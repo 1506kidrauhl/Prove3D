@@ -1,0 +1,18 @@
+
+Monitorando o PC por meio do celular
+
+Usando vnc uma forma prática de acessar máquinas remotamente.
+
+
+Usaremos o Team Viewer (versão gratuita)
+https://login.teamviewer.com/LogOn ( acesso)
+Instalar no PC e no celular 
+
+Dois aplicativos 
+
+Team Viewer padrão (para acessar o computador através do Celular)
+Team Viewer QucikSupport ( para acessar o Celular do Computador)
+
+https://www.youtube.com/watch?v=04jxvZUU7O8
+
+
