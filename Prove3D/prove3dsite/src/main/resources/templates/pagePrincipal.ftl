@@ -4,7 +4,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/parallax/logo.png" />
-    <title>Principal</title>
+    <title>Home</title>
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -15,14 +15,14 @@
 
 <body>
 <!-- TOP DA PÁGINA -->
-<nav class="navbar navbar-ligh text-white topPage">
+<nav class="navbar navbar-ligh text-white topPage header">
     <a class="navbar-brand text-white" href="/index">
         <img src="img/parallax/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
         Provë 3D
         <br>
         Bem vindo,
         <#if dadosLog ? has_content>
-            <b>${dadosLog.nome}</b>
+            <b>${dadosLog.nome}.</b>
         </#if>
     </a>
     <a class="navbar-brand text-white" style="height: 50px;" href="/sair">
@@ -46,7 +46,7 @@
             <a data-toggle="modal" data-target="#modalChamados">
             <div class="card cardSize">
                 <img src="img/cards/conversacao.png" class="card-body imgSize"/>
-                <div class="card-footer text-white bg-info">Chamados</div>
+                <div class="card-footer text-white colorCard">Chamados</div>
             </div>
             </a>
         </div>
@@ -55,7 +55,7 @@
             <a href="/dashboard">
             <div class="card cardSize">
                 <img src="img/cards/estatisticas.png" class="card-body imgSize"/>
-                <div class="card-footer text-white bg-info">Dashboard</div>
+                <div class="card-footer text-white colorCard">Dashboard</div>
             </div>
             </a>
         </div>
@@ -64,7 +64,7 @@
             <a href="#">
             <div class="card cardSize">
                 <img src="img/cards/velocimetro.png" class="card-body imgSize"/>
-                <div class="card-footer text-white bg-info">Desempenho de Processos</div>
+                <div class="card-footer text-white colorCard">Desempenho</div>
             </div>
             </a>
         </div>
@@ -78,7 +78,7 @@
             <a data-toggle="modal" data-target="#modalEdit">
             <div class="card cardSize">
                 <img src="img/cards/curriculo.png" class="card-body imgSize"/>
-                <div class="card-footer text-white bg-info">Perfil</div>
+                <div class="card-footer text-white colorCard">Perfil</div>
             </div>
             </a>
         </div>
@@ -87,7 +87,7 @@
             <a href="/relatorio">
             <div class="card cardSize">
                 <img src="img/cards/relatorio.png" class="card-body imgSize"/>
-                <div class="card-footer text-white bg-info">Relatório</div>
+                <div class="card-footer text-white colorCard">Relatórios</div>
             </div>
             </a>
         </div>
@@ -96,7 +96,7 @@
             <a href="#">
             <div class="card cardSize">
                 <img src="img/cards/manutencao.png" class="card-body imgSize"/>
-                <div class="card-footer text-white bg-info">Em Manutenção</div>
+                <div class="card-footer text-white colorCard">Em Manutenção</div>
             </div>
             </a>
         </div>
@@ -209,17 +209,17 @@
                 <div class="form-group">
                     <label for="cmbTipo">Selecione o Tipo:</label>
                     <select id="cmbTipo" class="form-control">
-                        <option value="1">Dúvida</option>
-                        <option value="2">Incidente</option>
+                        <option value="Dúvida">Dúvida</option>
+                        <option value="Incidente">Incidente</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="cmbAssunto">Selecione o Assunto:</label>
                     <select id="cmbTipo" class="form-control">
-                        <option value="1">Aplicação</option>
-                        <option value="2">Dashboard</option>
-                        <option value="3">Relatórios</option>
+                        <option value="Aplicação">Aplicação</option>
+                        <option value="DashBoard">Dashboard</option>
+                        <option value="Relatórios">Relatórios</option>
                     </select>
                 </div>
 
@@ -233,9 +233,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary">Abrir Chamado</button>
                 <#if dadosLog ? has_content>
-                <input type="hidden" id="idUserChamado" value="${dadosLog.idUsuario}">
-                    <#else>
-                        <input type="hidden" id="idUserChamado" >
+                    <input type="hidden" id="idUserChamado" value="${dadosLog.idUsuario}">
                 </#if>
             </div>
         </div>
@@ -248,8 +246,8 @@
 
 <script>
 
-
 </script>
+
 <script src="js/pagePrincipal/basic.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
