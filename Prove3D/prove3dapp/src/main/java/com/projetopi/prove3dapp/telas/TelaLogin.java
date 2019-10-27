@@ -1,5 +1,6 @@
 package com.projetopi.prove3dapp.telas;
 
+import com.projetopi.prove3dapp.Config;
 import com.projetopi.prove3dapp.Prove3dappApplication;
 import com.projetopi.prove3dapp.dao.TabelaUsuarioDAO;
 import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
@@ -22,6 +23,10 @@ public class TelaLogin extends javax.swing.JFrame {
     public TelaLogin() {
         initComponents();
     }
+    
+    @Autowired
+    private Config config;
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -137,15 +142,11 @@ public class TelaLogin extends javax.swing.JFrame {
         if (dados == null) {
             lbMensagem.setText("Login ou Senha estão incorretos");
         } else {
-            ApplicationContext context = new SpringApplicationBuilder(Prove3dappApplication.class)
-                    .headless(false).run();
-
-            TelaPrincipal telaPrincipal = context.getBean(TelaPrincipal.class);
+            
+            TelaPrincipal telaPrincipal = config.TelaPrincipal();
 
             telaPrincipal.setVisible(true);
-            this.dispose();
         }
-
 
     }//GEN-LAST:event_btnEntrarActionPerformed
 
