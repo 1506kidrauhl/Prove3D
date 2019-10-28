@@ -94,11 +94,11 @@
             <div class="row">
               <div class="col-md-6">
                 <label for="inputTel">Telefone</label>
-                <input type="text" class="form-control" name="inputTel" maxlength="14" minlength="14" required>
+                <input type="text" class="form-control" name="inputTel" id="inputTel" maxlength="14" minlength="14" required>
               </div>
               <div class="col-md-6">
                 <label for="inputCpf">CPF</label>
-                <input type="text" class="form-control" name="inputCpf" maxlength="14" minlength="14" required>
+                <input type="text" class="form-control" name="inputCpf" id="inputCpf" maxlength="14" minlength="14" required>
               </div>
             </div>        
         </div>
@@ -465,6 +465,17 @@
 <script src="js/jquery.appear.js"></script>
 <script src="js/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="js/jquery.mask.min.js"></script>
+
+  <!-- máscara -->
+
+<script>
+$(document).ready(function(){
+$("#inputTel").mask("(00)00000-0000")
+$("#inputCpf").mask("000.000.000-00")
+})
+</script>
+
 
 <script>
 
