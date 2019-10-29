@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -27,19 +28,31 @@ public class TabelaGpu {
 
     @Id
     private Long idGpu;
+    
+    @Column
+    private String gpu;
 
     @Column(precision = 5, scale = 2)
     private Double utilizacao;
 
     @Column(precision = 5, scale = 2)
     private Double memoria;
-
+    
     @Column(precision = 5, scale = 2)
-    private Double memoriaCompartilhada;
+    private Double controlMemoria;
+    
+    @Column(precision = 5, scale = 2)
+    private Double video;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date dtHora;
+    
+    @ManyToOne
+    private TabelaComputador fkComputadorG;
+    
+    @ManyToOne
+    private TabelaUsuario fkUsuarioG;
 
     public Long getIdGpu() {
         return idGpu;
@@ -48,6 +61,16 @@ public class TabelaGpu {
     public void setIdGpu(Long idGpu) {
         this.idGpu = idGpu;
     }
+
+    public String getGpu() {
+        return gpu;
+    }
+
+    public void setGpu(String gpu) {
+        this.gpu = gpu;
+    }
+    
+    
 
     public Double getUtilizacao() {
         return utilizacao;
@@ -65,14 +88,6 @@ public class TabelaGpu {
         this.memoria = memoria;
     }
 
-    public Double getMemoriaCompartilhada() {
-        return memoriaCompartilhada;
-    }
-
-    public void setMemoriaCompartilhada(Double memoriaCompartilhada) {
-        this.memoriaCompartilhada = memoriaCompartilhada;
-    }
-
     public Date getDtHora() {
         return dtHora;
     }
@@ -81,4 +96,36 @@ public class TabelaGpu {
         this.dtHora = dtHora;
     }
 
+    public Double getControlMemoria() {
+        return controlMemoria;
+    }
+
+    public void setControlMemoria(Double controlMemoria) {
+        this.controlMemoria = controlMemoria;
+    }
+
+    public Double getVideo() {
+        return video;
+    }
+
+    public void setVideo(Double video) {
+        this.video = video;
+    }
+
+    public TabelaComputador getFkComputadorG() {
+        return fkComputadorG;
+    }
+
+    public void setFkComputadorG(TabelaComputador fkComputadorG) {
+        this.fkComputadorG = fkComputadorG;
+    }
+
+    public TabelaUsuario getFkUsuarioG() {
+        return fkUsuarioG;
+    }
+
+    public void setFkUsuarioG(TabelaUsuario fkUsuarioG) {
+        this.fkUsuarioG = fkUsuarioG;
+    }
+    
 }

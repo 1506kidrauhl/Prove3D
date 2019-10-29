@@ -26,7 +26,7 @@ public class TabelaComputador {
    private Long idComputador;
    
    @Column(length = 50)
-   private String sistemOperacional;
+   private String sistemaOperacional;
    
    @Column(length = 45)
    private String nmComputador;
@@ -52,6 +52,10 @@ public class TabelaComputador {
    @OneToMany(mappedBy= "fkComputadorL")
    private Set<TabelaLog>fkComputadorL= new HashSet<>();
 
+   @OneToMany(mappedBy= "fkComputadorG")
+   private Set<TabelaGpu>fkComputadorG= new HashSet<>();
+
+   
     public Set<TabelaLog> getFkComputadorL() {
         return fkComputadorL;
     }
@@ -86,12 +90,12 @@ public class TabelaComputador {
         this.idComputador = idComputador;
     }
 
-    public String getSistemOperacional() {
-        return sistemOperacional;
+    public String getSistemaOperacional() {
+        return sistemaOperacional;
     }
 
-    public void setSistemOperacional(String sistemOperacional) {
-        this.sistemOperacional = sistemOperacional;
+    public void setSistemaOperacional(String sistemaOperacional) {
+        this.sistemaOperacional = sistemaOperacional;
     }
 
     public String getNmComputador() {
@@ -134,5 +138,12 @@ public class TabelaComputador {
         this.fkComputadorP = fkComputadorP;
     }
 
-   
+    public Set<TabelaGpu> getFkComputadorG() {
+        return fkComputadorG;
+    }
+
+    public void setFkComputadorG(Set<TabelaGpu> fkComputadorG) {
+        this.fkComputadorG = fkComputadorG;
+    }
+
   }

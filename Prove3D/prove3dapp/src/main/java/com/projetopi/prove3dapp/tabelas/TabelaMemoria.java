@@ -22,12 +22,9 @@ public class TabelaMemoria {
     @Column(precision=2,scale=1)
     private Double disponivel;
     
-    @Column 
-    private Integer paginada;
-    
-    @Column
-    private Integer nPaginada;
-    
+    @Column(precision = 5, scale = 2)
+    private Double cache;
+        
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date dtHora;
@@ -59,20 +56,20 @@ public class TabelaMemoria {
         this.disponivel = disponivel;
     }
 
-    public Integer getPaginada() {
-        return paginada;
+    public Double getCache() {
+        return cache;
     }
 
-    public void setPaginada(Integer paginada) {
-        this.paginada = paginada;
+    public void setCache(Double cache) {
+        this.cache = cache;
     }
 
-    public Integer getnPaginada() {
-        return nPaginada;
+    public TabelaComputador getFkComputadorM() {
+        return fkComputadorM;
     }
 
-    public void setnPaginada(Integer nPaginada) {
-        this.nPaginada = nPaginada;
+    public void setFkComputadorM(TabelaComputador fkComputadorM) {
+        this.fkComputadorM = fkComputadorM;
     }
 
     public Date getDtHora() {
@@ -90,9 +87,5 @@ public class TabelaMemoria {
     public void setFkComputador(TabelaComputador fkComputador) {
         this.fkComputadorM = fkComputador;
     }
-    
-    
-    
-    
     
 }

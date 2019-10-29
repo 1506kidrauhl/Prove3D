@@ -44,6 +44,10 @@ public class TabelaUsuario {
     @OneToMany (mappedBy="fkUsuario")
     private Set<TabelaLog> fkUsuarioL= new HashSet<>();
 
+    @OneToMany (mappedBy="fkUsuarioG")
+    private Set<TabelaGpu> fkUsuarioG= new HashSet<>();
+
+    
     public Set<TabelaLog> getFkUsuarioL() {
         return fkUsuarioL;
     }
@@ -127,5 +131,12 @@ public class TabelaUsuario {
         this.fkUsuarioP = fkUsuarioP;
     }
 
-    
+    public Set<TabelaGpu> getFkUsuarioG() {
+        return fkUsuarioG;
+    }
+
+    public void setFkUsuarioG(Set<TabelaGpu> fkUsuarioG) {
+        this.fkUsuarioG = fkUsuarioG;
+    }
+
 }

@@ -124,8 +124,5 @@ public class TabelaProcessos {
     public void setFkUsuarioP(TabelaUsuario fkUsuarioP) {
         this.fkUsuarioP = fkUsuarioP;
     }
-
-    
-    
     
 }
