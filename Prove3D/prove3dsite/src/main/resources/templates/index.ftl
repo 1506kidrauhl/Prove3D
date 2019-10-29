@@ -426,11 +426,7 @@
       <div class="row animated opacity mar-bot20" data-andown="fadeIn" data-animation="animation">
         <div class="col-sm-12 align-center">
           <ul class="social-network social-circle">
-            <li><a href="#" class="icoRss" title="Rss"><i class="fa fa-rss"></i></a></li>
-            <li><a href="#" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-            <li><a href="#" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="#" class="icoGoogle" title="Google +"><i class="fa fa-google-plus"></i></a></li>
-            <li><a href="#" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+            <li><a href="#" title="prove3d@gmail.com"><i><img src="img/portfolio/email.png"></i></a></li>
           </ul>
         </div>
       </div>
@@ -467,24 +463,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script src="js/jquery.mask.min.js"></script>
 
-  <!-- máscara -->
-
+<!-- máscara -->
 <script>
-$(document).ready(function(){
-$("#inputTel").mask("(00)00000-0000")
-$("#inputCpf").mask("000.000.000-00")
-})
-</script>
+    $(document).ready(function(){
 
+        $("#inputTel").mask("(00)00000-0000");
+        $("#inputCpf").mask("000.000.000-00");
 
-<script>
+        $('#modalExemplo').on('shown.bs.modal', function () {
+            $('#meuInput').trigger('focus')
+        });
 
-  $('#modalExemplo').on('shown.bs.modal', function () {
-    $('#meuInput').trigger('focus')
-  })
+        try{
+            if(verif.value == 0){
+                swal("Login ou Senha incorretos");
+            }
+        } catch (e) {}
 
-  if(verif.value == 0){
-    swal("Login ou Senha incorretos");
-  }
+    });
 
 </script>
