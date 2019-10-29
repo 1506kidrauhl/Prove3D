@@ -35,6 +35,8 @@ public class TabelaUsuario {
     @Column(length = 14)
     private String cpf;
 
+    @OneToMany(mappedBy = "fkUsuarioP")
+    private Set<TabelaProcessos> fkUsuarioP = new HashSet<>();
     
     @OneToMany(mappedBy = "fkUsuario")
     private Set<TabelaComputador> fkUsuario  = new HashSet<>();
@@ -117,4 +119,13 @@ public class TabelaUsuario {
         this.cpf = cpf;
     }
 
+    public Set<TabelaProcessos> getFkUsuarioP() {
+        return fkUsuarioP;
+    }
+
+    public void setFkUsuarioP(Set<TabelaProcessos> fkUsuarioP) {
+        this.fkUsuarioP = fkUsuarioP;
+    }
+
+    
 }

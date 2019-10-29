@@ -46,6 +46,9 @@ public class TabelaComputador {
    @OneToOne(mappedBy="fkComputadorD")
    private TabelaDisco fkComputadorD;
    
+   @OneToMany (mappedBy="fkComputadorP")
+   private Set<TabelaProcessos> fkComputadorP = new HashSet<>();
+   
    @OneToMany(mappedBy= "fkComputadorL")
    private Set<TabelaLog>fkComputadorL= new HashSet<>();
 
@@ -75,8 +78,6 @@ public class TabelaComputador {
         this.fkComputadorCPU = fkComputadorCPU;
     }
 
-   
-   
    public Long getIdComputador() {
         return idComputador;
     }
@@ -116,9 +117,22 @@ public class TabelaComputador {
     public void setFkUsuario(TabelaUsuario fkUsuario) {
         this.fkUsuario = fkUsuario;
     }
-   
-   
-   
-   
+
+    public TabelaDisco getFkComputadorD() {
+        return fkComputadorD;
+    }
+
+    public void setFkComputadorD(TabelaDisco fkComputadorD) {
+        this.fkComputadorD = fkComputadorD;
+    }
+
+    public Set<TabelaProcessos> getFkComputadorP() {
+        return fkComputadorP;
+    }
+
+    public void setFkComputadorP(Set<TabelaProcessos> fkComputadorP) {
+        this.fkComputadorP = fkComputadorP;
+    }
+
    
   }
