@@ -40,17 +40,6 @@ public class TabelaCpu {
   @OneToOne
   private TabelaComputador fkComputadorCPU;
   
-  @OneToMany(mappedBy = "fkCpuP")
-  private Set<TabelaProcessos> fkCpuP = new HashSet<>();
-
-    public Set<TabelaProcessos> getFkCpu() {
-        return fkCpuP;
-    }
-
-    public void setFkCpu(Set<TabelaProcessos> fkCpu) {
-        this.fkCpuP = fkCpu;
-    }
-
     public Long getIdCpu() {
         return idCpu;
     }

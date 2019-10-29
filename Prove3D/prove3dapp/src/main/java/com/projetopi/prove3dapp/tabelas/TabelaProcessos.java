@@ -40,8 +40,11 @@ public class TabelaProcessos {
     private Date dataHora;
     
     @ManyToOne
-    private TabelaCpu fkCpuP;
-
+    private TabelaComputador fkComputadorP;
+    
+    @ManyToOne
+    private TabelaUsuario fkUsuarioP;
+    
     public Long getIdProcesso() {
         return idProcesso;
     }
@@ -106,17 +109,22 @@ public class TabelaProcessos {
         this.dataHora = dataHora;
     }
 
-    public TabelaCpu getFkCpu() {
-        return fkCpuP;
+    public TabelaComputador getFkComputadorP() {
+        return fkComputadorP;
     }
 
-    public void setFkCpu(TabelaCpu fkCpu) {
-        this.fkCpuP = fkCpu;
+    public void setFkComputadorP(TabelaComputador fkComputadorP) {
+        this.fkComputadorP = fkComputadorP;
     }
-    
-    
-    
-    
+
+    public TabelaUsuario getFkUsuarioP() {
+        return fkUsuarioP;
+    }
+
+    public void setFkUsuarioP(TabelaUsuario fkUsuarioP) {
+        this.fkUsuarioP = fkUsuarioP;
+    }
+
     
     
     
