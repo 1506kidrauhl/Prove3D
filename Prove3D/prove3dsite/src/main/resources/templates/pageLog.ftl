@@ -56,7 +56,9 @@
           <div class="sidebar-header d-flex align-items-center">
             <div class="avatar"><img src="img/dashboard/user.png" alt="..." class="img-fluid rounded-circle"></div>
             <div class="title">
-              <h1 class="h4">Gustavo Caires</h1>
+              <#if dadosLog ? has_content>
+                <h1 class="h4">${dadosLog.nome}</h1>
+              </#if>
             </div>
           </div>
 
@@ -65,7 +67,7 @@
             <li><a data-toggle="modal" data-target="#modalChamados"><i></i>Chamados</a></li>
             <li><a href="/dashboard"><i></i>Dashboard</a></li>
             <li><a><i></i>Desempenho de processos</a></li>
-            <li class="active"><a href="/relatorio"><i></i>Relatório</a></li>
+            <li class="active"><a href="/relatorio"><i></i>Relatórios</a></li>
           </ul>
 
         </nav>
@@ -143,7 +145,7 @@
             <div class="container-fluid">
               <div class="row bg-white has-shadow">
                 <div class="col-xl-12 col-sm-6">
-                  <img src="https://icon-icons.com/icons2/72/PNG/48/back_arrow_14447.png" onclick="troca(secLog)"/>
+                  <img src="img/back.png" onclick="troca(secLog)"/>
 
                   <table class="table table-bordered table-striped" style="margin-top: 5px;">
                     <thead>
