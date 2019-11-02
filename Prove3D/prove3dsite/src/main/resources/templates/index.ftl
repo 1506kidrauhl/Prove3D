@@ -27,18 +27,18 @@
 
 <body>
   <section id="header" class="appear"></section>
-  <div class="navbar navbar-fixed-top" role="navigation" data-0="line-height:70px; height:70px; background-color:rgba(47,79,79,0.2);" data-300="line-height:60px; height:60px; background-color:rgba(25,50,112,1);">
+  <div class="navbar navbar-fixed-top" role="navigation" data-0="line-height:70px; height:70px; background-color:rgba(47,79,79,0.2);" data-300="line-height:70px; height:70px; background-color:rgba(25,50,112,1);">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 						<span class="fa fa-bars color-white"></span>
 					</button>
-        <h1><a class="navbar-brand" href="index.html" style="margin-left: 5px; vertical-align: middle;" data-0="line-height:90px;" data-300="line-height:50px;">			
+        <h1><a class="navbar-brand" href="index.html" style="margin-left: 5px; vertical-align: middle;" data-0="line-height:90px;" data-300="line-height:90px;">
             Provë 3D
 					</a></h1>
       </div>
       <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav" data-0="margin-top:20px;" data-300="margin-top:5px;">
+        <ul class="nav navbar-nav" data-0="margin-top:20px;" data-300="margin-top:20px;">
           <li class="active"><a href="#header">Home</a></li>
           <li><a href="#parallax1">Download</a></li>
           <li><a href="#section-manual">Manual</a></li>
@@ -204,7 +204,7 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="align-center">
-            <div class="testimonial pad-top40 pad-bot40 clearfix">
+            <div class="testimonial">
                 <h2 style="color: white">Sobre Nós</h2>
               <h5>
                     Nós temos como objetivo oferecer ao criador uma maneira de conseguir visualizar o desempenho do seu computador durante um processo de renderização e a produção de uma animação 3D/2D,
@@ -370,55 +370,9 @@
     </div>
   </section>
 
-  <section id="parallax2" class="section parallax" data-stellar-background-ratio="0.5">
-    <div class="align-center pad-top40 pad-bot0">
-      <blockquote class="bigquote color-white">Fale conosco</blockquote>
-    </div>
-  </section>
+
 
   <!-- contact -->
-  <section id="section-contact" class="section appear clearfix">
-    <div class="container">
-
-      <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-          <div class="cform" id="contact-form">
-
-            <div id="sendmessage">Sua mensagem foi enviada com sucesso, muito obrigado!</div>
-            <div id="errormessage">Ops! erro ao enviar a mensagem, por favor, tente novamente</div>
-
-            <form action="/" method="get" role="form">
-              <div class="form-group">
-                <label for="name">Seu nome</label>
-                <input type="text" name="name" class="form-control" id="name" data-rule="minlen:4" data-msg="Este campo deve conter pelo menos 4 caracteres" />
-                <div class="validation"></div>
-              </div>
-              <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" class="form-control" name="email" id="email" data-rule="email" data-msg="O email deve ser válido" />
-                <div class="validation"></div>
-              </div>
-              <div class="form-group">
-                <label for="subject">Assunto</label>
-                <input type="text" class="form-control" name="subject" id="subject" data-rule="minlen:4" data-msg="O assunto deve conter pelo menos 8 caracteres" />
-                <div class="validation"></div>
-              </div>
-              <div class="form-group">
-                <label for="message">Mensagem</label>
-                <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Por favor, escreva sua mensagem"></textarea>
-                <div class="validation"></div>
-              </div>
-
-              <button type="submit" class="btn btn-theme pull-left">Enviar</button>
-            </form>
-
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </section>
 
   <section id="footer" class="section footer">
 
@@ -432,8 +386,8 @@
       </div>
 
       <div class="row align-center copyright">
-        <div class="col-sm-12">
-          <p>Copyright &copy; Provë3D</p>
+        <div  class="col-sm-12">
+          <p id="copyright">Copyright &copy; Provë3D</p>
         </div>
       </div>
     </div>
