@@ -22,7 +22,7 @@
         <br>
         Bem vindo,
         <#if dadosLog ? has_content>
-            <b>${dadosLog.nome}.</b>
+            <b id="nmUser">${dadosLog.nome}.</b>
         </#if>
     </a>
     <a class="navbar-brand text-white" style="height: 50px;" href="/sair">
@@ -106,12 +106,12 @@
 
 <!-- MODAL DE EDIÇÃO DE PERFIL -->
 <#if dadosLog ? has_content>
-<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title" id="exampleModalLabel">
-                    <input type="hidden" value="${dadosLog.idUsuario}">
+                    <input type="hidden" id="idUser" value="${dadosLog.idUsuario}">
                     <div class="row">
                         <div class="col-sm-2">
                             <img src="img/parallax/logo.png" width="30px" height="30px">
@@ -124,7 +124,7 @@
                         </div>
                     </div>
                 </h6>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                <button onclick="cancelaEdit()" type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -174,14 +174,13 @@
                 CPF:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="${dadosLog.cpf}" readonly>
+                        <input type="text" id="txtCpf" class="form-control" value="${dadosLog.cpf}" readonly>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Salvar mudanças</button>
-                <input type="hidden" id="idUserEdit">
+                <button type="button" class="btn btn-secondary" onclick="cancelaEdit()" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnEdit" onclick="btnEditaPerfil()">Salvar mudanças</button>
             </div>
         </div>
     </div>
@@ -234,8 +233,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="btnEmail()">Abrir Chamado</button>
+                <button type="button" class="btn btn-primary" id="btnEnviar" onclick="btnEmail()">Abrir Chamado</button>
                 <#if dadosLog ? has_content>
+                    <input type="hidden" id="txtNmUser" value="${dadosLog.nome}">
                     <input type="hidden" id="txtEmailC" value="${dadosLog.email}">
                 </#if>
             </div>
@@ -246,21 +246,8 @@
 </body>
 </html>
 
-<script>
-    function btnEmail() {
-        var urlFinal = "/enviarEmail/" + cmbTipo.value + "/" + cmbAssunto.value + "/" + comment.value + "/" +txtEmailC.value;
-        $.ajax({
-            url: urlFinal,
-            method:"POST",
-            error:function () {
-                swal("Email enviado com sucesso!");
-
-            },
-        })
-
-    }
-</script>
-
+<script src="js/ajax/edicaoPerfil.js"></script>
+<script src="js/ajax/envioEmail.js"></script>
 <script src="js/pagePrincipal/basic.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

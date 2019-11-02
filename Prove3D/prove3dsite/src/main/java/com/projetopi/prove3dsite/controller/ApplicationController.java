@@ -121,22 +121,48 @@ public class ApplicationController {
         
     }
 
-    @RequestMapping(value = "/enviarEmail/{tipo}/{assunto}/{msg}/{email}",method = RequestMethod.POST)
-    public void enviarEmail(@PathVariable String tipo, @PathVariable String assunto, @PathVariable String msg,@PathVariable String email){
+    @RequestMapping(value = "/enviarEmail",method = RequestMethod.POST)
+    public @ResponseBody String enviarEmail(@RequestBody DadosEmail mail){
 
         SimpleMailMessage mailMessage=new SimpleMailMessage();
 
         mailMessage.setTo("support@prove.zendesk.com");
-        mailMessage.setSubject(tipo +" - "+ email + " - " + assunto);
-        mailMessage.setText(msg);
-        mailMessage.setFrom(email);
+        mailMessage.setSubject(mail.getTipo() +" - "+ mail.getAssunto() + " - " + mail.getNome());
+        mailMessage.setText(mail.getEmail() + ".\n" + mail.getMensagem());
+        mailMessage.setFrom(mail.getEmail());
         try{
             javaMailSender.send(mailMessage);
+            return "Seu chamado foi aberto. Obrigado pelo feedback!";
         }catch (Exception ex ){
             ex.printStackTrace();
+            return "Erro ao enviar o email. Ops, por favor, tente abrir novamente o chamado!";
         }
 
     }
 
+    @RequestMapping(value = "/editarPerfil", method = RequestMethod.POST)
+    public @ResponseBody String editarPerfil(@RequestBody TabelaUsuario perfil){
+
+        TabelaUsuario editar = new TabelaUsuario();
+        tabelaUsuarioDAO.findById(perfil.getIdUsuario());
+
+        editar.setIdUsuario(perfil.getIdUsuario());
+        editar.setNome(perfil.getNome());
+        editar.setLogin(perfil.getLogin());
+        editar.setSenha(perfil.getSenha());
+        editar.setEmail(perfil.getEmail());
+        editar.setTelefone(perfil.getTelefone());
+        editar.setCpf(perfil.getCpf());
+
+        try{
+            tabelaUsuarioDAO.save(editar);
+            log = perfil.getLogin();
+            pass = perfil.getSenha();
+            return "Sucesso!. Seus dados foram alterados com sucesso.";
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return "Erro!. Não foi possível editar seus dados, por favor, tente novamente";
+        }
+    }
 
 }

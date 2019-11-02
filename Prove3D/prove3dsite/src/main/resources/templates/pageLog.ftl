@@ -111,19 +111,6 @@
                   <!--FILTRO TIPO-->
                   <div class="row">
                     <div class="col-sm-6">
-
-                 <!--     <input type="checkbox" id="chckTodos" name="scales">
-                      <label for="chckTodos">Todos</label>
-
-                      <input type="checkbox" id="chckAtencao" name="scales">
-                      <label for="chckAtencao">Atenção</label>
-
-                      <input type="checkbox" id="chckErro" name="scales">
-                      <label for="chckErro">Erro</label>
-
-                      <input type="checkbox" id="chckOK" name="scales">
-                      <label for="chckOK">OK</label>-->
-
                       <select id="cmbFiltro" class="form-control">
                           <option>Escolha um tipo de filtro</option>
                           <option value="Atenção">Atenção</option>
@@ -185,61 +172,66 @@
     </div>
 
   <!-- MODAL DE CHAMADOS -->
-  <div class="modal fade" id="modalChamados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h6 class="modal-title" id="exampleModalLabel">
-            <div class="row">
-              <div class="col-sm-2">
-                <img src="img/parallax/logo.png" width="30px" height="30px">
+    <div class="modal fade" id="modalChamados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title" id="exampleModalLabel">
+              <div class="row">
+                <div class="col-sm-2">
+                  <img src="img/parallax/logo.png" width="30px" height="30px">
+                </div>
+                <div class="col-sm-10" style="vertical-align: center">
+                  Abrir um chamado
+                </div>
               </div>
-              <div class="col-sm-10" style="vertical-align: center">
-                Abrir um chamado
-              </div>
+            </h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label for="cmbTipo">Selecione o Tipo:</label>
+              <select id="cmbTipo" class="form-control">
+                <option value="Dúvida">Dúvida</option>
+                <option value="Incidente">Incidente</option>
+              </select>
             </div>
-          </h6>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
 
-          <div class="form-group">
-            <label for="cmbTipo">Selecione o Tipo:</label>
-            <select id="cmbTipo" class="form-control">
-              <option value="1">Dúvida</option>
-              <option value="2">Incidente</option>
-            </select>
+            <div class="form-group">
+              <label for="cmbAssunto">Selecione o Assunto:</label>
+              <select id="cmbAssunto" class="form-control">
+                <option value="Aplicação">Aplicação</option>
+                <option value="Dashboard">Dashboard</option>
+                <option value="Relatórios">Relatórios</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="comment">Mensagem:</label>
+              <textarea class="form-control" rows="5" id="comment"></textarea>
+            </div>
+
           </div>
-
-          <div class="form-group">
-            <label for="cmbAssunto">Selecione o Assunto:</label>
-            <select id="cmbTipo" class="form-control">
-              <option value="1">Aplicação</option>
-              <option value="2">Dashboard</option>
-              <option value="3">Relatórios</option>
-            </select>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btnEnviar" onclick="btnEmail()">Abrir Chamado</button>
+            <#if dadosLog ? has_content>
+              <input type="hidden" id="txtNmUser" value="${dadosLog.nome}">
+              <input type="hidden" id="txtEmailC" value="${dadosLog.email}">
+            </#if>
           </div>
-
-          <div class="form-group">
-            <label for="comment">Mensagem:</label>
-            <textarea class="form-control" rows="5" id="comment"></textarea>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary">Abrir Chamado</button>
         </div>
       </div>
     </div>
-  </div>
 
   </body>
 </html>
 
 <!-- JavaScript files-->
+<script src="js/ajax/envioEmail.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.js"> </script>
