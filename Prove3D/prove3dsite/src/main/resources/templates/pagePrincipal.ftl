@@ -252,4 +252,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="js/jquery.mask.min.js"></script>
+<script>
+    $(document).ready(function(){
 
+        $("#txtTel").mask("(00)00000-0000");
+    });
+</script>
