@@ -4,11 +4,11 @@ package com.projetopi.prove3dsite.controller;
 import com.projetopi.prove3dsite.dao.TabelaUsuarioDAO;
 import com.projetopi.prove3dsite.tabelas.TabelaUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ApplicationController {
@@ -16,6 +16,10 @@ public class ApplicationController {
     
     @Autowired
     private TabelaUsuarioDAO tabelaUsuarioDAO;
+
+    @Autowired
+    JavaMailSender javaMailSender;
+
 
     String log, pass;
 
@@ -116,5 +120,23 @@ public class ApplicationController {
         }
         
     }
+
+    @RequestMapping(value = "/enviarEmail/{tipo}/{assunto}/{msg}/{email}",method = RequestMethod.POST)
+    public void enviarEmail(@PathVariable String tipo, @PathVariable String assunto, @PathVariable String msg,@PathVariable String email){
+
+        SimpleMailMessage mailMessage=new SimpleMailMessage();
+
+        mailMessage.setTo("support@prove.zendesk.com");
+        mailMessage.setSubject(tipo +" - "+ email + " - " + assunto);
+        mailMessage.setText(msg);
+        mailMessage.setFrom(email);
+        try{
+            javaMailSender.send(mailMessage);
+        }catch (Exception ex ){
+            ex.printStackTrace();
+        }
+
+    }
+
 
 }
