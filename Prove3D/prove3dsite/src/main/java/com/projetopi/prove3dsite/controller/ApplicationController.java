@@ -1,6 +1,9 @@
 package com.projetopi.prove3dsite.controller;
 
 
+import com.projetopi.prove3dsite.dao.TabelaComputadorDAO;
+import com.projetopi.prove3dsite.dao.TabelaGpuDAO;
+import com.projetopi.prove3dsite.dao.TabelaLogDAO;
 import com.projetopi.prove3dsite.dao.TabelaUsuarioDAO;
 import com.projetopi.prove3dsite.tabelas.TabelaUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ApplicationController {
@@ -20,8 +26,18 @@ public class ApplicationController {
     @Autowired
     JavaMailSender javaMailSender;
 
+    @Autowired
+    private TabelaComputadorDAO tabelaComputadorDAO;
+
+    @Autowired
+    private TabelaGpuDAO tabelaGpuDAO;
+
+    @Autowired
+    private TabelaLogDAO tabelaLogDAO;
 
     String log, pass;
+
+    TabelaUsuario dadosUser;
 
     @GetMapping("/principal")
     public String pagePrincipal(Model model){
@@ -116,6 +132,7 @@ public class ApplicationController {
         } else{
             log = login;
             pass = senha;
+            dadosUser = dados;
             return "redirect:/principal";
         }
         
