@@ -51,12 +51,6 @@ public class Config {
     public TelaRelatórios telaRelatorios() {
         return new TelaRelatórios();
     }
-
-    @Bean
-    @ConditionalOnProperty(name = "com.projetopi.prove3dapp.telas", havingValue = "telas", matchIfMissing = true)
-    public TelaPrincipal TelaPrincipal() {
-        return new TelaPrincipal();
-    }
     
     /*
     @Bean

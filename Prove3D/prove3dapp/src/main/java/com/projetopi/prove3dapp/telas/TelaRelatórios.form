@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -28,6 +28,10 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="203" max="-2" attributes="0"/>
                       <Component id="btGerar" min="-2" pref="122" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                      <Component id="lbMensagem" min="-2" pref="432" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
@@ -60,11 +64,12 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="txHorarioFinal" min="-2" pref="122" max="-2" attributes="0"/>
                           </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="cbComponente" min="-2" pref="122" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-                      <Component id="lbMensagem" min="-2" pref="432" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="37" max="32767" attributes="0"/>
@@ -78,6 +83,8 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cbTipoLog" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cbComponente" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -132,13 +139,18 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Gerar log"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btGerarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="cbTipoLog">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
-            <StringItem index="0" value="Aviso"/>
-            <StringItem index="1" value="Erro"/>
+          <StringArray count="4">
+            <StringItem index="0" value="Todos"/>
+            <StringItem index="1" value="Aviso"/>
+            <StringItem index="2" value="Erro"/>
+            <StringItem index="3" value="Ok"/>
           </StringArray>
         </Property>
       </Properties>
@@ -158,6 +170,26 @@
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lbMensagem">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tipo de log"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cbComponente">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="CPU"/>
+            <StringItem index="1" value="Disco"/>
+            <StringItem index="2" value="GPU"/>
+            <StringItem index="3" value="Mem&#xf3;ria"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

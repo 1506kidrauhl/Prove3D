@@ -5,7 +5,22 @@
  */
 package com.projetopi.prove3dapp.telas;
 
+import com.projetopi.prove3dapp.dao.TabelaLogDAO;
+import com.projetopi.prove3dapp.tabelas.TabelaLog;
+
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /**
  *
@@ -21,6 +36,11 @@ public class TelaRelatórios extends javax.swing.JFrame {
         initComponents();
     }
 
+    @Autowired
+    TabelaLogDAO tabelaLogDAO;
+
+    public Long idUser;
+    public Long idComputador;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,8 +62,10 @@ public class TelaRelatórios extends javax.swing.JFrame {
         txHorarioInicial = new javax.swing.JTextField();
         txHorarioFinal = new javax.swing.JTextField();
         lbMensagem = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        cbComponente = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel2.setText("Tipo de log");
 
@@ -56,14 +78,23 @@ public class TelaRelatórios extends javax.swing.JFrame {
         jLabel6.setText("Horário final:");
 
         btGerar.setText("Gerar log");
+        btGerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btGerarActionPerformed(evt);
+            }
+        });
 
-        cbTipoLog.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Aviso", "Erro" }));
+        cbTipoLog.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Aviso", "Erro", "Ok" }));
 
         txHorarioFinal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txHorarioFinalActionPerformed(evt);
             }
         });
+
+        jLabel7.setText("Tipo de log");
+
+        cbComponente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CPU", "Disco", "GPU", "Memória" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -74,6 +105,9 @@ public class TelaRelatórios extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(203, 203, 203)
                         .addComponent(btGerar, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(lbMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -98,10 +132,11 @@ public class TelaRelatórios extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
-                                .addComponent(txHorarioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(lbMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txHorarioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbComponente, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -110,7 +145,9 @@ public class TelaRelatórios extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(cbTipoLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbTipoLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(cbComponente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -136,6 +173,188 @@ public class TelaRelatórios extends javax.swing.JFrame {
     private void txHorarioFinalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txHorarioFinalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txHorarioFinalActionPerformed
+
+    private void btGerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGerarActionPerformed
+
+        //Variáveis que irão ser auxiliares
+        lbMensagem.setText("");
+        //Aqui defino o formato como quero que o que o usuário digitou fique
+        //Ou seja, ano-mes-dia horas:segundos (2019-11-05 14:57)
+        //Fica neste formato, pois é assim que o banco entende DATETIMe
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd hh:ss");
+
+        //Estes Splits servem para transformar o que o usuário digitou em uma data válida
+        //Para isso, preciso que ele digite neste formato: dd/MM/yyyy (05/11/2019)
+        //Caso contrário, é mostrado uma msg de erro e não é executado a geração do Log
+        String[] inicio = txDataInicial.getText().split("/");
+        String[] fim = txDataFinal.getText().split("/");
+
+        //Estas variáveis irão servir como parâmetro mais para frente
+        Date dataInit = new Date(), dataFim = new Date();
+        List<TabelaLog> dados = new ArrayList<>();
+        String init = "", end = "", componente = "", tipoLog = "";
+
+        //Aqui utilizo o try para deixar a data no  formato yyyy-MM-dd
+        //Caso dê erro, quer dizer que a data foi digitada no formato errado, então
+        //é mostrado uma mensagem
+        try {
+            init = inicio[2] + "-" + inicio[1] + "-" + inicio[0];
+            end = fim[2] + "-" + fim[1] + "-" + fim[0];
+        } catch (Exception ex) {
+            lbMensagem.setText("Formato de data incorreta");
+            return;
+        }
+
+        //Aqui defino o tipo de Log que o usuário quer, para ser utilizado mais tarde, na consulta do BD
+        switch (cbTipoLog.getSelectedIndex()) {
+            case 1:
+                tipoLog = "Aviso";
+                break;
+            case 2:
+                tipoLog = "Erro";
+                break;
+            case 3:
+                tipoLog = "OK";
+                break;
+        }
+
+        //Aqui defino o componente que o usuário quer, para ser utilizado mais tarde, na consulta do BD
+        switch (cbComponente.getSelectedIndex()) {
+            case 0:
+                componente = "CPU";
+                break;
+            case 1:
+                componente = "Disco";
+                break;
+            case 2:
+                componente = "GPU";
+                break;
+            case 3:
+                componente = "Memória";
+                break;
+        }
+
+        //Caso o usuário não queira que a consulta seja filtrada por horas
+        if (txHorarioInicial.getText().equals("") || txHorarioFinal.getText().equals("")) {
+            //Agora, estou formatando minha data inicial e final e passando os horários padrões
+            //Ou seja, quero do inicio do primeiro dia, até o ultimo minuto do ultimo dia
+            //Ex: Quero que o filtro seja das 00:00 do dia 05/11/2019 até as 23:59 do dia 06/11/2019.
+            // Isto porque se o horário final fosse 00:00, isto quer dizer que também iria trazer do dia 07/11/2019
+            try {
+                dataInit = formato.parse(init + " 00:00");
+                dataFim = formato.parse(end + " 23:59");
+            } catch (Exception ex) {
+                lbMensagem.setText("Formato de data incorreta");
+                return;
+            }
+            //Chamando função que irá fazer a consulta no banco
+            verificaDados(dados,  dataInit,  dataFim,  componente,  tipoLog);
+
+        } else {
+            //Aqui o split é utilizado para a verificação de hora. Que deve ser digitada pelo usuário no formato
+            //hh:mm (15:08), caso contrário, irá dar erro
+            String[] hInicio = txHorarioInicial.getText().split(":");
+            String[] hFim = txHorarioFinal.getText().split(":");
+            String hrI = "", hrF = "";
+
+            try {
+                //Verificando se a formatação foi correta
+                hrI = hInicio[0] + ":" + hInicio[1];
+                hrF = hFim[0] + ":" + hFim[1];
+
+            } catch (Exception ex) {
+                lbMensagem.setText("Formato de horário incorreto");
+                return;
+            }
+
+            try {
+                //Formatando a data desejada com o horário escolhido
+                dataInit = formato.parse(init + " " + hrI);
+                dataFim = formato.parse(end + " " + hrF);
+            } catch (Exception ex) {
+                lbMensagem.setText("Formato de data incorreta");
+                return;
+            }
+
+            //Chamando função que irá fazer a consulta no BD
+            verificaDados(dados,  dataInit,  dataFim,  componente,  tipoLog);
+
+        }
+
+    }//GEN-LAST:event_btGerarActionPerformed
+
+    private void verificaDados(List<TabelaLog> dados, Date dataInit, Date dataFim, String componente, String tipoLog){
+        //Verificando se o usuário escolher filtrar ou não por tipo de Log
+        if (cbTipoLog.getSelectedIndex() == 0) {
+            //Caso sejam todos os tipos de Log
+            dados = tabelaLogDAO.findAllByInitialAndFinal(dataInit, dataFim, componente, idUser);
+            geraExcel(dados);
+        } else {
+            //Caso seja algum tipo especifico de Log
+            dados = tabelaLogDAO.findByComponente(dataInit, dataFim, tipoLog, componente, idUser);
+            geraExcel(dados);
+        }
+
+    }
+    //Iniciando geração do Excel
+    private void geraExcel(List<TabelaLog> dados){
+
+        //Verificando se a consultada no BD trouxe algum resultado
+        if(dados.size() > 0){
+
+            HSSFWorkbook workbook = new HSSFWorkbook();
+
+            //Nome da planilha
+            HSSFSheet planilha = workbook.createSheet("Relatório");
+
+            // Criando as linhas
+            //O número representa a linha que será criada o cabeçalho
+            HSSFRow cabecalho = planilha.createRow((short) 0);
+
+            //Número representa a coluna
+            cabecalho.createCell(0).setCellValue("Tipo");
+            cabecalho.createCell(1).setCellValue("Componente");
+            cabecalho.createCell(2).setCellValue("Descrição");
+            cabecalho.createCell(3).setCellValue("Data");
+
+            //DEFINE A LINHA DAS COLUNAS
+            //Após a consulta, faço um For para trazer todos os dados e montar o excel
+            for (int i = 0; i < dados.size(); i++) {
+                //Aqui o i + 1 serve apenas para não ser iniciado com 0 e sim em um, não sobrescrevendo
+                //As linhas anteriores
+                HSSFRow linha = planilha.createRow((short) i + 1);
+                linha.createCell(0).setCellValue(dados.get(i).getTipo());
+                linha.createCell(1).setCellValue(dados.get(i).getComponente());
+                linha.createCell(2).setCellValue(dados.get(i).getDescricao());
+
+                //Formatando a data para dd/MM/yyyy (05/11/2019) para mostras nas linhas da tabela
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                linha.createCell(3).setCellValue(formato.format(dados.get(i).getDtHora()));
+            }
+
+            try {
+                //Este código gigantesco apenas traz o caminho de uma pasta padrão do sistema operacional
+                String caminho = javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory().toString();
+                //Aqui estou criando o caminho e por último o nome do arquivo excel que irá ser gerado.
+                FileOutputStream fileOut = new FileOutputStream(caminho + "/Log.xls");
+                //Aqui é gerado o excel de fato
+                workbook.write(fileOut);
+                //Finaliza o processo
+                fileOut.close();
+                //Exibe ao usuário onde foi efetuado o download do excel
+                lbMensagem.setText("Seu arquivo foi gerado no caminho: " + caminho);
+
+            } catch (Exception ex) {
+                System.out.println(ex);
+                lbMensagem.setText("Ocorreu um erro ao gerar o Excel, tente novamente");
+            }
+
+        } else{
+            //Caso não tenha encontrado dados na consulta do BD
+            lbMensagem.setText("Nenhum dado foi encontrado para geração de relatório");
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -174,12 +393,14 @@ public class TelaRelatórios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btGerar;
+    private javax.swing.JComboBox<String> cbComponente;
     private javax.swing.JComboBox<String> cbTipoLog;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel lbMensagem;
     private javax.swing.JTextField txDataFinal;
     private javax.swing.JTextField txDataInicial;

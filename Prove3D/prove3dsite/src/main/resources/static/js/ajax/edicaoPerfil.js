@@ -51,7 +51,7 @@ function btnEditaPerfil(){
     $.ajax({
         url: "/editarPerfil",
         method: 'POST',
-        contentType : 'application/json; charset=utf-8',
+        contentType : '\'application/x-www-form-urlencoded; charset=UTF-8',
         dataType : 'json',
         data: JSON.stringify(dadosPerfil),
         error: function (data){

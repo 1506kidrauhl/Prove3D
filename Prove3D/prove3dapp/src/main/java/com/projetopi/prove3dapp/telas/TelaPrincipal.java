@@ -27,6 +27,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     @Autowired
     private Config config;
 
+    public Long idUser;
+    public Long idComputador;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -181,8 +184,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void btnRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatoriosActionPerformed
          TelaRelatórios telaRelatorios = config.telaRelatorios();
-
-        telaRelatorios.setVisible(true);
+         telaRelatorios.idUser = this.idUser;
+         telaRelatorios.idComputador = this.idComputador;
+         telaRelatorios.setVisible(true);
     }//GEN-LAST:event_btnRelatoriosActionPerformed
 
     /**
@@ -220,7 +224,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
     }
 
-    
     public void dados() {
         SystemInfo si = config.oshi();
         //informações de hardware

@@ -2,20 +2,24 @@ package com.projetopi.prove3dapp.telas;
 
 import com.projetopi.prove3dapp.Config;
 import com.projetopi.prove3dapp.Prove3dappApplication;
+import com.projetopi.prove3dapp.dao.TabelaComputadorDAO;
 import com.projetopi.prove3dapp.dao.TabelaUsuarioDAO;
+import com.projetopi.prove3dapp.tabelas.TabelaComputador;
 import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
+
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import oshi.SystemInfo;
+import oshi.hardware.HardwareAbstractionLayer;
+import oshi.software.os.OperatingSystem;
 
 @Component
 public class TelaLogin extends javax.swing.JFrame {
-
-    @Autowired
-    private TabelaUsuarioDAO tabelaUsuarioDAO;
 
     /**
      * Creates new form TelaLogin
@@ -27,6 +31,11 @@ public class TelaLogin extends javax.swing.JFrame {
     @Autowired
     private Config config;
 
+    @Autowired
+    private TabelaUsuarioDAO tabelaUsuarioDAO;
+
+    @Autowired
+    private TabelaComputadorDAO tabelaComputadorDAO;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -143,12 +152,55 @@ public class TelaLogin extends javax.swing.JFrame {
             lbMensagem.setText("Login ou Senha estão incorretos");
         } else {
             
-            TelaPrincipal telaPrincipal = config.TelaPrincipal();
-
+            TelaPrincipal telaPrincipal = config.telaPrincipal();
             telaPrincipal.setVisible(true);
+
+            telaPrincipal.idUser = dados.getIdUsuario();
+
+            //Fazendo consulta no BD para descobrir se é a primeira vez que o usuário se Log no sistema
+            TabelaComputador pc = tabelaComputadorDAO.findData(dados);
+
+            if(pc == null){
+                //Caso seja, iremos armazenar os dados básicos no PC dele
+                gravarDados(dados, telaPrincipal);
+            } else{
+                //Caso não seja, apenas iremos atributir sua fk para a próxima tela
+                telaPrincipal.idUser = dados.getIdUsuario();
+                telaPrincipal.idComputador = pc.getIdComputador();
+            }
+
+            this.dispose();
         }
 
     }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void gravarDados(TabelaUsuario dados, TelaPrincipal telaPrincipal) {
+
+        SystemInfo si = config.oshi();
+
+        OperatingSystem os = si.getOperatingSystem();
+        HardwareAbstractionLayer hal = si.getHardware();
+
+        TabelaComputador tabelaComputador = new TabelaComputador();
+
+        //Modelo
+        tabelaComputador.setModelo(hal.getComputerSystem().getBaseboard().getManufacturer());
+        //Sistema Operacional
+        tabelaComputador.setSistemaOperacional(os.getFamily() + " " + os.getVersion().getVersion());
+        //Nome do Usuário
+        tabelaComputador.setNmComputador(System.getProperty("user.name"));
+        //Fk do Usuário Logado pela Primeira Vez
+        tabelaComputador.setFkUsuario(dados);
+
+        //Realizando o Insert na Tabela
+        tabelaComputadorDAO.save(tabelaComputador);
+
+        //Settando id do usuário na próxima tela
+        telaPrincipal.idUser = dados.getIdUsuario();
+        //Settando id do computador na próxima tela
+        telaPrincipal.idComputador = tabelaComputador.getIdComputador();
+
+    }
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         System.exit(0);
