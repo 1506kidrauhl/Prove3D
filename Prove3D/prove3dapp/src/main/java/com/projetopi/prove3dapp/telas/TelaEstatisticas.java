@@ -1,6 +1,10 @@
 package com.projetopi.prove3dapp.telas;
 
 import com.projetopi.prove3dapp.Config;
+import com.projetopi.prove3dapp.dadosClasses.Cpu;
+import com.projetopi.prove3dapp.tabelas.TabelaComputador;
+import com.projetopi.prove3dapp.tabelas.TabelaCpu;
+import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,50 +42,36 @@ public class TelaEstatisticas extends javax.swing.JFrame {
 
     @Autowired
     Config config;
+
+    @Autowired
+    Cpu cpu;
+
     SystemInfo si;
     HardwareAbstractionLayer hal;
     OperatingSystem os;
 
     public void pegaCpu() {
 
-        si = config.oshi();
+        TabelaCpu dadosCpu = new TabelaCpu();
+        System.out.println("A");
+        cpu.pegaCpu(dadosCpu, false);
+        try {
+            System.out.println("c");
+            
+            lblCpuModelo.setText(dadosCpu.getModelo());
 
-        hal = si.getHardware();
-        os = si.getOperatingSystem();
+            lblCpuProcessos.setText(dadosCpu.getProcessos().toString());
 
-        //CPU (Processos, Temperatura, Voltagem, Velocidade, Threads, Tempo de atividade)
-        //Quantidade em inteiros de Processos
-        os.getProcessCount();
-        lblCpuProcessos.setText(String.valueOf(os.getProcessCount()));
+            lblCpuTemp.setText(dadosCpu.getTemperatura().toString());
+            
+            lblCpuUtilizacao.setText(String.format("%.2f",dadosCpu.getUtilizacao()));
 
-        //Modelo da cpu
-        lblCpuModelo.setText(String.valueOf(hal.getProcessor().getName()));
-
-        //Temperatura
-        Double temperatura = hal.getSensors().getCpuTemperature();
-        lblCpuTemp.setText(String.format("%.1f°C%n", hal.getSensors().getCpuTemperature()));
-
-        //Voltagem
-        Double voltagem = hal.getSensors().getCpuVoltage();
-        lblCpuVolt.setText(String.valueOf(voltagem + "V"));
-
-        //Velocidade
-        //int[] velocidade = hal.getSensors().getFanSpeeds();
-        //Threads
-        Integer threads = os.getThreadCount();
-        FormatUtil.formatBytes(threads);
-        lblCpuThreads.setText(String.valueOf(threads));
-
-        //Tempo de atividade cpu
-        String temp = FormatUtil.formatElapsedSecs(os.getSystemUptime());
-        String[] tempo = temp.split(", ");
-        lblCpuAtividade.setText(tempo[1]);
-        
-        
-        //Utilização
-        long[] prevTicks = hal.getProcessor().getSystemCpuLoadTicks();
-        Double cpuUtilizacao = hal.getProcessor().getSystemCpuLoadBetweenTicks(prevTicks);
-        lblUtilizacao.setText(String.format("%.2f", cpuUtilizacao));
+            lblCpuVolt.setText(dadosCpu.getVoltagem().toString());
+            System.out.println("d");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("Aqui mesmo");
+        }
     }
 
     public void pegaMemoria() {
@@ -101,7 +91,7 @@ public class TelaEstatisticas extends javax.swing.JFrame {
         //memoria em uso
         Long total = hal.getMemory().getTotal();
         lblMemoriaUso.setText(String.valueOf(FormatUtil.formatBytesDecimal(total - disponivel)));
-        
+
     }
 
     public void pegaDisco() {
@@ -128,14 +118,14 @@ public class TelaEstatisticas extends javax.swing.JFrame {
 
     }
 
-    @PostConstruct
+    
     public void dados() {
         pegaCpu();
         pegaDisco();
         pegaMemoria();
     }
 
-    @PostConstruct
+    
     public void disparaRelogio() {
         /*Criando uma instancia de Tempo no java. Essa instância irá chamar o 
         método 'ChamarRelogio()' a cada cinco segundos*/
@@ -143,12 +133,12 @@ public class TelaEstatisticas extends javax.swing.JFrame {
         // Inicia o timer, para que a cada 5 seg, ele se repita
         timer.start();
     }
-    
+
     class ChamarRelogio implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
             //Chamando o método que irá pegar os processos do sistema
-                dados();
+            dados();
         }
     }
 
@@ -178,7 +168,7 @@ public class TelaEstatisticas extends javax.swing.JFrame {
         lblCpuVelocidade = new javax.swing.JLabel();
         lblCpuModelo = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        lblUtilizacao = new javax.swing.JLabel();
+        lblCpuUtilizacao = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblDiscoModelo = new javax.swing.JLabel();
@@ -295,7 +285,7 @@ public class TelaEstatisticas extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(lblUtilizacao, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lblCpuUtilizacao, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel2))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
@@ -333,7 +323,7 @@ public class TelaEstatisticas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblUtilizacao, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblCpuUtilizacao, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -736,6 +726,7 @@ public class TelaEstatisticas extends javax.swing.JFrame {
     private javax.swing.JLabel lblCpuProcessos;
     private javax.swing.JLabel lblCpuTemp;
     private javax.swing.JLabel lblCpuThreads;
+    private javax.swing.JLabel lblCpuUtilizacao;
     private javax.swing.JLabel lblCpuVelocidade;
     private javax.swing.JLabel lblCpuVolt;
     private javax.swing.JLabel lblDiscoAtividade;
@@ -760,6 +751,5 @@ public class TelaEstatisticas extends javax.swing.JFrame {
     private javax.swing.JLabel lblMemoriaDisponivel;
     private javax.swing.JLabel lblMemoriaModelo;
     private javax.swing.JLabel lblMemoriaUso;
-    private javax.swing.JLabel lblUtilizacao;
     // End of variables declaration//GEN-END:variables
 }

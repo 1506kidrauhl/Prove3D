@@ -39,6 +39,9 @@ public class TabelaGpu {
     private Double memoria;
     
     @Column(precision = 5, scale = 2)
+    private Double temperatura;
+    
+    @Column(precision = 5, scale = 2)
     private Double controlMemoria;
     
     @Column(precision = 5, scale = 2)
@@ -53,6 +56,14 @@ public class TabelaGpu {
     
     @ManyToOne
     private TabelaUsuario fkUsuarioG;
+
+    public Double getTemperatura() {
+        return temperatura;
+    }
+
+    public void setTemperatura(Double temperatura) {
+        this.temperatura = temperatura;
+    }    
 
     public Long getIdGpu() {
         return idGpu;

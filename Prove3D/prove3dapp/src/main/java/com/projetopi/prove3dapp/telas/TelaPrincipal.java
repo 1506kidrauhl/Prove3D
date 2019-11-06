@@ -171,7 +171,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void btnEstatisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstatisticasActionPerformed
 
         TelaEstatisticas telaEstatisticas = config.telaEstatiscas();
-        
+        telaEstatisticas.pegaCpu();
         telaEstatisticas.setVisible(true);
     }//GEN-LAST:event_btnEstatisticasActionPerformed
 
