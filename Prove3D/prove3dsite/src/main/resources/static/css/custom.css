@@ -1,1 +1,178 @@
-/* your styles go here */
+#cha .card {
+    border-radius: 0px;
+}
+
+#cha .topPage {
+    margin-bottom: 0px;
+}
+
+#cho .teste1 {
+    border-radius: 115px;
+    background-color: #e2deff;
+    border-bottom: 3px solid #4dafff;
+    border-right: 3px solid #4dafff;
+    border-left: 3px solid #796AED;
+    border-top: 3px solid #796AEE;
+    margin-bottom: 8px;
+}
+#cho .teste1:hover{
+    background-color: #ccc6f9;
+}
+
+#cho .progress{
+    border: solid 0.7px;
+}
+
+
+
+
+#cha .btn-primary {
+    color: #fff;
+    background-color: rgb(121,106,238);
+    border-color: rgb(121,106,238)!important;
+
+}
+#cha .btn-primary:hover{
+    background-color: rgb(100,90,200);
+}
+#cho .img-position {
+    /* padding: 10px; */
+    align-content: center;
+    /* padding: 10px; */
+    /* padding: 0px 45px; */
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 25px;
+    padding-right: 15px;
+}
+#cho .img-positionMemoria {
+    /* padding: 10px; */
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 25px;
+    padding-right: 15px;
+    margin: 0px -5px;
+}
+
+#cho section.dashboard-counts div[class*='col-'] .item {
+    border-right: 0px solid #eee !important;
+
+}
+
+.modal.left .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 320px;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 0);
+    -ms-transform: translate3d(0%, 0, 0);
+    -o-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+}
+
+.modal.left .modal-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.modal.left .modal-body {
+    padding: 15px 15px 80px;
+}
+
+.modal.left.fade .modal-dialog {
+    left: -320px;
+    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+    transition: opacity 0.3s linear, left 0.3s ease-out;
+}
+
+.modal.left.fade.show .modal-dialog {
+    left: 0;
+}
+
+/* ----- MODAL STYLE ----- */
+.modal-content {
+    border-radius: 0;
+    border: none;
+}
+
+.modal-header {
+    border-bottom-color: #eeeeee;
+    background-color: #fafafa;
+}
+.modal-backdrop.show {
+    opacity: 0!important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-image: linear-gradient( #2f333e, #111);
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
