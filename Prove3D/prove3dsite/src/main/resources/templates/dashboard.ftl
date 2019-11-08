@@ -263,17 +263,17 @@
                 <div class="form-group">
                     <label for="cmbTipo">Selecione o Tipo:</label>
                     <select id="cmbTipo" class="form-control">
-                        <option value="1">Dúvida</option>
-                        <option value="2">Incidente</option>
+                        <option value="Dúvida">Dúvida</option>
+                        <option value="Incidente">Incidente</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="cmbAssunto">Selecione o Assunto:</label>
-                    <select id="cmbTipo" class="form-control">
-                        <option value="1">Aplicação</option>
-                        <option value="2">Dashboard</option>
-                        <option value="3">Relatórios</option>
+                    <select id="cmbAssunto" class="form-control">
+                        <option value="Aplicação">Aplicação</option>
+                        <option value="Dashboard">Dashboard</option>
+                        <option value="Relatórios">Relatórios</option>
                     </select>
                 </div>
 
@@ -285,7 +285,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Abrir Chamado</button>
+                <button type="button" class="btn btn-primary" id="btnEnviar" onclick="btnEmail()">Abrir Chamado</button>
+                <#if dadosLog ? has_content>
+                    <input type="hidden" id="txtNmUser" value="${dadosLog.nome}">
+                    <input type="hidden" id="txtEmailC" value="${dadosLog.email}">
+                </#if>
             </div>
         </div>
     </div>
@@ -294,8 +298,8 @@
 </div>
 </body>
 </html>
-</html>
 
+<script src="js/ajax/envioEmail.js"></script>
 <!-- Projects Section-->
 <script src="js/dashboard/charts-home.js"></script>
 

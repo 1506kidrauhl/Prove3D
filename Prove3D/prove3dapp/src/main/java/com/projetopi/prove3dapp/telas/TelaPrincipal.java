@@ -1,18 +1,24 @@
 package com.projetopi.prove3dapp.telas;
 
 import com.projetopi.prove3dapp.Config;
-import com.projetopi.prove3dapp.Prove3dappApplication;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
+import com.projetopi.prove3dapp.dadosClasses.Cpu;
+import com.projetopi.prove3dapp.dadosClasses.DGpu;
+import com.projetopi.prove3dapp.dadosClasses.Disco;
+import com.projetopi.prove3dapp.dadosClasses.Memoria;
+import com.projetopi.prove3dapp.dadosClasses.Processos;
+import com.projetopi.prove3dapp.tabelas.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import oshi.SystemInfo;
-import oshi.hardware.HWDiskStore;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.software.os.OperatingSystem;
+import oshi.util.FormatUtil;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class TelaPrincipal extends javax.swing.JFrame {
@@ -26,6 +32,31 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     @Autowired
     private Config config;
+
+    @Autowired
+    private Cpu cpu;
+
+    @Autowired
+    private Disco disco;
+    
+    @Autowired
+    private DGpu gpu;
+
+    @Autowired
+    private Memoria memoria;
+    
+    @Autowired
+    private Processos processos;
+
+    public TabelaUsuario idUser;
+    public TabelaComputador idComputador;
+
+    /*Criando uma instancia de Tempo no java. Essa instância irá chamar o
+    método 'ChamarRelogio()' a cada cinco segundos*/
+    Timer timer = new Timer(5000, new ChamarRelogio());
+    
+    
+    Timer timerGPU = new Timer(6000, new ChamarGpu());
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,6 +77,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         btnEstatisticas = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         btnRelatorios = new javax.swing.JButton();
+        btnGpu = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtLog = new javax.swing.JTextArea();
 
@@ -87,6 +119,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        btnGpu.setText("Dados GPU");
+        btnGpu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGpuActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -97,27 +136,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(lblTempAtividade, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                        .addComponent(lblTempAtividade, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnEstatisticas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnProcessos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(lblProcessos, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnGpu, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                            .addComponent(lblProcessos, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRelatorios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(83, 83, 83))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(btnEstatisticas)
-                        .addGap(28, 28, 28)
-                        .addComponent(btnProcessos)
-                        .addGap(26, 26, 26)
-                        .addComponent(btnRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(62, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,12 +167,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblProcessos, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(31, 31, 31)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnGpu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEstatisticas, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnProcessos, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEstatisticas, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(0, 13, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Início", jPanel1);
@@ -166,24 +202,35 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEstatisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstatisticasActionPerformed
-
         TelaEstatisticas telaEstatisticas = config.telaEstatiscas();
-        
+        telaEstatisticas.idUsuario = this.idUser;
+        telaEstatisticas.idComputador = this.idComputador;
+        telaEstatisticas.disparaRelogio();
         telaEstatisticas.setVisible(true);
     }//GEN-LAST:event_btnEstatisticasActionPerformed
 
     private void btnProcessosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessosActionPerformed
-      
         TelaProcessos telaProcessos = config.telaProcessos();
-
+        telaProcessos.idComputador = this.idComputador;
+        telaProcessos.idUsuario = this.idUser;
+        telaProcessos.disparaRelogio();
         telaProcessos.setVisible(true);
     }//GEN-LAST:event_btnProcessosActionPerformed
 
     private void btnRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatoriosActionPerformed
-         TelaRelatórios telaRelatorios = config.telaRelatorios();
-
+        TelaRelatórios telaRelatorios = config.telaRelatorios();
+        telaRelatorios.idUser = this.idUser;
+        telaRelatorios.idComputador = this.idComputador;
         telaRelatorios.setVisible(true);
     }//GEN-LAST:event_btnRelatoriosActionPerformed
+
+    private void btnGpuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGpuActionPerformed
+        TelaGpu telaGpu = config.telaGpu();
+        telaGpu.idUsuario = this.idUser;
+        telaGpu.idComputador = this.idComputador;
+        telaGpu.disparaRelogio();
+        telaGpu.setVisible(true);
+    }//GEN-LAST:event_btnGpuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,52 +267,64 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
     }
 
-    
     public void dados() {
         SystemInfo si = config.oshi();
         //informações de hardware
         HardwareAbstractionLayer hal = si.getHardware();
         //informações de sistema 
         OperatingSystem os = si.getOperatingSystem();
-        /*esse é um for com array 
-         HWDiskStore[] A = hal.getDiskStores();
-         
-         for(HWDiskStore atual : A){
-             
-             atual.getName();
-             
-         }*/
-        
+
         //traz o número total de processos
         os.getProcessCount();
         lblProcessos.setText(String.valueOf(os.getProcessCount()));
 
-        long tempo = os.getSystemUptime() / 1000;
-        lblTempAtividade.setText(String.valueOf(tempo));
-
-        tempo();
-    }
-    
-    @PostConstruct
-    public void pegaDados(){
-        dados();
+        String tempo = FormatUtil.formatElapsedSecs(os.getSystemUptime()).split(",")[1];
+        lblTempAtividade.setText(tempo);
     }
 
-    public void tempo() {
-/*
-        try {
-            Thread.sleep(5000);
+    public void disparaRelogio() {
+        // Inicia o timer, para que a cada 5 seg, ele se repita
+        timer.start();
+        //timerGPU.start();
+    }
+
+    class ChamarGpu implements ActionListener {
+        
+        public void actionPerformed(ActionEvent e) {
+        
+            List<TabelaGpu> dadosGpu = new ArrayList<>();
+            
+            gpu.pegaGpu(dadosGpu, true, idComputador, idUser);
+            
+        }
+        
+    }
+    class ChamarRelogio implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            //Chamando o método que irá pegar os processos do sistema
             dados();
-            tempo();
-        } catch (InterruptedException  ex) {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+            /*TabelaCpu dadosCpu = new TabelaCpu();
+            cpu.pegaCpu(dadosCpu, true, idComputador);
 
+            TabelaDisco dadosDisco = new TabelaDisco();
+            List<String> data = new ArrayList<>();
+            disco.pegaDisco(dadosDisco, true, idComputador, data);
+
+            TabelaMemoria dadosMemoria = new TabelaMemoria();
+            memoria.pegaMemoria(dadosMemoria, true, idComputador, data);
+
+            List<TabelaProcessos> dadosProcessos = new ArrayList<>();
+            processos.pegaProcessos(dadosProcessos, true, idComputador, idUser, OperatingSystem.ProcessSort.CPU);
+
+             */
+        }
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEstatisticas;
+    private javax.swing.JButton btnGpu;
     private javax.swing.JButton btnProcessos;
     private javax.swing.JButton btnRelatorios;
     private javax.swing.JLabel jLabel1;

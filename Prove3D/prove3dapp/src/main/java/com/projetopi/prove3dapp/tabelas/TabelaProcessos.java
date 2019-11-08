@@ -2,18 +2,14 @@
 package com.projetopi.prove3dapp.tabelas;
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "TBPROCESSOS")
+@SequenceGenerator(name = "sqProc", sequenceName = "sqProc", allocationSize = 1)
 public class TabelaProcessos {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqProc")
     private Long idProcesso;
     
     @Column
@@ -36,7 +32,7 @@ public class TabelaProcessos {
     private Double usoMemoria;
     
     @Column 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dataHora;
     
     @ManyToOne

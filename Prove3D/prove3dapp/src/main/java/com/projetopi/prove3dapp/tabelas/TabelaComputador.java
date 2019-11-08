@@ -7,13 +7,7 @@ package com.projetopi.prove3dapp.tabelas;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -21,8 +15,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "TBCOMPUTADOR")
+@SequenceGenerator(name = "sqComp", sequenceName = "sqComp", allocationSize = 1)
 public class TabelaComputador {
    @Id
+   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqComp")
    private Long idComputador;
    
    @Column(length = 50)

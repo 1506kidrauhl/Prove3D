@@ -2,12 +2,7 @@ package com.projetopi.prove3dapp.tabelas;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "TBUSUARIO")
@@ -38,7 +33,7 @@ public class TabelaUsuario {
     @OneToMany(mappedBy = "fkUsuarioP")
     private Set<TabelaProcessos> fkUsuarioP = new HashSet<>();
     
-    @OneToMany(mappedBy = "fkUsuario")
+    @OneToMany(mappedBy = "fkUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TabelaComputador> fkUsuario  = new HashSet<>();
     
     @OneToMany (mappedBy="fkUsuario")

@@ -26,7 +26,7 @@
         <br>
         Bem vindo,
         <#if dadosLog ? has_content>
-            <b>${dadosLog.nome}.</b>
+            <b id="nmUser">${dadosLog.nome}.</b>
         </#if>
     </a>
     <a class="navbar-brand text-white" style="height: 50px;" href="/sair">
@@ -109,11 +109,13 @@
 </div>
 
 <!-- MODAL DE EDIÇÃO DE PERFIL -->
-<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<#if dadosLog ? has_content>
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title" id="exampleModalLabel">
+                    <input type="hidden" id="idUser" value="${dadosLog.idUsuario}">
                     <div class="row">
                         <div class="col-sm-2">
                             <img src="img/parallax/logo.png" width="30px" height="30px">
@@ -126,7 +128,7 @@
                         </div>
                     </div>
                 </h6>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                <button onclick="cancelaEdit()" type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -134,13 +136,13 @@
                 Nome:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtName" class="form-control form-group" value="Provë 3D" readonly>
+                        <input type="text" id="txtName" class="form-control form-group" value="${dadosLog.nome}" readonly>
                     </div>
                 </div>
                 Login:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtLogin" class="form-control form-group" value="Provë Admin" readonly>
+                        <input type="text" id="txtLogin" class="form-control form-group" value="${dadosLog.login}" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtLogin)">
@@ -149,7 +151,7 @@
                 Senha:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="password" id="txtSenha" class="form-control form-group" value="#palmeirasSemMundial" readonly>
+                        <input type="password" id="txtSenha" class="form-control form-group" value="${dadosLog.senha}" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtSenha)">
@@ -158,7 +160,7 @@
                 Email:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtEmail" class="form-control form-group" value="prove3d@gmail.com" readonly>
+                        <input type="text" id="txtEmail" class="form-control form-group" value="${dadosLog.email}" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtEmail)">
@@ -167,7 +169,7 @@
                 Telefone:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtTel" class="form-control form-group" maxlength="14" value="(11)97720-2265" readonly>
+                        <input type="text" id="txtTel" class="form-control form-group" maxlength="14" value="${dadosLog.telefone}" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtTel)">
@@ -176,18 +178,18 @@
                 CPF:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" class="form-control form-group" value="120.569.198-01" readonly>
+                        <input type="text" id="txtCpf" class="form-control form-group" value="${dadosLog.cpf}" readonly>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Salvar mudanças</button>
-                <input type="hidden" id="idUserEdit">
+                <button type="button" class="btn btn-secondary" onclick="cancelaEdit()" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnEdit" onclick="btnEditaPerfil()">Salvar mudanças</button>
             </div>
         </div>
     </div>
 </div>
+</#if>
 
 <!-- MODAL DE CHAMADOS -->
 <div class="modal fade" id="modalChamados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -220,7 +222,7 @@
 
                 <div class="form-group">
                     <label for="cmbAssunto">Selecione o Assunto:</label>
-                    <select id="cmbTipo" class="form-control">
+                    <select id="cmbAssunto" class="form-control">
                         <option value="Aplicação">Aplicação</option>
                         <option value="Dashboard">Dashboard</option>
                         <option value="Relatórios">Relatórios</option>
@@ -235,9 +237,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Abrir Chamado</button>
+                <button type="button" class="btn btn-primary" id="btnEnviar" onclick="btnEmail()">Abrir Chamado</button>
                 <#if dadosLog ? has_content>
-                <input type="hidden" id="idUserChamado" value="${dadosLog.idUsuario}">
+                    <input type="hidden" id="txtNmUser" value="${dadosLog.nome}">
+                    <input type="hidden" id="txtEmailC" value="${dadosLog.email}">
                 </#if>
             </div>
         </div>
@@ -247,8 +250,16 @@
 </body>
 </html>
 
+<script src="js/ajax/edicaoPerfil.js"></script>
+<script src="js/ajax/envioEmail.js"></script>
 <script src="js/pagePrincipal/basic.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="js/jquery.mask.min.js"></script>
+<script>
+    $(document).ready(function(){
 
+        $("#txtTel").mask("(00)00000-0000");
+    });
+</script>

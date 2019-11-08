@@ -1,45 +1,69 @@
-
 package com.projetopi.prove3dapp.tabelas;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "TBCPU")
-
+@SequenceGenerator(name = "sqCpu", sequenceName = "sqCpu", allocationSize = 1)
 public class TabelaCpu {
-  @Id
-  private Long idCpu;
-  
-  @Column(precision = 5, scale = 2)
-  private Double utilizacao;
-  
-  @Column (precision = 5, scale = 2)
-  private Double temperatura;
-  
-  @Column (precision = 5, scale = 2)
-  private Double voltagem;
-  
-  @Column 
-  @Temporal(TemporalType.TIME)
-  private Date tempAtividade;
-  
-  @Column
-  @Temporal (TemporalType.TIMESTAMP)
-  private Date dtHora;
-  
-  @OneToOne
-  private TabelaComputador fkComputadorCPU;
-  
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqCpu")
+    private Long idCpu;
+
+    @Column(precision = 5, scale = 2)
+    private Double utilizacao;
+
+    @Column(precision = 5, scale = 2)
+    private Double temperatura;
+
+    @Column(precision = 5, scale = 2)
+    private Double voltagem;
+
+    @Column
+    @Temporal(TemporalType.TIME)
+    private Date tempAtividade;
+
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dtHora;
+
+    @Column
+    private Integer processos;
+    
+    @Column
+    private String modelo;
+
+    @OneToOne
+    private TabelaComputador fkComputadorCPU;
+
+    public Integer getProcessos() {
+        return processos;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public void setProcessos(Integer processos) {
+        this.processos = processos;
+    }
+
+    public TabelaComputador getFkComputadorCPU() {
+        return fkComputadorCPU;
+    }
+
+    public void setFkComputadorCPU(TabelaComputador fkComputadorCPU) {
+        this.fkComputadorCPU = fkComputadorCPU;
+    }
+
     public Long getIdCpu() {
         return idCpu;
     }
@@ -95,9 +119,5 @@ public class TabelaCpu {
     public void setFkComputador(TabelaComputador fkComputador) {
         this.fkComputadorCPU = fkComputador;
     }
-  
-  
-  
-  
-  
+
 }

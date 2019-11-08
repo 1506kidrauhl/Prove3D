@@ -9,14 +9,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  *
@@ -24,9 +17,11 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "TBGPU")
+@SequenceGenerator(name = "sqGpu", sequenceName = "sqGpu", allocationSize = 1)
 public class TabelaGpu {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqLog")
     private Long idGpu;
     
     @Column
@@ -37,6 +32,9 @@ public class TabelaGpu {
 
     @Column(precision = 5, scale = 2)
     private Double memoria;
+    
+    @Column(precision = 5, scale = 2)
+    private Double temperatura;
     
     @Column(precision = 5, scale = 2)
     private Double controlMemoria;
@@ -53,6 +51,14 @@ public class TabelaGpu {
     
     @ManyToOne
     private TabelaUsuario fkUsuarioG;
+
+    public Double getTemperatura() {
+        return temperatura;
+    }
+
+    public void setTemperatura(Double temperatura) {
+        this.temperatura = temperatura;
+    }    
 
     public Long getIdGpu() {
         return idGpu;

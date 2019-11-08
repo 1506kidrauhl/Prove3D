@@ -1,13 +1,11 @@
 package com.projetopi.prove3dapp;
 
-import com.profesorfalken.jsensors.JSensors;
-import com.profesorfalken.jsensors.model.components.Components;
 import com.projetopi.prove3dapp.telas.TelaEstatisticas;
+import com.projetopi.prove3dapp.telas.TelaGpu;
 import com.projetopi.prove3dapp.telas.TelaLogin;
 import com.projetopi.prove3dapp.telas.TelaPrincipal;
 import com.projetopi.prove3dapp.telas.TelaProcessos;
 import com.projetopi.prove3dapp.telas.TelaRelatórios;
-import java.util.Map;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +24,12 @@ public class Config {
     @ConditionalOnProperty(name = "com.projetopi.prove3dapp.telas", havingValue = "telas", matchIfMissing = true)
     public TelaLogin telaLogin() {
         return new TelaLogin();
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "com.projetopi.prove3dapp.telas", havingValue = "telas", matchIfMissing = true)
+    public TelaGpu telaGpu() {
+        return new TelaGpu();
     }
 
     @Bean
@@ -50,12 +54,6 @@ public class Config {
     @ConditionalOnProperty(name = "com.projetopi.prove3dapp.telas", havingValue = "telas", matchIfMissing = true)
     public TelaRelatórios telaRelatorios() {
         return new TelaRelatórios();
-    }
-
-    @Bean
-    @ConditionalOnProperty(name = "com.projetopi.prove3dapp.telas", havingValue = "telas", matchIfMissing = true)
-    public TelaPrincipal TelaPrincipal() {
-        return new TelaPrincipal();
     }
     
     /*
