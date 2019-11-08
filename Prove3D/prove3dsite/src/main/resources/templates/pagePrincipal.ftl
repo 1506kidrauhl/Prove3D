@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/parallax/logo.png" />
     <title>Home</title>
+
+
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/custom.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   
 
@@ -14,6 +17,7 @@
 </head>
 
 <body>
+<div id="cha">
 <!-- TOP DA PÁGINA -->
 <nav class="navbar navbar-ligh text-white topPage header">
     <a class="navbar-brand text-white" href="/index">
@@ -31,9 +35,9 @@
 </nav>
 
 <!-- CARD PARA ALERT DE ALERTAS -->
-    <div class="card bg-ligth" id="lblAlertas">
+    <div class="card bg-ligth" id="lblAlertas" >
         <div class="card-body text-center">
-            <p id="lblMsg" class="card-text text-light"></p>
+            <p id="lblMsg" class="card-text text-light" style="border-radius: 50px"></p>
         </div>
     </div>
 
@@ -132,13 +136,13 @@
                 Nome:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtName" class="form-control" value="${dadosLog.nome}" readonly>
+                        <input type="text" id="txtName" class="form-control form-group" value="${dadosLog.nome}" readonly>
                     </div>
                 </div>
                 Login:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtLogin" class="form-control" value="${dadosLog.login}" readonly>
+                        <input type="text" id="txtLogin" class="form-control form-group" value="${dadosLog.login}" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtLogin)">
@@ -147,7 +151,7 @@
                 Senha:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="password" id="txtSenha" class="form-control" value="${dadosLog.senha}" readonly>
+                        <input type="password" id="txtSenha" class="form-control form-group" value="${dadosLog.senha}" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtSenha)">
@@ -156,7 +160,7 @@
                 Email:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtEmail" class="form-control" value="${dadosLog.email}" readonly>
+                        <input type="text" id="txtEmail" class="form-control form-group" value="${dadosLog.email}" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtEmail)">
@@ -165,7 +169,7 @@
                 Telefone:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtTel" class="form-control" maxlength="14" value="${dadosLog.telefone}" readonly>
+                        <input type="text" id="txtTel" class="form-control form-group" maxlength="14" value="${dadosLog.telefone}" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtTel)">
@@ -174,7 +178,7 @@
                 CPF:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtCpf" class="form-control" value="${dadosLog.cpf}" readonly>
+                        <input type="text" id="txtCpf" class="form-control form-group" value="${dadosLog.cpf}" readonly>
                     </div>
                 </div>
             </div>
@@ -242,7 +246,7 @@
         </div>
     </div>
 </div>
-
+</div>
 </body>
 </html>
 

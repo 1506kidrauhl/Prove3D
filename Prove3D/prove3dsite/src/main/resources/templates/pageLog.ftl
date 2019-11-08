@@ -9,6 +9,7 @@
     <meta name="robots" content="all,follow">
 
     <link rel="shortcut icon" href="img/parallax/logo.png" />
+    <link rel="stylesheet" href="css/custom.css"/>
 
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -33,11 +34,12 @@
               <!-- Navbar Header-->
               <div class="navbar-header">
                 <!-- Navbar Brand -->
-                <a class="navbar-brand d-none d-sm-inline-block" href="/index">
-                  <div class="brand-text d-none d-lg-inline-block"><strong>Provë3D</strong></div>
-                  <img style="height: 30px; width: 30px;" src="img/logo.png">
+                <a class="navbar-brand d-flexx d-sm-inline-block" href="/index">
+                  <div class="brand-text d-flex d-lg-inline-block"><strong>Provë3D</strong>
+                    <img style="height: 30px; width: 30px;" src="img/logo.png">
+                  </div>
                 </a>
-                <!-- Toggle Button--> 
+                <!-- Toggle Button-->
               </div>
               <!-- Navbar Menu -->
               <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
@@ -48,6 +50,25 @@
           </div>
         </nav>
       </header>
+      <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/principal">Home</a>
+        <a href="/dashboard" data-toggle="modal" data-target="#modalChamados">Chamados</a>
+        <a  href="/dashboard">Dashboard</a>
+        <a  href="">Desempenho de processos</a>
+        <a style="color:#796aee" href="/relatorio">Relatórios</a>
+      </div>
+
+
+      <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+      </script>
 
       <div class="page-content d-flex align-items-stretch"> 
         <!-- Side Navbar -->
@@ -76,7 +97,9 @@
           <!-- Page Header-->
           <header class="page-header">
             <div class="container-fluid">
-              <h2 class="no-margin-bottom">Relatórios</h2>
+              <div class="col-lg-12"> <span class="side-Dash" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+                Relatórios </div>
+
             </div>
           </header>
 
