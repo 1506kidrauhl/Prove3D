@@ -25,10 +25,10 @@ public class DGpu {
     @Autowired
     private TabelaLogDAO tabelaLogDAO;
 
-    public List<TabelaGpu> pegaGpu(List<TabelaGpu> gpu, boolean enviarDados, TabelaComputador fkPc, TabelaUsuario fkUser) {
+    public List<TabelaGpu> pegaGpu(List<TabelaGpu> gpu, TabelaComputador fkPc, TabelaUsuario fkUser) {
 
         Map<String, String> overriddenConfig = new HashMap<String, String>();
-        overriddenConfig.put("debugMode", "true");
+        overriddenConfig.put("debugMode", "false");
 
         Components component = JSensors.get.config(overriddenConfig).components();
 
@@ -41,8 +41,6 @@ public class DGpu {
             pegarDados(gpuComp, gpu1);
 
             gpu.add(gpu1);
-
-            if (enviarDados) {
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(calendar.getTime());
@@ -57,9 +55,8 @@ public class DGpu {
 
                 gpu1.setFkComputadorG(fkPc);
                 gpu1.setFkUsuarioG(fkUser);
-
                 tabelaGpuDAO.save(gpu1);
-            }
+
 
         }
 

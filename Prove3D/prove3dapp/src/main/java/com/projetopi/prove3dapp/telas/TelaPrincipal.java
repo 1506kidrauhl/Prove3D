@@ -54,9 +54,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     /*Criando uma instancia de Tempo no java. Essa instância irá chamar o
     método 'ChamarRelogio()' a cada cinco segundos*/
     Timer timer = new Timer(5000, new ChamarRelogio());
-    
-    
     Timer timerGPU = new Timer(6000, new ChamarGpu());
+
+    TelaEstatisticas telaEstatisticas;
+    TelaProcessos telaProcessos;
+    TelaGpu telaGpu;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -202,15 +204,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEstatisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstatisticasActionPerformed
-        TelaEstatisticas telaEstatisticas = config.telaEstatiscas();
         telaEstatisticas.idUsuario = this.idUser;
         telaEstatisticas.idComputador = this.idComputador;
-        telaEstatisticas.disparaRelogio();
         telaEstatisticas.setVisible(true);
     }//GEN-LAST:event_btnEstatisticasActionPerformed
 
     private void btnProcessosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessosActionPerformed
-        TelaProcessos telaProcessos = config.telaProcessos();
         telaProcessos.idComputador = this.idComputador;
         telaProcessos.idUsuario = this.idUser;
         telaProcessos.disparaRelogio();
@@ -225,10 +224,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRelatoriosActionPerformed
 
     private void btnGpuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGpuActionPerformed
-        TelaGpu telaGpu = config.telaGpu();
         telaGpu.idUsuario = this.idUser;
         telaGpu.idComputador = this.idComputador;
-        telaGpu.disparaRelogio();
         telaGpu.setVisible(true);
     }//GEN-LAST:event_btnGpuActionPerformed
 
@@ -280,6 +277,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         String tempo = FormatUtil.formatElapsedSecs(os.getSystemUptime()).split(",")[1];
         lblTempAtividade.setText(tempo);
+
+        telaEstatisticas = config.telaEstatiscas();
+        telaProcessos = config.telaProcessos();
+        telaGpu = config.telaGpu();
     }
 
     public void disparaRelogio() {
@@ -294,8 +295,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         
             List<TabelaGpu> dadosGpu = new ArrayList<>();
             
-            gpu.pegaGpu(dadosGpu, true, idComputador, idUser);
-            
+            gpu.pegaGpu(dadosGpu, idComputador, idUser);
+            telaGpu.dadosGpu = dadosGpu;
+            telaGpu.pegaGpu();
         }
         
     }
@@ -304,20 +306,39 @@ public class TelaPrincipal extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             //Chamando o método que irá pegar os processos do sistema
             dados();
-            /*TabelaCpu dadosCpu = new TabelaCpu();
-            cpu.pegaCpu(dadosCpu, true, idComputador);
+            TabelaCpu dadosCpu = new TabelaCpu();
+            cpu.pegaCpu(dadosCpu, idComputador);
+
+            telaEstatisticas.cpuModelo = dadosCpu.getModelo();
+            telaEstatisticas.cpuProcessos = dadosCpu.getProcessos().toString();
+            telaEstatisticas.cpuTemp = dadosCpu.getTemperatura().toString();
+            telaEstatisticas.cpuVoltagem = dadosCpu.getVoltagem().toString();
+            telaEstatisticas.cpuUtilizacao = dadosCpu.getUtilizacao();
+            telaEstatisticas.cpuTempAtividade = dadosCpu.getTempAtividade().toString().split(" ")[3];
+            telaEstatisticas.pegaCpu();
+
+            List<String> data = new ArrayList<>();
 
             TabelaDisco dadosDisco = new TabelaDisco();
-            List<String> data = new ArrayList<>();
-            disco.pegaDisco(dadosDisco, true, idComputador, data);
+            disco.pegaDisco(dadosDisco, idComputador, data);
+            telaEstatisticas.discoModelo = dadosDisco.getModelo();
+            telaEstatisticas.discoVLeitura = data.get(0);
+            telaEstatisticas.discoVGravacao = data.get(1);
+            telaEstatisticas.pegaDisco();
 
             TabelaMemoria dadosMemoria = new TabelaMemoria();
-            memoria.pegaMemoria(dadosMemoria, true, idComputador, data);
+            memoria.pegaMemoria(dadosMemoria, idComputador, data);
 
-            List<TabelaProcessos> dadosProcessos = new ArrayList<>();
-            processos.pegaProcessos(dadosProcessos, true, idComputador, idUser, OperatingSystem.ProcessSort.CPU);
+            telaEstatisticas.memoriaDisponivel = data.get(0);
+            telaEstatisticas.memoriaCache = data.get(1);
+            telaEstatisticas.memoriaUso = data.get(2);
+            telaEstatisticas.memoriaModelo = data.get(0);
+            telaEstatisticas.pegaMemoria();
 
-             */
+
+            List<TabelaProcessos> dadosProcesso = new ArrayList<>();
+            processos.pegaProcessos(dadosProcesso, true, idComputador, idUser, OperatingSystem.ProcessSort.CPU);
+
         }
     }
 

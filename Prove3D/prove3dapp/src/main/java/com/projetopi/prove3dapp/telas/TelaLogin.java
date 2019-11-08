@@ -182,6 +182,7 @@ public class TelaLogin extends javax.swing.JFrame {
                 telaPrincipal.idUser = dados;
                 telaPrincipal.idComputador = comp;
             }
+            telaPrincipal.dados();
             telaPrincipal.disparaRelogio();
             this.dispose();
         }

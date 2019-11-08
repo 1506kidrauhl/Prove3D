@@ -9,11 +9,7 @@ import com.projetopi.prove3dapp.dadosClasses.DGpu;
 import com.projetopi.prove3dapp.tabelas.TabelaComputador;
 import com.projetopi.prove3dapp.tabelas.TabelaGpu;
 import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
-import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,28 +33,10 @@ public class TelaGpu extends javax.swing.JFrame {
     
     @Autowired
     DGpu gpu;
-    
-    Timer timer = new Timer(5000, new ChamarRelogio());
 
-
-    public void disparaRelogio() {
-        // Inicia o timer, para que a cada 5 seg, ele se repita
-        timer.start();
-    }
-
-    class ChamarRelogio implements ActionListener {
-
-        public void actionPerformed(ActionEvent e) {
-            //Chamando o método que irá pegar os processos do sistema
-            pegaGpu();
-        }
-    }
+    public List<TabelaGpu> dadosGpu;
 
     public void pegaGpu() {
-
-        List<TabelaGpu> dadosGpu = new ArrayList<>();
-
-        gpu.pegaGpu(dadosGpu, false, idComputador, idUsuario);
 
         DefaultTableModel tabela = (DefaultTableModel) tbGpu.getModel();
 
@@ -153,7 +131,6 @@ public class TelaGpu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        timer.stop();
     }//GEN-LAST:event_formWindowClosed
 
     /**

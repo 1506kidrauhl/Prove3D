@@ -30,7 +30,7 @@ public class Memoria {
     TabelaLogDAO tabelaLogDAO;
 
 
-    public TabelaMemoria pegaMemoria(TabelaMemoria memoria, boolean enviarDados, TabelaComputador fkPC, List<String> data) {
+    public TabelaMemoria pegaMemoria(TabelaMemoria memoria, TabelaComputador fkPC, List<String> data) {
 
         SystemInfo si = config.oshi();
         HardwareAbstractionLayer hal = si.getHardware();
@@ -70,10 +70,9 @@ public class Memoria {
             System.out.println("Deu ruim");
         }
 
-        if(enviarDados){
-            memoria.setFkComputadorM(fkPC);
-            tabelaMemoriaDAO.save(memoria);
-        }
+        memoria.setFkComputadorM(fkPC);
+        tabelaMemoriaDAO.save(memoria);
+
 
         return memoria;
     }

@@ -154,10 +154,6 @@ public class TelaProcessos extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         timer.stop();
     }//GEN-LAST:event_formWindowClosed
-    /*A anotação @POSTCONSTRUCT serve para toda vez que a tela for chamada,
-    o método que estiver abaixo, irá ser chamado no construtor da class, ou seja,
-    sempre que a TelaProcessos for aberta, a função 'disparaRelogio()' irá ser 
-    chamada*/
 
     public void disparaRelogio() {
         // Inicia o timer, para que a cada 5 seg, ele se repita
@@ -172,7 +168,7 @@ public class TelaProcessos extends javax.swing.JFrame {
         }
     }
 
-    public synchronized void pegaProcessos() {
+    public void pegaProcessos() {
 
         //Instanciando classe SystemInfo para podermos pegarmos os dados de Hardware
         SystemInfo si = config.oshi();
@@ -206,7 +202,6 @@ public class TelaProcessos extends javax.swing.JFrame {
         }
 
         List<TabelaProcessos> dadosProcessos = new ArrayList<>();
-
         processos.pegaProcessos(dadosProcessos, false, idComputador, idUsuario, filtro);
 
         /*Não podemos manipular a tabela apenas com seu nome de variável, então

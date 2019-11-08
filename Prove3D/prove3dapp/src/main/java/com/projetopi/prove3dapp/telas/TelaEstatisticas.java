@@ -5,16 +5,9 @@ import com.projetopi.prove3dapp.dadosClasses.Cpu;
 import com.projetopi.prove3dapp.dadosClasses.Disco;
 import com.projetopi.prove3dapp.dadosClasses.Memoria;
 import com.projetopi.prove3dapp.tabelas.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import oshi.SystemInfo;
-import oshi.hardware.HardwareAbstractionLayer;
-import oshi.util.FormatUtil;
 
 /**
  *
@@ -45,78 +38,39 @@ public class TelaEstatisticas extends javax.swing.JFrame {
     @Autowired
     Memoria memoria;
 
-    /*Criando uma instancia de Tempo no java. Essa instância irá chamar o
-    método 'ChamarRelogio()' a cada cinco segundos*/
-    Timer timer = new Timer(5000, new ChamarRelogio());
+    //PARA CPU
+    public String cpuModelo, cpuProcessos, cpuTemp, cpuVoltagem, cpuTempAtividade;
+    public Double cpuUtilizacao;
 
     SystemInfo si;
-    HardwareAbstractionLayer hal;
+
+    //PARA MEMÓRIA
+    public String memoriaDisponivel, memoriaCache, memoriaUso, memoriaModelo;
 
     public void pegaCpu() {
-
-        TabelaCpu dadosCpu = new TabelaCpu();
-
-        cpu.pegaCpu(dadosCpu, false, idComputador);
-
-        try {
-            si = config.oshi();
-            String atividade = dadosCpu.getTempAtividade().toString().split(" ")[3];
-            lblCpuModelo.setText(dadosCpu.getModelo());
-            lblCpuProcessos.setText(dadosCpu.getProcessos().toString());
-            lblCpuTemp.setText(dadosCpu.getTemperatura() + " C");
-            lblCpuUtilizacao.setText(String.format("%.2f %%", dadosCpu.getUtilizacao()));
-            lblCpuVolt.setText(dadosCpu.getVoltagem() + " V");
-            lblCpuAtividade.setText(atividade);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println("Aqui mesmo");
-        }
+        lblCpuModelo.setText(cpuModelo);
+        lblCpuProcessos.setText(cpuProcessos);
+        lblCpuTemp.setText(cpuTemp + " C");
+        lblCpuUtilizacao.setText(String.format("%.2f %%", cpuUtilizacao));
+        lblCpuVolt.setText(cpuVoltagem + " V");
+        lblCpuAtividade.setText(cpuTempAtividade);
     }
 
     public void pegaMemoria() {
 
-        TabelaMemoria dadosMemoria = new TabelaMemoria();
-        List<String> data = new ArrayList<>();
-        
-        memoria.pegaMemoria(dadosMemoria, false, idComputador, data);
-        HardwareAbstractionLayer hal = si.getHardware();
-        
-        lblMemoriaDisponivel.setText(data.get(0));
-        lblMemoriaCache.setText(data.get(1));
-        lblMemoriaUso.setText(data.get(2));
-        lblMemoriaModelo.setText(data.get(0));
+        lblMemoriaDisponivel.setText(memoriaDisponivel);
+        lblMemoriaCache.setText(memoriaCache);
+        lblMemoriaUso.setText(memoriaUso);
+        lblMemoriaModelo.setText(memoriaModelo);
 
     }
+
+    public String discoModelo, discoVLeitura, discoVGravacao;
 
     public void pegaDisco() {
-
-        TabelaDisco dadosDisco = new TabelaDisco();
-        List<String> data = new ArrayList<>();
-
-        disco.pegaDisco(dadosDisco, false, idComputador, data);
-
-        lblDiscoModelo.setText(dadosDisco.getModelo());
-        lblDiscoVLeitura.setText(data.get(0));
-        lblDiscoVGravacao.setText(data.get(1));
-    }
-
-    public void dados() {
-        pegaCpu();
-        pegaDisco();
-        pegaMemoria();
-    }
-
-    public void disparaRelogio() {
-        // Inicia o timer, para que a cada 5 seg, ele se repita
-        timer.start();
-    }
-
-    class ChamarRelogio implements ActionListener {
-
-        public void actionPerformed(ActionEvent e) {
-            //Chamando o método que irá pegar os processos do sistema
-            dados();
-        }
+        lblDiscoModelo.setText(discoModelo);
+        lblDiscoVLeitura.setText(discoVLeitura);
+        lblDiscoVGravacao.setText(discoVGravacao);
     }
 
     /**
@@ -424,7 +378,6 @@ public class TelaEstatisticas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        timer.stop();
     }//GEN-LAST:event_formWindowClosed
 
     /**
