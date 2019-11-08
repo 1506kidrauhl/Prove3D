@@ -5,22 +5,28 @@
  */
 package com.projetopi.prove3dapp.telas;
 
+import com.projetopi.prove3dapp.dadosClasses.ApplicationController;
 import com.projetopi.prove3dapp.dao.TabelaLogDAO;
+import com.projetopi.prove3dapp.tabelas.TabelaComputador;
 import com.projetopi.prove3dapp.tabelas.TabelaLog;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
+import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 /**
  *
@@ -39,8 +45,11 @@ public class TelaRelatórios extends javax.swing.JFrame {
     @Autowired
     TabelaLogDAO tabelaLogDAO;
 
-    public Long idUser;
-    public Long idComputador;
+    public TabelaUsuario idUser;
+    public TabelaComputador idComputador;
+
+    @Autowired
+    ApplicationController applicationController;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -178,10 +187,11 @@ public class TelaRelatórios extends javax.swing.JFrame {
 
         //Variáveis que irão ser auxiliares
         lbMensagem.setText("");
+
         //Aqui defino o formato como quero que o que o usuário digitou fique
         //Ou seja, ano-mes-dia horas:segundos (2019-11-05 14:57)
         //Fica neste formato, pois é assim que o banco entende DATETIMe
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd hh:ss");
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
         //Estes Splits servem para transformar o que o usuário digitou em uma data válida
         //Para isso, preciso que ele digite neste formato: dd/MM/yyyy (05/11/2019)
@@ -287,17 +297,51 @@ public class TelaRelatórios extends javax.swing.JFrame {
         //Verificando se o usuário escolher filtrar ou não por tipo de Log
         if (cbTipoLog.getSelectedIndex() == 0) {
             //Caso sejam todos os tipos de Log
-            dados = tabelaLogDAO.findAllByInitialAndFinal(dataInit, dataFim, componente, idUser);
-            geraExcel(dados);
+              Object[] datas =  tabelaLogDAO.findAllByInitialAndFinal(dataInit, dataFim, componente, idUser.getIdUsuario());
+              SimpleDateFormat dataForm = new SimpleDateFormat("yyy-MM-dd");
+
+              for (int i = 0; i < datas.length; i++){
+
+                  Object[] data = (Object[]) datas[i];
+                  TabelaLog tb = new TabelaLog();
+
+                  tb.setComponente(data[0].toString());
+                  tb.setDescricao(data[1].toString());
+                  tb.setTipo(data[2].toString());
+                  try{
+                    tb.setDtHora((Date) data[3]);
+                  } catch (Exception ex){
+                      ex.printStackTrace();
+                      System.out.println("Deu Ruim!!");
+                  }
+                  dados.add(tb);
+
+              }
+
+            geraExcel(dados, "Log.xls");
+
         } else {
             //Caso seja algum tipo especifico de Log
-            dados = tabelaLogDAO.findByComponente(dataInit, dataFim, tipoLog, componente, idUser);
-            geraExcel(dados);
+
+            Object[] datas = tabelaLogDAO.findByComponente(dataInit, dataFim, tipoLog, componente, idUser.getIdUsuario());
+
+            SimpleDateFormat dataForm = new SimpleDateFormat("yyy-MM-dd");
+
+            for (int i = 0; i < datas.length; i++){
+
+                Object[] data = (Object[]) datas[i];
+                TabelaLog tb = (TabelaLog) data[i];
+
+                dados.add(tb);
+
+            }
+
+            geraExcel(dados, "Log.xls");
         }
 
     }
     //Iniciando geração do Excel
-    private void geraExcel(List<TabelaLog> dados){
+    private void geraExcel(List<TabelaLog> dados, String nome){
 
         //Verificando se a consultada no BD trouxe algum resultado
         if(dados.size() > 0){
@@ -316,6 +360,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
             cabecalho.createCell(1).setCellValue("Componente");
             cabecalho.createCell(2).setCellValue("Descrição");
             cabecalho.createCell(3).setCellValue("Data");
+            cabecalho.createCell(4).setCellValue("Hora");
 
             //DEFINE A LINHA DAS COLUNAS
             //Após a consulta, faço um For para trazer todos os dados e montar o excel
@@ -330,19 +375,29 @@ public class TelaRelatórios extends javax.swing.JFrame {
                 //Formatando a data para dd/MM/yyyy (05/11/2019) para mostras nas linhas da tabela
                 SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
                 linha.createCell(3).setCellValue(formato.format(dados.get(i).getDtHora()));
+                String[] hora = dados.get(i).getDtHora().toString().split(" ");
+                linha.createCell(4).setCellValue(hora[1]);
+
             }
 
             try {
                 //Este código gigantesco apenas traz o caminho de uma pasta padrão do sistema operacional
                 String caminho = javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory().toString();
                 //Aqui estou criando o caminho e por último o nome do arquivo excel que irá ser gerado.
-                FileOutputStream fileOut = new FileOutputStream(caminho + "/Log.xls");
+                FileOutputStream fileOut = new FileOutputStream(caminho + "/" + nome);
                 //Aqui é gerado o excel de fato
                 workbook.write(fileOut);
                 //Finaliza o processo
                 fileOut.close();
                 //Exibe ao usuário onde foi efetuado o download do excel
-                lbMensagem.setText("Seu arquivo foi gerado no caminho: " + caminho);
+                lbMensagem.setText("Seu arquivo foi gerado no caminho: " + caminho + "/" + nome);
+
+            } catch (FileNotFoundException fil){
+                fil.printStackTrace();
+                Random random = new Random();
+
+                nome = String.format("Log%d.xls", random.nextInt(100) + 1);
+                geraExcel(dados, nome);
 
             } catch (Exception ex) {
                 System.out.println(ex);

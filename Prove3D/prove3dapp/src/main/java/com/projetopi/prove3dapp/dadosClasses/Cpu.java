@@ -1,12 +1,11 @@
 package com.projetopi.prove3dapp.dadosClasses;
 
 import com.projetopi.prove3dapp.Config;
+import com.projetopi.prove3dapp.dao.TabelaComputadorDAO;
 import com.projetopi.prove3dapp.dao.TabelaCpuDAO;
 import com.projetopi.prove3dapp.dao.TabelaLogDAO;
 import com.projetopi.prove3dapp.tabelas.TabelaComputador;
 import com.projetopi.prove3dapp.tabelas.TabelaCpu;
-import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,9 +26,12 @@ public class Cpu {
     TabelaLogDAO tabelaLogDaAO;
 
     @Autowired
+    TabelaComputadorDAO tabelaComputadorDAO;
+
+    @Autowired
     TabelaCpuDAO tabelaCpuDaAO;
 
-    public synchronized TabelaCpu pegaCpu(TabelaCpu cpu, boolean enviarDados) {
+    public synchronized TabelaCpu pegaCpu(TabelaCpu cpu, boolean enviarDados, TabelaComputador fkPc) {
 
         SystemInfo si = config.oshi();
 
@@ -51,36 +53,32 @@ public class Cpu {
         cpu.setVoltagem(voltagem);
 
         //Tempo de atividade cpu
-        String temp = FormatUtil.formatElapsedSecs(os.getSystemUptime());
-        String[] tempo = temp.split(", ");
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss");
         
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(calendar.getTime());
-        
-      /*  try {
-            String dataFormatada = tempo[1];
-            cpu.setTempAtividade(formato.parse(dataFormatada));
-      
-            Date dtHora = new Date(formato.format(calendar.getTime()));
-          
+        try {
+
+            String[] split = FormatUtil.formatElapsedSecs(os.getSystemUptime()).split(",");
+            Date dtHora = new Date(calendar.getTime().getTime());
+
             cpu.setDtHora(dtHora);
+            cpu.setTempAtividade(hora.parse(split[1]));
+
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("Deu ruim");
-        }*/
+        }
 
         //Utilização
         long[] prevTicks = hal.getProcessor().getSystemCpuLoadTicks();
-        Double cpuUtilizacao = hal.getProcessor().getSystemCpuLoadBetweenTicks(prevTicks);
+        Double cpuUtilizacao = hal.getProcessor().getSystemCpuLoadBetweenTicks(prevTicks) * 100;
         cpu.setUtilizacao(cpuUtilizacao);
 
-        System.out.println("");
         if (enviarDados) {
-//            cpu.setFkComputador(idPc);
+            cpu.setFkComputador(fkPc);
             tabelaCpuDaAO.save(cpu);
         }
-System.out.println("b");
         return cpu;
        
     }

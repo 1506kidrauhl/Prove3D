@@ -15,9 +15,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "TBCOMPUTADOR")
+@SequenceGenerator(name = "sqComp", sequenceName = "sqComp", allocationSize = 1)
 public class TabelaComputador {
    @Id
-   @GeneratedValue
+   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqComp")
    private Long idComputador;
    
    @Column(length = 50)

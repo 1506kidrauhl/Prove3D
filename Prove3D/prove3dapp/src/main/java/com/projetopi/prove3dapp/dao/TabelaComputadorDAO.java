@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface TabelaComputadorDAO extends JpaRepository<TabelaComputador, Long>{
 
-    @Query("Select c from TabelaComputador c where c.fkUsuario = ?1")
-    TabelaComputador findData(TabelaUsuario idUser);
+    @Query("Select c.idComputador, c.sistemaOperacional, c.nmComputador, c.modelo, c.fkUsuario from TabelaComputador c join c.fkUsuario u where c.fkUsuario = u.idUsuario and u.idUsuario = ?1")
+    Object[] findData(Long id);
 
 }

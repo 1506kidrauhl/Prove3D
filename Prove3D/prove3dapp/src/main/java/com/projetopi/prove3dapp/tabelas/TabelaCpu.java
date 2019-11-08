@@ -3,21 +3,15 @@ package com.projetopi.prove3dapp.tabelas;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "TBCPU")
-
+@SequenceGenerator(name = "sqCpu", sequenceName = "sqCpu", allocationSize = 1)
 public class TabelaCpu {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqCpu")
     private Long idCpu;
 
     @Column(precision = 5, scale = 2)

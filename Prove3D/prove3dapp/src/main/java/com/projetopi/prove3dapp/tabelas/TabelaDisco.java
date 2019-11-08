@@ -1,21 +1,17 @@
 package com.projetopi.prove3dapp.tabelas;
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 @Table(name="TBDISCO")
+@SequenceGenerator(name = "sqDisco", sequenceName = "sqDisco", allocationSize = 1)
 public class TabelaDisco {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqDisco")
     private Long idDisco;
     
-    @Column(length=45)
+    @Column
     private String modelo;
     
     @Column(precision=4,scale=2)

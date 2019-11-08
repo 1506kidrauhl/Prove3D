@@ -6,13 +6,7 @@
 package com.projetopi.prove3dapp.tabelas;
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  *
@@ -20,9 +14,11 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "TBLOG")
+@SequenceGenerator(name = "sqLog", sequenceName = "sqLog", allocationSize = 1)
 public class TabelaLog {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqLog")
     private Long idLog;
 
     @Column(length = 45)

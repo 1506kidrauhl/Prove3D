@@ -1,12 +1,17 @@
 package com.projetopi.prove3dapp.telas;
 
 import com.projetopi.prove3dapp.Config;
+import com.projetopi.prove3dapp.dadosClasses.Processos;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import javax.annotation.PostConstruct;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+
+import com.projetopi.prove3dapp.tabelas.TabelaComputador;
+import com.projetopi.prove3dapp.tabelas.TabelaProcessos;
+import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import oshi.SystemInfo;
@@ -18,9 +23,17 @@ import oshi.util.FormatUtil;
 @Component
 public class TelaProcessos extends javax.swing.JFrame {
 
+    Timer timer = new Timer(5000, new ChamarRelogio());
+
+    TabelaComputador idComputador;
+    TabelaUsuario idUsuario;
+
     @Autowired
     private Config config;
-    
+
+    @Autowired
+    private Processos processos;
+
     /**
      * Creates new form TelaProcessos
      */
@@ -139,50 +152,44 @@ public class TelaProcessos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-      
+        timer.stop();
     }//GEN-LAST:event_formWindowClosed
     /*A anotação @POSTCONSTRUCT serve para toda vez que a tela for chamada,
     o método que estiver abaixo, irá ser chamado no construtor da class, ou seja,
     sempre que a TelaProcessos for aberta, a função 'disparaRelogio()' irá ser 
     chamada*/
-    @PostConstruct
+
     public void disparaRelogio() {
-        /*Criando uma instancia de Tempo no java. Essa instância irá chamar o 
-        método 'ChamarRelogio()' a cada cinco segundos*/
-        Timer timer = new Timer(5000, new ChamarRelogio());
         // Inicia o timer, para que a cada 5 seg, ele se repita
         timer.start();
     }
-    
+
     class ChamarRelogio implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
             //Chamando o método que irá pegar os processos do sistema
-                pegaProcessos();
+            pegaProcessos();
         }
     }
-    
-    @PostConstruct
-    public void pegaProcessos(){
-        
+
+    public synchronized void pegaProcessos() {
+
         //Instanciando classe SystemInfo para podermos pegarmos os dados de Hardware
         SystemInfo si = config.oshi();
-        
+
         //Variável para coletar dados do Sistema
         OperatingSystem os = si.getOperatingSystem();
-        //Variável para coletar dados do Hardware
-        HardwareAbstractionLayer hal = si.getHardware();
-        
+
         //Setando, dentro da label, a quantidade de processos rodando no pc
         lblQuantidade.setText(String.valueOf(os.getProcessCount()));
-        
+
         //Criando variável para filtro dos processos
         OperatingSystem.ProcessSort filtro;
-        
+
         /*Switch para saber qual opção usuário escolheu na tela
         Obs: Funciona como faziamos no java script, pegando pelo value, ou no caso,
         pelo index selecionado da combo*/
-        switch(cmbFiltro.getSelectedIndex()){
+        switch (cmbFiltro.getSelectedIndex()) {
             case 0://Caso tenha escolhido filtrar por PID
                 filtro = OperatingSystem.ProcessSort.PID;
                 break;
@@ -198,59 +205,33 @@ public class TelaProcessos extends javax.swing.JFrame {
                 break;
         }
 
-        /*Criando array para pegar os processos do sistema, o 10 significa o número
-        máximo de processos que irão ser coletados.
-        Obs: Caso fosse 0, seria coletados os processos sendo executados pelo SO*/
-        OSProcess[] processos = os.getProcesses(10, filtro);
-        
+        List<TabelaProcessos> dadosProcessos = new ArrayList<>();
+
+        processos.pegaProcessos(dadosProcessos, false, idComputador, idUsuario, filtro);
+
         /*Não podemos manipular a tabela apenas com seu nome de variável, então
         criamos um modelo de tabela que recebe a nossa tabela que está na tela*/
         DefaultTableModel tabela = (DefaultTableModel) tbProcessos.getModel();
-        
+
         //Limpando a tabela na tela para poder atualizar os dados
         tabela.setNumRows(0);
-        
-        //Variável auxiliar
-        int indice = 0;
-        
-        /*Este tipo de for é muito útil para o nosso caso, pois ele seta o array
-        um por um por nós,*/
-        for (OSProcess processoAtual : processos) {
-            /*O indice irá servir apenas para o visual da tabela, nos mostrando
-            o número de linhas que terá*/
-            indice++;
-            
-            // Armazenando todos os dados que serão armazenados na tabela
-            int pid = processoAtual.getProcessID();
-            String nmProcesso = processoAtual.getName();
-            int prioridade = processoAtual.getPriority();
-            
-            //Calculo de uso de CPU por processo
-            Double cpuPercent = 100d * (processoAtual.getKernelTime() + processoAtual.getUserTime()) / processoAtual.getUpTime();
-            //Formatando resultado de Uso de CPU por processo
-            String percentCpu = String.format("%.2f", cpuPercent);
+        int hastag = 0;
+        for (int i = 0; i < dadosProcessos.size(); i++) {
 
-            //Calculo de uso de Memória por processo
-            Double memoryPercent = 100d * processoAtual.getResidentSetSize() / hal.getMemory().getTotal();
-            //Formatando resultado de Uso de Memória por processo
-            String percentMemory = String.format("%4.1f", memoryPercent);
-            
-            /*Formatando o tempo de atividade do processo, e cortando o retorno
-            a partir da vírgula (O retorno seria uma String, ex: 
-            17356 days, 13:09:09). O que estou fazendo nada mais é do que cortar 
-            a String através da vírgula, o que nos dá um array com dois valores
-            (0: 17356 days, 1: 13:09:09). Então quando for mostrar isto na tabela
-            será tempo[1], pois quero que mostre o valor que ficará no indice 1*/
-            String[] tempo = FormatUtil.formatElapsedSecs(processoAtual.getStartTime()).split(", ");
-            
-            //Adicionando os valores coletados em uma linha na tabela
-            tabela.addRow(new Object[]{indice,pid, nmProcesso, prioridade, percentCpu,
-            percentMemory, tempo[1]});
-            
+            TabelaProcessos proc = dadosProcessos.get(i);
+            hastag++;
+            tabela.addRow(new Object[]{
+                hastag,
+                 proc.getPid(),
+                 proc.getProcesso(),
+                 proc.getPrioridade(),
+                 proc.getUsoCpu(),
+                 proc.getUsoMemoria(),
+                 proc.getTempoAtividade().toString().split(" ")[3]
+            });
         }
-        
     }
-    
+
     /**
      * @param args the command line arguments
      */

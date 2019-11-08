@@ -144,31 +144,45 @@ public class TelaLogin extends javax.swing.JFrame {
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         String login = txtUser.getText();
         String senha = txtSenha.getText();
-       
-        
+
         TabelaUsuario dados = tabelaUsuarioDAO.findByLogin(login, senha);
         
         if (dados == null) {
             lbMensagem.setText("Login ou Senha estão incorretos");
         } else {
-            
+
+            SystemInfo si = config.oshi();
+
+            OperatingSystem os = si.getOperatingSystem();
+            HardwareAbstractionLayer hal = si.getHardware();
+
             TelaPrincipal telaPrincipal = config.telaPrincipal();
+
             telaPrincipal.setVisible(true);
 
-            telaPrincipal.idUser = dados.getIdUsuario();
-
             //Fazendo consulta no BD para descobrir se é a primeira vez que o usuário se Log no sistema
-            TabelaComputador pc = tabelaComputadorDAO.findData(dados);
+            Object[] pc = tabelaComputadorDAO.findData(dados.getIdUsuario());
 
-            if(pc == null){
+            if(pc.length == 0){
                 //Caso seja, iremos armazenar os dados básicos no PC dele
                 gravarDados(dados, telaPrincipal);
             } else{
-                //Caso não seja, apenas iremos atributir sua fk para a próxima tela
-                telaPrincipal.idUser = dados.getIdUsuario();
-                telaPrincipal.idComputador = pc.getIdComputador();
-            }
+                Object[] data = (Object[]) pc[0];
+                TabelaComputador comp = new TabelaComputador();
+                TabelaUsuario user = (TabelaUsuario) data[4];
 
+                Long id = Math.round(Double.valueOf(data[0].toString()));
+                comp.setIdComputador(id);
+                comp.setSistemaOperacional(data[1].toString());
+                comp.setNmComputador(data[2].toString());
+                comp.setModelo(data[3].toString());
+                comp.setFkUsuario(user);
+
+                //Caso não seja, apenas iremos atributir sua fk para a próxima tela
+                telaPrincipal.idUser = dados;
+                telaPrincipal.idComputador = comp;
+            }
+            telaPrincipal.disparaRelogio();
             this.dispose();
         }
 
@@ -196,9 +210,9 @@ public class TelaLogin extends javax.swing.JFrame {
         tabelaComputadorDAO.save(tabelaComputador);
 
         //Settando id do usuário na próxima tela
-        telaPrincipal.idUser = dados.getIdUsuario();
+        telaPrincipal.idUser = dados;
         //Settando id do computador na próxima tela
-        telaPrincipal.idComputador = tabelaComputador.getIdComputador();
+        telaPrincipal.idComputador = tabelaComputador;
 
     }
 
