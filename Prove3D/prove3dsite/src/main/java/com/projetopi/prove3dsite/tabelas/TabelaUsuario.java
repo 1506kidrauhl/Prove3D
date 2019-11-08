@@ -2,12 +2,7 @@ package com.projetopi.prove3dsite.tabelas;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "TBUSUARIO")
@@ -35,16 +30,19 @@ public class TabelaUsuario {
     @Column(length = 14)
     private String cpf;
 
+    @OneToMany(mappedBy = "fkUsuarioP")
+    private Set<TabelaProcessos> fkUsuarioP = new HashSet<>();
     
-    @OneToMany(mappedBy = "fkUsuario")
+    @OneToMany(mappedBy = "fkUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TabelaComputador> fkUsuario  = new HashSet<>();
     
     @OneToMany (mappedBy="fkUsuario")
     private Set<TabelaLog> fkUsuarioL= new HashSet<>();
-    
-    @OneToMany(mappedBy = "fkUsuarioG")
-    private Set<TabelaGpu> fkUsuarioG = new HashSet<>();
 
+    @OneToMany (mappedBy="fkUsuarioG")
+    private Set<TabelaGpu> fkUsuarioG= new HashSet<>();
+
+    
     public Set<TabelaLog> getFkUsuarioL() {
         return fkUsuarioL;
     }
@@ -52,14 +50,8 @@ public class TabelaUsuario {
     public void setFkUsuarioL(Set<TabelaLog> fkUsuarioL) {
         this.fkUsuarioL = fkUsuarioL;
     }
-
-    public Set<TabelaGpu> getFkUsuarioG() {
-        return fkUsuarioG;
-    }
-
-    public void setFkUsuarioG(Set<TabelaGpu> fkUsuarioG) {
-        this.fkUsuarioG = fkUsuarioG;
-    }
+    
+    
 
     public Set<TabelaComputador> getFkUsuario() {
         return fkUsuario;
@@ -124,6 +116,22 @@ public class TabelaUsuario {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public Set<TabelaProcessos> getFkUsuarioP() {
+        return fkUsuarioP;
+    }
+
+    public void setFkUsuarioP(Set<TabelaProcessos> fkUsuarioP) {
+        this.fkUsuarioP = fkUsuarioP;
+    }
+
+    public Set<TabelaGpu> getFkUsuarioG() {
+        return fkUsuarioG;
+    }
+
+    public void setFkUsuarioG(Set<TabelaGpu> fkUsuarioG) {
+        this.fkUsuarioG = fkUsuarioG;
     }
 
 }
