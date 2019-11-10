@@ -195,27 +195,31 @@
                             </div>
                         </div>
 
-                        <div class="statistics col-lg-3 col-12" style="display: none;" id="memoria" onclick="tbDisplay()">
+                        <div class="statistics col-lg-3 col-12" style="display: none;" id="disco" onclick="tbDisplay()">
                             <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Leitura','lei', 1)">
                                 <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Leitura</small></div>
                             </div>
 
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Gravação',1)">
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Gravação', 'grav',1)">
                                 <div class="icon bg-green"><i class="fa fa-calendar-o"></i></div>
                                 <div class="text"><small>Gravação</small></div>
                             </div>
                         </div>
 
-                        <div class="statistics col-lg-3 col-12" style="display: none;" id="disco" onclick="tbDisplay()">
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Utilização(%)',2)" >
+                        <div class="statistics col-lg-3 col-12" style="display: none;" id="gpu" onclick="tbDisplay()">
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Utilização(%)', 'util',2)" >
                                 <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Utilização</small></div>
                             </div>
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Memória(%)', 'memo',2)" >
+                                <div class="icon bg-green"><i class="fa fa-tasks"></i></div>
+                                <div class="text"><small>Memória</small></div>
+                            </div>
                         </div>
 
-                        <div class="statistics col-lg-3 col-12" style="display: none;" id="gpu" onclick="tbDisplay()">
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Em uso(%)', 3)">
+                        <div class="statistics col-lg-3 col-12" style="display: none;" id="memoria" onclick="tbDisplay()">
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Em uso(%)', 'uso',3)">
                                 <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Em uso</small></div>
                             </div>

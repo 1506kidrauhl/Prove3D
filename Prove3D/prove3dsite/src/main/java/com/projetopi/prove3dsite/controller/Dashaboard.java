@@ -2,8 +2,17 @@ package com.projetopi.prove3dsite.controller;
 
 public class Dashaboard {
 
+    private Integer id;
     private Double dados;
     private String dataHora;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Double getDados() {
         return dados;

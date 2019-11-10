@@ -18,9 +18,8 @@ function chamaAjax(cor, texto, fil,comp) {
 
             for(i=0;i<data.length;i++){
                 dados.push(data[i].dados);
-                dataHora.push(data[i].dataHora);
+                dataHora.push(data[i].dataHora.split(" ")[1].split(".")[0]);
             }
-
 
             grafico(dados,dataHora,cor, texto, fil, comp);
         }

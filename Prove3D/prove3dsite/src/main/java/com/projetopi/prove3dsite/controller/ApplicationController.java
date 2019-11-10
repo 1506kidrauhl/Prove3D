@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -215,7 +216,7 @@ public class ApplicationController {
 
            dadosComputador = tbComputador;
        }
-//Cpu = 0 Disco = 1 Gpu =2 Memoria = 3
+        //Cpu = 0 Disco = 1 Gpu =2 Memoria = 3
         if (componente == 0) {
 
             Object[] dadoCpu = tabelaComputadorDAO.filtraCPU(dadosComputador);
@@ -225,11 +226,13 @@ public class ApplicationController {
                 Object[] dataCpu = (Object[]) dadoCpu[i];
 
                 if (filtro.equals("temp")) {
-                    dashaboard.setDados(Double.valueOf(dataCpu[1].toString()));
-                    dashaboard.setDataHora(dataCpu[2].toString());
+                    dashaboard.setId(Integer.valueOf(dataCpu[0].toString()));
+                    dashaboard.setDados(Double.valueOf(dataCpu[2].toString()));
+                    dashaboard.setDataHora(dataCpu[3].toString());
                 } else {
-                    dashaboard.setDados(Double.valueOf(dataCpu[0].toString()));
-                    dashaboard.setDataHora(dataCpu[2].toString());
+                    dashaboard.setId(Integer.valueOf(dataCpu[0].toString()));
+                    dashaboard.setDados(Double.valueOf(dataCpu[1].toString()));
+                    dashaboard.setDataHora(dataCpu[3].toString());
                 }
 
                 dadosDash.add(dashaboard);
@@ -244,11 +247,13 @@ public class ApplicationController {
                 Object[] dataDisco = (Object[]) dadoDisco[i];
 
                 if (filtro.equals("grav")) {
+                    dashaboard.setId(Integer.valueOf(dataDisco[0].toString()));
                     dashaboard.setDados(Double.valueOf(dataDisco[1].toString()));
-                    dashaboard.setDataHora(dataDisco[2].toString());
+                    dashaboard.setDataHora(dataDisco[3].toString());
                 } else {
-                    dashaboard.setDados(Double.valueOf(dataDisco[0].toString()));
-                    dashaboard.setDataHora(dataDisco[2].toString());
+                    dashaboard.setId(Integer.valueOf(dataDisco[0].toString()));
+                    dashaboard.setDados(Double.valueOf(dataDisco[2].toString()));
+                    dashaboard.setDataHora(dataDisco[3].toString());
                 }
 
                 dadosDash.add(dashaboard);
@@ -263,11 +268,13 @@ public class ApplicationController {
                 Object[] dataGpu = (Object[]) dadoGpu[i];
 
                 if (filtro.equals("util")) {
-                    dashaboard.setDados(Double.valueOf(dataGpu[0].toString()));
-                    dashaboard.setDataHora(dataGpu[2].toString());
-                } else {
+                    dashaboard.setId(Integer.valueOf(dataGpu[0].toString()));
                     dashaboard.setDados(Double.valueOf(dataGpu[1].toString()));
-                    dashaboard.setDataHora(dataGpu[2].toString());
+                    dashaboard.setDataHora(dataGpu[3].toString());
+                } else {
+                    dashaboard.setId(Integer.valueOf(dataGpu[0].toString()));
+                    dashaboard.setDados(Double.valueOf(dataGpu[2].toString()));
+                    dashaboard.setDataHora(dataGpu[3].toString());
                 }
 
                 dadosDash.add(dashaboard);
@@ -281,16 +288,17 @@ public class ApplicationController {
                 Object[] dataMemoria = (Object[]) dadoMemoria[i];
                 Dashaboard dashaboard = new Dashaboard();
 
-                dashaboard.setDados(Double.valueOf(dataMemoria[0].toString()));
-                dashaboard.setDataHora(dataMemoria[1].toString());
+                dashaboard.setId(Integer.valueOf(dataMemoria[0].toString()));
+                dashaboard.setDados(Double.valueOf(dataMemoria[1].toString()));
+                dashaboard.setDataHora(dataMemoria[2].toString());
 
                 dadosDash.add(dashaboard);
-
 
             }
 
         }
 
+        dadosDash.sort(Comparator.comparing(Dashaboard::getId));
         return dadosDash;
 
 
