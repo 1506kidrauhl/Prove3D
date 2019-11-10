@@ -6,13 +6,10 @@
 package com.projetopi.prove3dsite.tabelas;
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.*;
 
 /**
  *
@@ -20,22 +17,30 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "TBGPU")
+@SequenceGenerator(name = "sqGpu", sequenceName = "sqGpu", allocationSize = 1)
 public class TabelaGpu {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqLog")
     private Long idGpu;
     
     @Column
     private String gpu;
-    
+
     @Column(precision = 5, scale = 2)
     private Double utilizacao;
 
     @Column(precision = 5, scale = 2)
     private Double memoria;
-
+    
     @Column(precision = 5, scale = 2)
-    private Double memoriaCompartilhada;
+    private Double temperatura;
+    
+    @Column(precision = 5, scale = 2)
+    private Double controlMemoria;
+    
+    @Column(precision = 5, scale = 2)
+    private Double video;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
@@ -43,16 +48,24 @@ public class TabelaGpu {
     
     @ManyToOne
     private TabelaComputador fkComputadorG;
-
+    
     @ManyToOne
     private TabelaUsuario fkUsuarioG;
 
-    public TabelaUsuario getFkUsuarioG() {
-        return fkUsuarioG;
+    public Double getTemperatura() {
+        return temperatura;
     }
 
-    public void setFkUsuarioG(TabelaUsuario fkUsuarioG) {
-        this.fkUsuarioG = fkUsuarioG;
+    public void setTemperatura(Double temperatura) {
+        this.temperatura = temperatura;
+    }    
+
+    public Long getIdGpu() {
+        return idGpu;
+    }
+
+    public void setIdGpu(Long idGpu) {
+        this.idGpu = idGpu;
     }
 
     public String getGpu() {
@@ -62,22 +75,8 @@ public class TabelaGpu {
     public void setGpu(String gpu) {
         this.gpu = gpu;
     }
-
-    public TabelaComputador getFkComputadorG() {
-        return fkComputadorG;
-    }
-
-    public void setFkComputadorG(TabelaComputador fkComputadorG) {
-        this.fkComputadorG = fkComputadorG;
-    }
-
-    public Long getIdGpu() {
-        return idGpu;
-    }
-
-    public void setIdGpu(Long idGpu) {
-        this.idGpu = idGpu;
-    }
+    
+    
 
     public Double getUtilizacao() {
         return utilizacao;
@@ -95,14 +94,6 @@ public class TabelaGpu {
         this.memoria = memoria;
     }
 
-    public Double getMemoriaCompartilhada() {
-        return memoriaCompartilhada;
-    }
-
-    public void setMemoriaCompartilhada(Double memoriaCompartilhada) {
-        this.memoriaCompartilhada = memoriaCompartilhada;
-    }
-
     public Date getDtHora() {
         return dtHora;
     }
@@ -111,4 +102,36 @@ public class TabelaGpu {
         this.dtHora = dtHora;
     }
 
+    public Double getControlMemoria() {
+        return controlMemoria;
+    }
+
+    public void setControlMemoria(Double controlMemoria) {
+        this.controlMemoria = controlMemoria;
+    }
+
+    public Double getVideo() {
+        return video;
+    }
+
+    public void setVideo(Double video) {
+        this.video = video;
+    }
+
+    public TabelaComputador getFkComputadorG() {
+        return fkComputadorG;
+    }
+
+    public void setFkComputadorG(TabelaComputador fkComputadorG) {
+        this.fkComputadorG = fkComputadorG;
+    }
+
+    public TabelaUsuario getFkUsuarioG() {
+        return fkUsuarioG;
+    }
+
+    public void setFkUsuarioG(TabelaUsuario fkUsuarioG) {
+        this.fkUsuarioG = fkUsuarioG;
+    }
+    
 }

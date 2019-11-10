@@ -7,13 +7,7 @@ package com.projetopi.prove3dsite.tabelas;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -21,54 +15,43 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "TBCOMPUTADOR")
+@SequenceGenerator(name = "sqComp", sequenceName = "sqComp", allocationSize = 1)
 public class TabelaComputador {
+   @Id
+   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqComp")
+   private Long idComputador;
+   
+   @Column(length = 50)
+   private String sistemaOperacional;
+   
+   @Column(length = 45)
+   private String nmComputador;
+   
+   @Column(length = 45)
+   private String modelo;
+  
+   @ManyToOne
+   private TabelaUsuario fkUsuario;
+   
+   @OneToOne(mappedBy = "fkComputadorCPU")
+   private TabelaCpu fkComputadorCPU;
+   
+   @OneToOne(mappedBy="fkComputadorM")
+   private TabelaMemoria fkComputadorM;
+   
+   @OneToOne(mappedBy="fkComputadorD")
+   private TabelaDisco fkComputadorD;
+   
+   @OneToMany (mappedBy="fkComputadorP")
+   private Set<TabelaProcessos> fkComputadorP = new HashSet<>();
+   
+   @OneToMany(mappedBy= "fkComputadorL")
+   private Set<TabelaLog>fkComputadorL= new HashSet<>();
 
-    @Id
-    private Long idComputador;
+   @OneToMany(mappedBy= "fkComputadorG")
+   private Set<TabelaGpu>fkComputadorG= new HashSet<>();
 
-    @Column(length = 50)
-    private String sistemOperacional;
-
-    @Column(length = 45)
-    private String nmComputador;
-
-    @Column(length = 45)
-    private String modelo;
-
-    @ManyToOne
-    private TabelaUsuario fkUsuario;
-
-    @OneToOne(mappedBy = "fkComputadorCPU")
-    private TabelaCpu fkComputadorCPU;
-
-    @OneToOne(mappedBy = "fkComputadorM")
-    private TabelaMemoria fkComputadorM;
-
-    @OneToOne(mappedBy = "fkComputadorD")
-    private TabelaDisco fkComputadorD;
-
-    @OneToMany(mappedBy = "fkComputadorL")
-    private Set<TabelaLog> fkComputadorL = new HashSet<>();
-
-    @OneToMany(mappedBy = "fkComputadorG")
-    private Set<TabelaGpu> fkComputadorG = new HashSet();
-
-    public TabelaDisco getFkComputadorD() {
-        return fkComputadorD;
-    }
-
-    public void setFkComputadorD(TabelaDisco fkComputadorD) {
-        this.fkComputadorD = fkComputadorD;
-    }
-
-    public Set<TabelaGpu> getFkComputadorG() {
-        return fkComputadorG;
-    }
-
-    public void setFkComputadorG(Set<TabelaGpu> fkComputadorG) {
-        this.fkComputadorG = fkComputadorG;
-    }
-    
+   
     public Set<TabelaLog> getFkComputadorL() {
         return fkComputadorL;
     }
@@ -76,6 +59,7 @@ public class TabelaComputador {
     public void setFkComputadorL(Set<TabelaLog> fkComputadorL) {
         this.fkComputadorL = fkComputadorL;
     }
+ 
 
     public TabelaMemoria getFkComputadorM() {
         return fkComputadorM;
@@ -84,6 +68,7 @@ public class TabelaComputador {
     public void setFkComputadorM(TabelaMemoria fkComputadorM) {
         this.fkComputadorM = fkComputadorM;
     }
+   
 
     public TabelaCpu getFkComputadorCPU() {
         return fkComputadorCPU;
@@ -93,7 +78,7 @@ public class TabelaComputador {
         this.fkComputadorCPU = fkComputadorCPU;
     }
 
-    public Long getIdComputador() {
+   public Long getIdComputador() {
         return idComputador;
     }
 
@@ -101,12 +86,12 @@ public class TabelaComputador {
         this.idComputador = idComputador;
     }
 
-    public String getSistemOperacional() {
-        return sistemOperacional;
+    public String getSistemaOperacional() {
+        return sistemaOperacional;
     }
 
-    public void setSistemOperacional(String sistemOperacional) {
-        this.sistemOperacional = sistemOperacional;
+    public void setSistemaOperacional(String sistemaOperacional) {
+        this.sistemaOperacional = sistemaOperacional;
     }
 
     public String getNmComputador() {
@@ -133,4 +118,28 @@ public class TabelaComputador {
         this.fkUsuario = fkUsuario;
     }
 
-}
+    public TabelaDisco getFkComputadorD() {
+        return fkComputadorD;
+    }
+
+    public void setFkComputadorD(TabelaDisco fkComputadorD) {
+        this.fkComputadorD = fkComputadorD;
+    }
+
+    public Set<TabelaProcessos> getFkComputadorP() {
+        return fkComputadorP;
+    }
+
+    public void setFkComputadorP(Set<TabelaProcessos> fkComputadorP) {
+        this.fkComputadorP = fkComputadorP;
+    }
+
+    public Set<TabelaGpu> getFkComputadorG() {
+        return fkComputadorG;
+    }
+
+    public void setFkComputadorG(Set<TabelaGpu> fkComputadorG) {
+        this.fkComputadorG = fkComputadorG;
+    }
+
+  }
