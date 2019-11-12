@@ -45,7 +45,9 @@
 <div class="cont">
 
     <!-- CARDS PARTE 1 -->
-    <div class="row">
+
+    <div>
+     <div class="row">
         <div class="col-sm-2">
             <a data-toggle="modal" data-target="#modalChamados">
             <div class="card cardSize">
@@ -73,6 +75,12 @@
             </a>
         </div>
 
+
+
+
+
+    <!-- CARDS PARTE 2 -->
+
         <div class="col-sm-2">
             <a data-toggle="modal" data-target="#modalEdit">
             <div class="card cardSize">
@@ -90,8 +98,17 @@
             </div>
             </a>
         </div>
+        <div style="display: none;" class="col-sm-4">
+            <a href="#">
+            <div class="card cardSize">
+                <img src="img/cards/manutencao.png" class="card-body imgSize"/>
+                <div class="card-footer text-white colorCard">Em Manutenção</div>
+            </div>
+            </a>
+        </div>
     </div>
 
+</div>
 </div>
 
 <!-- MODAL DE EDIÇÃO DE PERFIL -->

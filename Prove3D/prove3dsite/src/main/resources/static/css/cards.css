@@ -1,6 +1,5 @@
 .imgSize{
-  width: 170px;
-  /*height: 110px*/
+  height: 110px
 }
 
 a:hover {
@@ -34,6 +33,7 @@ a {
 
 .col-sm-2 {
     margin-right: 25px !important;
+>>>>>>> master
 }
 
 .mgTop{

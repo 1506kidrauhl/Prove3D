@@ -5,6 +5,10 @@
 #cha .topPage {
     margin-bottom: 0px;
 }
+#cha a {
+    cursor: pointer !important;
+}
+
 
 #cho .teste1 {
     border-radius: 115px;
@@ -57,6 +61,16 @@
 #cho section.dashboard-counts div[class*='col-'] .item {
     border-right: 0px solid #eee !important;
 
+}
+#cha *, ::after, ::before{
+
+    box-sizing:unset !important;
+
+}
+
+#cha .row{
+    padding: 125px 0;
+    margin-left: 20px;
 }
 
 .modal.left .modal-dialog {
