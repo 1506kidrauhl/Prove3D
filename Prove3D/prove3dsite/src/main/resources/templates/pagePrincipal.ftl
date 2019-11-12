@@ -45,8 +45,9 @@
 <div class="container mgTop">
 <center>
     <!-- CARDS PARTE 1 -->
-    <div class="row">
-        <div class="col-sm-4">
+    <div>
+     <div class="row">
+        <div class="col-sm-2">
             <a data-toggle="modal" data-target="#modalChamados">
             <div class="card cardSize">
                 <img src="img/cards/conversacao.png" class="card-body imgSize"/>
@@ -55,7 +56,7 @@
             </a>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             <a href="/dashboard">
             <div class="card cardSize">
                 <img src="img/cards/estatisticas.png" class="card-body imgSize"/>
@@ -64,7 +65,7 @@
             </a>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             <a href="#">
             <div class="card cardSize">
                 <img src="img/cards/performance.png" class="card-body imgSize"/>
@@ -73,12 +74,12 @@
             </a>
         </div>
 
-    </div>
 
-    <br>
+
+
     <!-- CARDS PARTE 2 -->
-    <div class="row">
-        <div class="col-sm-4">
+
+        <div class="col-sm-2">
             <a data-toggle="modal" data-target="#modalEdit">
             <div class="card cardSize">
                 <img src="img/cards/curriculo.png" class="card-body imgSize"/>
@@ -87,7 +88,7 @@
             </a>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             <a href="/relatorio">
             <div class="card cardSize">
                 <img src="img/cards/relatorio.png" class="card-body imgSize"/>
@@ -96,7 +97,7 @@
             </a>
         </div>
 
-        <div class="col-sm-4">
+        <div style="display: none;" class="col-sm-4">
             <a href="#">
             <div class="card cardSize">
                 <img src="img/cards/manutencao.png" class="card-body imgSize"/>
@@ -106,6 +107,7 @@
         </div>
     </div>
 </center>
+</div>
 </div>
 
 <!-- MODAL DE EDIÇÃO DE PERFIL -->
