@@ -6,6 +6,7 @@ import com.projetopi.prove3dsite.dao.TabelaGpuDAO;
 import com.projetopi.prove3dsite.dao.TabelaLogDAO;
 import com.projetopi.prove3dsite.dao.TabelaUsuarioDAO;
 import com.projetopi.prove3dsite.tabelas.TabelaComputador;
+import com.projetopi.prove3dsite.tabelas.TabelaLog;
 import com.projetopi.prove3dsite.tabelas.TabelaUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,10 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class ApplicationController {
@@ -303,5 +301,53 @@ public class ApplicationController {
 
 
     }
+
+
+    @RequestMapping(value = "/gerarLog", method = RequestMethod.GET)
+    @ResponseBody
+    public List<TabelaLog> gerarLog(@RequestParam("dtInicio")String dtInicio, @RequestParam("dtFim") String dtFim,
+                                    @RequestParam("tipo") String tipoLog, @RequestParam("comp") String componente,
+                                    @RequestParam("id") Long idUser){
+
+        List<TabelaLog> dadosLog = new ArrayList<>();
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        Date dtI = new Date(), dtF = new Date();
+
+        try{
+            dtI = formato.parse(dtInicio + ":00");
+            dtF = formato.parse(dtFim + ":59");
+        } catch (Exception ex){
+            System.out.println("Erro ao formatar a data");
+        }
+        Object[] dados;
+
+        if(tipoLog.equals("")){
+           dados =  tabelaLogDAO.findAllByInitialAndFinal(dtI, dtF, componente, idUser);
+        } else{
+           dados =  tabelaLogDAO.findByComponente(dtI, dtF, tipoLog, componente, idUser);
+        }
+
+        for(int i = 0; i < dados.length; i++){
+            Object[] data = (Object[]) dados[i];
+            TabelaLog dataLog = new TabelaLog();
+
+            dataLog.setComponente(data[0].toString());
+            dataLog.setDescricao(data[1].toString());
+            dataLog.setTipo(data[2].toString());
+
+            try {
+                dataLog.setDtHora(formato.parse(data[3].toString()));
+            }catch (Exception ex){
+                System.out.println("Erro ao formatar data");
+            }
+
+            dadosLog.add(dataLog);
+
+        }
+
+        return dadosLog;
+    }
+
 
 }

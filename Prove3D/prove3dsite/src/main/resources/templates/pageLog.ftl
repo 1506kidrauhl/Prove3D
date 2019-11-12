@@ -79,6 +79,7 @@
             <div class="title">
               <#if dadosLog ? has_content>
                 <h1 class="h4">${dadosLog.nome}</h1>
+                <input type="hidden" id="idAux" value="${dadosLog.idUsuario}">
               </#if>
             </div>
           </div>
@@ -135,14 +136,24 @@
                   <div class="row">
                     <div class="col-sm-6">
                       <select id="cmbFiltro" class="form-control">
-                          <option>Escolha um tipo de filtro</option>
+                          <option value="">Todos</option>
                           <option value="Atenção">Atenção</option>
                           <option value="Erro">Erro</option>
                           <option value="OK">OK</option>
                       </select>
                     </div>
                     <div class="col-sm-6">
-                      <button class="btn btn-primary" onclick="troca(secTable)">Gerar Relatório</button>
+                      <select id="cmbComp" class="form-control">
+                        <option value="CPU">CPU</option>
+                        <option value="Disco">Disco</option>
+                        <option value="GPU">GPU</option>
+                        <option value="Memória">Memória</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <button class="btn btn-primary" onclick="chamaAjax()">Gerar Relatório</button>
                     </div>
                   </div>
                 </div>
@@ -155,7 +166,7 @@
             <div class="container-fluid">
               <div class="row bg-white has-shadow">
                 <div class="col-xl-12 col-sm-6">
-                  <img src="img/back.png" onclick="troca(secLog)"/>
+                  <img src="img/back.png" onclick="troca()"/>
 
                   <table class="table table-bordered table-striped" style="margin-top: 5px;">
                     <thead>
@@ -167,22 +178,7 @@
                           <th>Hora</th>
                         <tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Erro</td>
-                          <td>CPU com temperatura acima de 70°C</td>
-                          <td>10/10/2019</td>
-                          <td>13:03</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Atenção</td>
-                          <td>Memória com utilização acima de 50%</td>
-                          <td>10/10/2019</td>
-                          <td>15:03</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="bodyTable"></tbody>
                   </table>
 
                 </div>
