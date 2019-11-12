@@ -5,50 +5,75 @@ $(document).ready(function() {
     dtInicio.value = dt.getFullYear() + "-" + (dt.getMonth()+ 1) +"-" + dt.getDate();
     dtFim.value = dt.getFullYear() + "-" + (dt.getMonth()+ 1) +"-" + dt.getDate();
 
-    var hora = dt.getHours();
-    var min = dt.getMinutes();
+    hrInicio.value = "00:00";
+    hrFim.value = "23:59";
+});
 
-    var horaFim = dt.getHours();
-    var minFim = dt.getMinutes();
+function chamaAjax() {
 
-    if(hora < 10){
-        hora = "0" + dt.getHours();
+    if(dtInicio.value == "" || dtFim.value == ""){
+        swal("Atenção", "Preencha os campos de data corretamente");
+        return;
+    } else if(dtInicio.value > dtFim.value){
+        swal("Atenção", "Data Inicial não pode ser maior que a Data Final");
+        return;
+    } else if(hrInicio.value > hrFim.value){
+        swal("Atenção", "Hora Inicial não pode ser maior que a Hora Final");
+        return;
+    } else if(hrInicio.value == "" || hrFim.value == ""){
+        swal("Atenção", "Preencha os campos de hora corretamente");
     }
 
-    if(min < 10){
-        min = "0" + dt.getMinutes();
-    }
+    var parametros="dtInicio="+dtInicio.value + " " + hrInicio.value + "&dtFim="+ dtFim.value +  " " + hrFim.value +
+        "&tipo="+cmbFiltro.value+"&comp="+cmbComp.value+"&id="+idAux.value;
 
-    if(horaFim < 10){
-        horaFim = "0" + dt.getHours();
-    }
+    console.log(parametros);
 
-    if(minFim < 10){
-        minFim = "0" + dt.getMinutes();
-    }
+    $.ajax({
+        url: "/gerarLog",
+        method: 'GET',
+        data: parametros,
+        error: function (data){
+            console.log("foi nada");
+        },
+        success: function(data){
+            geraLog(data);
+        }
+    });
 
-    minFim += 5;
+}
 
-    if(minFim > 60){
+function troca(){
+    secTable.style.display = "none";
+    secLog.style.display = "block";
+}
 
-        minFim = "0" + ((minFim + 5) - 60);
-        horaFim += 1;
+function geraLog(dados){
 
-        if(horaFim < 10){
-            horaFim = "0" + horaFim;
+    bodyTable.innerHTML = "";
+
+    if(dados == null || dados.length == 0){
+        swal("Ops!", "Não foram encontrados dados")
+    } else{
+
+            secTable.style.display = "block";
+            secLog.style.display = "none";
+
+        for(i = 0; i < dados.length; i++){
+
+            bodyTable.innerHTML += `
+            <tr>
+              <td>${i + 1}</td>
+              <td>${dados[i].tipo}</td>
+              <td>${dados[i].descricao}</td>
+              <td>${dados[i].dtHora.split("T")[0]}</td>
+              <td>${dados[i].dtHora.split("T")[1].split(".")[0]}</td>
+            </tr>`;
+
         }
 
     }
 
-    hrInicio.value = hora + ":" + min;
-    hrFim.value = horaFim + ":" + minFim;
 
-});
-
-function troca(aparecer){
-
-    secTable.style.display = "none";
-    secLog.style.display = "none";
-    aparecer.style.display = "block";
 
 }
