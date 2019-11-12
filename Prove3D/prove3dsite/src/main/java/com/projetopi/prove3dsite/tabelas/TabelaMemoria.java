@@ -2,18 +2,14 @@
 package com.projetopi.prove3dsite.tabelas;
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 @Table(name="TBMEMORIA")
+@SequenceGenerator(name = "sqMemory", sequenceName = "sqMemory", allocationSize = 1)
 public class TabelaMemoria {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqMemory")
     private Long idMemoria;
     
     @Column(precision=2,scale=1)
@@ -22,12 +18,9 @@ public class TabelaMemoria {
     @Column(precision=2,scale=1)
     private Double disponivel;
     
-    @Column 
-    private Integer paginada;
-    
-    @Column
-    private Integer nPaginada;
-    
+    @Column(precision = 5, scale = 2)
+    private Double cache;
+
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date dtHora;
@@ -59,20 +52,20 @@ public class TabelaMemoria {
         this.disponivel = disponivel;
     }
 
-    public Integer getPaginada() {
-        return paginada;
+    public Double getCache() {
+        return cache;
     }
 
-    public void setPaginada(Integer paginada) {
-        this.paginada = paginada;
+    public void setCache(Double cache) {
+        this.cache = cache;
     }
 
-    public Integer getnPaginada() {
-        return nPaginada;
+    public TabelaComputador getFkComputadorM() {
+        return fkComputadorM;
     }
 
-    public void setnPaginada(Integer nPaginada) {
-        this.nPaginada = nPaginada;
+    public void setFkComputadorM(TabelaComputador fkComputadorM) {
+        this.fkComputadorM = fkComputadorM;
     }
 
     public Date getDtHora() {
@@ -82,17 +75,5 @@ public class TabelaMemoria {
     public void setDtHora(Date dtHora) {
         this.dtHora = dtHora;
     }
-
-    public TabelaComputador getFkComputador() {
-        return fkComputadorM;
-    }
-
-    public void setFkComputador(TabelaComputador fkComputador) {
-        this.fkComputadorM = fkComputador;
-    }
-    
-    
-    
-    
     
 }

@@ -28,7 +28,7 @@ public class Disco {
 
     @Autowired
     TabelaDiscoDAO tabelaDiscoDaAO;
-    public synchronized TabelaDisco pegaDisco(TabelaDisco disco, boolean enviarDados, TabelaComputador fkPc, List<String> data) {
+    public synchronized TabelaDisco pegaDisco(TabelaDisco disco, TabelaComputador fkPc, List<String> data) {
         SystemInfo si = config.oshi();
 
         HardwareAbstractionLayer hal = si.getHardware();
@@ -71,10 +71,8 @@ public class Disco {
             disco.setTempAtividade(3);
             disco.setTempResp(3.6);
 
-            if(enviarDados){
-                disco.setFkComputador(fkPc);
-                tabelaDiscoDaAO.save(disco);
-            }
+            disco.setFkComputador(fkPc);
+            tabelaDiscoDaAO.save(disco);
 
         }
 

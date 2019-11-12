@@ -31,7 +31,7 @@ public class Cpu {
     @Autowired
     TabelaCpuDAO tabelaCpuDaAO;
 
-    public synchronized TabelaCpu pegaCpu(TabelaCpu cpu, boolean enviarDados, TabelaComputador fkPc) {
+    public synchronized TabelaCpu pegaCpu(TabelaCpu cpu, TabelaComputador fkPc) {
 
         SystemInfo si = config.oshi();
 
@@ -75,10 +75,9 @@ public class Cpu {
         Double cpuUtilizacao = hal.getProcessor().getSystemCpuLoadBetweenTicks(prevTicks) * 100;
         cpu.setUtilizacao(cpuUtilizacao);
 
-        if (enviarDados) {
-            cpu.setFkComputador(fkPc);
-            tabelaCpuDaAO.save(cpu);
-        }
+        cpu.setFkComputador(fkPc);
+        tabelaCpuDaAO.save(cpu);
+
         return cpu;
        
     }

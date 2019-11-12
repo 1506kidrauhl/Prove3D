@@ -42,9 +42,10 @@
     </div>
 
 <!-- CONTAINER DOS CARDS DA PÁGINA -->
-<div class="container mgTop">
-<center>
+<div class="cont">
+
     <!-- CARDS PARTE 1 -->
+
     <div>
      <div class="row">
         <div class="col-sm-2">
@@ -77,6 +78,7 @@
 
 
 
+
     <!-- CARDS PARTE 2 -->
 
         <div class="col-sm-2">
@@ -96,7 +98,6 @@
             </div>
             </a>
         </div>
-
         <div style="display: none;" class="col-sm-4">
             <a href="#">
             <div class="card cardSize">
@@ -106,7 +107,7 @@
             </a>
         </div>
     </div>
-</center>
+
 </div>
 </div>
 

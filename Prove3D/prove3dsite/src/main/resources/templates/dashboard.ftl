@@ -89,6 +89,7 @@
                 <div class="title">
                     <#if dadosLog ? has_content>
                         <h1 class="h4">${dadosLog.nome}</h1>
+                        <input type="hidden" id="idAux" value="${dadosLog.idUsuario}">
                     </#if>
                 </div>
             </div>
@@ -183,16 +184,17 @@
                     <div class="row" >
                         <!--Statistics-->
                         <div class="statistics col-lg-3 col-12" style="display: none;" id="cpu" onclick="tbDisplay()">
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Temperatura(°C)')">
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Temperatura(°C)', 'temp', 0)">
                                 <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Temperatura</small></div>
                             </div>
 
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Voltagem(V)')">
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Voltagem(V)','volt', 0)">
                                 <div class="icon bg-green"><i class="fa fa-calendar-o"></i></div>
                                 <div class="text"><small>Voltagem</small></div>
                             </div>
                         </div>
+
 
                         <div class="statistics col-lg-3 col-12" style="display: none;" id="memoria" onclick="tbDisplay()">
                             <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Utilização(%)')">
@@ -211,7 +213,12 @@
                                 <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Gravação</small></div>
                             </div>
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Memória(%)', 'memo',2)" >
+                                <div class="icon bg-green"><i class="fa fa-tasks"></i></div>
+                                <div class="text"><small>Memória</small></div>
+                            </div>
                         </div>
+
 
                         <div class="statistics col-lg-3 col-12" style="display: none;" id="gpu" onclick="tbDisplay()">
                             <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Utilizacao(%)')">
@@ -300,8 +307,8 @@
 </html>
 
 <script src="js/ajax/envioEmail.js"></script>
-<!-- Projects Section-->
 <script src="js/dashboard/charts-home.js"></script>
+<script src="js/ajax/dashboard.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -315,5 +322,4 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 
 <!-- Main File-->
-<script src="js/dashboard/front.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>

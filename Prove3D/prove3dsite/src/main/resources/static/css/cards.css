@@ -2,6 +2,40 @@
   height: 110px
 }
 
+a:hover {
+    text-decoration: none !important;
+}
+
+#cha {
+    height: 100%;
+}
+
+.cont {
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a {
+    cursor: pointer !important;
+}
+
+.row {
+    justify-content: center !important;
+}
+
+.card:hover .card-footer{
+    cursor: pointer;
+    background: #6454df !important;
+    transition: all ease-in-out .3s;
+}
+
+.col-sm-2 {
+    margin-right: 25px !important;
+>>>>>>> master
+}
+
 .mgTop{
   margin-top: 10px;
 }

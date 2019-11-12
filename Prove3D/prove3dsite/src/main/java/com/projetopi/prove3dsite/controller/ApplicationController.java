@@ -5,6 +5,7 @@ import com.projetopi.prove3dsite.dao.TabelaComputadorDAO;
 import com.projetopi.prove3dsite.dao.TabelaGpuDAO;
 import com.projetopi.prove3dsite.dao.TabelaLogDAO;
 import com.projetopi.prove3dsite.dao.TabelaUsuarioDAO;
+import com.projetopi.prove3dsite.tabelas.TabelaComputador;
 import com.projetopi.prove3dsite.tabelas.TabelaUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,8 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ApplicationController {
@@ -35,7 +39,11 @@ public class ApplicationController {
     @Autowired
     private TabelaLogDAO tabelaLogDAO;
 
+    TabelaComputador dadosComputador;
+
     String log, pass;
+
+    TabelaUsuario idUsuario;
 
     TabelaUsuario dadosUser;
 
@@ -180,6 +188,120 @@ public class ApplicationController {
             ex.printStackTrace();
             return "Erro!. Não foi possível editar seus dados, por favor, tente novamente";
         }
+    }
+
+    @RequestMapping(value = "/pegarDados", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Dashaboard> pegarDados(@RequestParam("componente") Integer componente,@RequestParam("filtro")String filtro,
+                                       @RequestParam("id")Long id){
+
+        List<Dashaboard> dadosDash = new ArrayList<>();
+
+
+       if(dadosComputador == null ||idUsuario == null) {
+           Optional<TabelaUsuario>  user = tabelaUsuarioDAO.findById(id);
+           idUsuario = user.get();
+
+           Object[] dado = tabelaComputadorDAO.findData(id);
+           Object[] data = (Object[]) dado[0];
+
+           TabelaComputador tbComputador = new TabelaComputador();
+           long idPc = Math.round(Double.valueOf(data[0].toString()));
+
+           tbComputador.setIdComputador(idPc);
+
+           tbComputador.setSistemaOperacional(data[1].toString());
+           tbComputador.setNmComputador(data[2].toString());
+           tbComputador.setModelo(data[3].toString());
+
+           dadosComputador = tbComputador;
+       }
+        //Cpu = 0 Disco = 1 Gpu =2 Memoria = 3
+        if (componente == 0) {
+
+            Object[] dadoCpu = tabelaComputadorDAO.filtraCPU(dadosComputador);
+
+            for (int i = 0; i < dadoCpu.length; i++) {
+                Dashaboard dashaboard = new Dashaboard();
+                Object[] dataCpu = (Object[]) dadoCpu[i];
+
+                if (filtro.equals("temp")) {
+                    dashaboard.setId(Integer.valueOf(dataCpu[0].toString()));
+                    dashaboard.setDados(Double.valueOf(dataCpu[2].toString()));
+                    dashaboard.setDataHora(dataCpu[3].toString());
+                } else {
+                    dashaboard.setId(Integer.valueOf(dataCpu[0].toString()));
+                    dashaboard.setDados(Double.valueOf(dataCpu[1].toString()));
+                    dashaboard.setDataHora(dataCpu[3].toString());
+                }
+
+                dadosDash.add(dashaboard);
+
+            }
+
+        }
+        else if (componente == 1){
+            Object[] dadoDisco = tabelaComputadorDAO.filtraDisco(dadosComputador);
+            for (int i = 0; i < dadoDisco.length; i++) {
+                Dashaboard dashaboard = new Dashaboard();
+                Object[] dataDisco = (Object[]) dadoDisco[i];
+
+                if (filtro.equals("grav")) {
+                    dashaboard.setId(Integer.valueOf(dataDisco[0].toString()));
+                    dashaboard.setDados(Double.valueOf(dataDisco[1].toString()));
+                    dashaboard.setDataHora(dataDisco[3].toString());
+                } else {
+                    dashaboard.setId(Integer.valueOf(dataDisco[0].toString()));
+                    dashaboard.setDados(Double.valueOf(dataDisco[2].toString()));
+                    dashaboard.setDataHora(dataDisco[3].toString());
+                }
+
+                dadosDash.add(dashaboard);
+
+
+            }
+
+        }else if (componente == 2){
+            Object[] dadoGpu = tabelaGpuDAO.filtraGPU(idUsuario);
+            for (int i = 0; i < dadoGpu.length; i++) {
+                Dashaboard dashaboard = new Dashaboard();
+                Object[] dataGpu = (Object[]) dadoGpu[i];
+
+                if (filtro.equals("util")) {
+                    dashaboard.setId(Integer.valueOf(dataGpu[0].toString()));
+                    dashaboard.setDados(Double.valueOf(dataGpu[1].toString()));
+                    dashaboard.setDataHora(dataGpu[3].toString());
+                } else {
+                    dashaboard.setId(Integer.valueOf(dataGpu[0].toString()));
+                    dashaboard.setDados(Double.valueOf(dataGpu[2].toString()));
+                    dashaboard.setDataHora(dataGpu[3].toString());
+                }
+
+                dadosDash.add(dashaboard);
+
+
+            }
+
+        }else {
+            Object[] dadoMemoria = tabelaComputadorDAO.filtraMemoria(dadosComputador);
+            for (int i = 0; i < dadoMemoria.length; i++) {
+                Object[] dataMemoria = (Object[]) dadoMemoria[i];
+                Dashaboard dashaboard = new Dashaboard();
+
+                dashaboard.setId(Integer.valueOf(dataMemoria[0].toString()));
+                dashaboard.setDados(Double.valueOf(dataMemoria[1].toString()));
+                dashaboard.setDataHora(dataMemoria[2].toString());
+
+                dadosDash.add(dashaboard);
+
+            }
+
+        }
+
+        dadosDash.sort(Comparator.comparing(Dashaboard::getId));
+        return dadosDash;
+
+
     }
 
 }
