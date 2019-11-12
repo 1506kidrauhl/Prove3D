@@ -5,10 +5,6 @@
 #cha .topPage {
     margin-bottom: 0px;
 }
-#cha a {
-    cursor: pointer !important;
-}
-
 
 #cho .teste1 {
     border-radius: 115px;
@@ -62,16 +58,6 @@
     border-right: 0px solid #eee !important;
 
 }
-#cha *, ::after, ::before{
-
-    box-sizing:unset !important;
-
-}
-
-#cha .row{
-    padding: 125px 0;
-    margin-left: 20px;
-}
 
 .modal.left .modal-dialog {
     position: fixed;
@@ -118,29 +104,6 @@
 .modal-backdrop.show {
     opacity: 0!important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .sidenav {
     height: 100%; /* 100% Full-height */

@@ -6,12 +6,10 @@
     <link rel="shortcut icon" href="img/parallax/logo.png" />
     <title>Home</title>
 
-
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/custom.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  
 
 <head>
 </head>
@@ -42,13 +40,10 @@
     </div>
 
 <!-- CONTAINER DOS CARDS DA PÁGINA -->
-<div class="cont">
-
+<div class="container">
     <!-- CARDS PARTE 1 -->
-
-    <div>
-     <div class="row">
-        <div class="col-sm-2">
+     <div class="row" style="margin-top: 70px">
+        <div class="col-sm-3">
             <a data-toggle="modal" data-target="#modalChamados">
             <div class="card cardSize">
                 <img src="img/cards/conversacao.png" class="card-body imgSize"/>
@@ -57,7 +52,7 @@
             </a>
         </div>
 
-        <div class="col-sm-2">
+        <div class="col-sm-3">
             <a href="/dashboard">
             <div class="card cardSize">
                 <img src="img/cards/estatisticas.png" class="card-body imgSize"/>
@@ -66,22 +61,7 @@
             </a>
         </div>
 
-        <div class="col-sm-2">
-            <a href="#">
-            <div class="card cardSize">
-                <img src="img/cards/performance.png" class="card-body imgSize"/>
-                <div class="card-footer text-white colorCard">Desempenho</div>
-            </div>
-            </a>
-        </div>
-
-
-
-
-
-    <!-- CARDS PARTE 2 -->
-
-        <div class="col-sm-2">
+        <div class="col-sm-3">
             <a data-toggle="modal" data-target="#modalEdit">
             <div class="card cardSize">
                 <img src="img/cards/curriculo.png" class="card-body imgSize"/>
@@ -90,19 +70,11 @@
             </a>
         </div>
 
-        <div class="col-sm-2">
+        <div class="col-sm-3">
             <a href="/relatorio">
             <div class="card cardSize">
                 <img src="img/cards/relatorio.png" class="card-body imgSize"/>
                 <div class="card-footer text-white colorCard">Relatórios</div>
-            </div>
-            </a>
-        </div>
-        <div style="display: none;" class="col-sm-4">
-            <a href="#">
-            <div class="card cardSize">
-                <img src="img/cards/manutencao.png" class="card-body imgSize"/>
-                <div class="card-footer text-white colorCard">Em Manutenção</div>
             </div>
             </a>
         </div>
@@ -262,7 +234,6 @@
 <script src="js/jquery.mask.min.js"></script>
 <script>
     $(document).ready(function(){
-
         $("#txtTel").mask("(00)00000-0000");
     });
 </script>

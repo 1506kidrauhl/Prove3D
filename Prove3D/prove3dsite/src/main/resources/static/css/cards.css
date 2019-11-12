@@ -1,67 +1,34 @@
 .imgSize{
-  height: 110px
-}
-
-a:hover {
-    text-decoration: none !important;
-}
-
-#cha {
-    height: 100%;
-}
-
-.cont {
-    height: 80%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-a {
-    cursor: pointer !important;
-}
-
-.row {
-    justify-content: center !important;
-}
-
-.card:hover .card-footer{
-    cursor: pointer;
-    background: #6454df !important;
-    transition: all ease-in-out .3s;
-}
-
-.col-sm-2 {
-    margin-right: 25px !important;
->>>>>>> master
+    width: 170px;
+    height: 110px
 }
 
 .mgTop{
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .topPage{
-  background-color: rgb(47,51,62);
-  margin-bottom: 5px;
+    background-color: rgb(47,51,62);
+    margin-bottom: 5px;
 }
 
 .colorCard{
-  background-color: rgb(121,106,238)!important;
+    background-color: rgb(121,106,238)!important;
 }
 
 .cardSize{
-  width: 170px;
-  height: 200px
+    width: 170px;
+    height: 200px
 }
 
 body, html {
-  height: 100%;
-  background-color: rgb(238,245,249)!important;
+    height: 100%;
+    background-color: rgb(238,245,249)!important;
 
-  /* background-image: url("https://hdqwalls.com/download/3d-abstract-sharp-eg-2560x1700.jpg"); */
-  height: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+    /* background-image: url("https://hdqwalls.com/download/3d-abstract-sharp-eg-2560x1700.jpg"); */
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 
 }
