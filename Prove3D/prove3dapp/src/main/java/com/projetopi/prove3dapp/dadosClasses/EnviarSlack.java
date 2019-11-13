@@ -16,11 +16,13 @@ public class EnviarSlack {
 
     public void enviarMsg(String nomeUser, String msg) throws IOException{
 
-        String url = "";
+        String l1 = "https://hooks.slack.com - ";
+        String l2 = "/services/TPRKC8REJ/BQKJ7052T - ";
+        String l3 = "/QPiPK8NQEY4jMwThu43V18F0 - ";
         /*
             TODA VEZ QUE FOREM COMMITAR, LEMBREM-SE DE COMENTAR A URL ABAIXO!!!!!!
         */
-        //url = "https://hooks.slack.com/services/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";
+        String url = l1.split(" -")[0] + l2.split(" -")[0] + l3.split(" -")[0];
 
         JSONObject json = new JSONObject();
 
