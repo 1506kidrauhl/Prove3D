@@ -18,7 +18,8 @@
 
 .cardSize{
     width: 170px;
-    height: 200px
+    height: 210px;
+    margin: 15px;
 }
 
 body, html {
