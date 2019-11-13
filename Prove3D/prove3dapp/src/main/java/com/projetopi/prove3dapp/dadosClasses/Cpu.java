@@ -9,6 +9,7 @@ import com.projetopi.prove3dapp.tabelas.TabelaCpu;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JTextArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import oshi.SystemInfo;
@@ -31,7 +32,7 @@ public class Cpu {
     @Autowired
     TabelaCpuDAO tabelaCpuDaAO;
 
-    public synchronized TabelaCpu pegaCpu(TabelaCpu cpu, TabelaComputador fkPc) {
+    public TabelaCpu pegaCpu(TabelaCpu cpu, TabelaComputador fkPc) {
 
         SystemInfo si = config.oshi();
 
@@ -81,5 +82,12 @@ public class Cpu {
         return cpu;
        
     }
+    
+    public void verificaDados(TabelaCpu cpu, JTextArea console){
+        
+        
+        
+    }
+    
 
 }
