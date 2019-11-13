@@ -15,7 +15,12 @@ public class EnviarSlack {
     private static HttpURLConnection con;
 
     public void enviarMsg(String nomeUser, String msg) throws IOException{
-        String url = "https://hooks.slack.com/services/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";
+
+        String url = "";
+        /*
+            TODA VEZ QUE FOREM COMMITAR, LEMBREM-SE DE COMENTAR A URL ABAIXO!!!!!!
+        */
+        //url = "https://hooks.slack.com/services/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";
 
         JSONObject json = new JSONObject();
 
