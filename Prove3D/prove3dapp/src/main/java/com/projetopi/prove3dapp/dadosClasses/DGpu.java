@@ -77,7 +77,8 @@ public class DGpu {
             }
 
             List<Load> loads = component.sensors.loads;
-
+            
+            
             if (loads.size() != 0) {
                 for (final Load load : loads) {
 

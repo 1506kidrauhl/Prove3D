@@ -134,6 +134,7 @@ public class Processos {
         dadosProcessos.sort(Comparator.comparing(TabelaProcessos::getUsoMemoria).reversed());
         mensagem = " - Processo com maior utilização de Memória: " + dadosProcessos.get(0).getProcesso() + "\n";
         console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
+        
                 
         console.setText(console.getText() + formato.format(calendar.getTime()) + " - Finalizando monitoramento de Processos.\n");
         

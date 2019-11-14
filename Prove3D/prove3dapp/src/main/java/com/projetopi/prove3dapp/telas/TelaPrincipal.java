@@ -386,7 +386,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             telaEstatisticas.discoVLeitura = data.get(0);
             telaEstatisticas.discoVGravacao = data.get(1);
             telaEstatisticas.pegaDisco();
-
+            disco.verificaDados(dadosDisco, txtLog);
             
             calendar = Calendar.getInstance();
             calendar.setTime(calendar.getTime());
@@ -399,6 +399,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             telaEstatisticas.memoriaUso = data.get(2);
             telaEstatisticas.memoriaModelo = data.get(0);
             telaEstatisticas.pegaMemoria();
+            memoria.verificaDados(dadosMemoria, txtLog);
 
             calendar = Calendar.getInstance();
             calendar.setTime(calendar.getTime());
