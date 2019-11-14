@@ -38,13 +38,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     @Autowired
     private Disco disco;
-    
+
     @Autowired
     private DGpu gpu;
 
     @Autowired
     private Memoria memoria;
-    
+
     @Autowired
     private Processos processos;
 
@@ -326,17 +326,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     class ChamarGpu implements ActionListener {
-        
+
         public void actionPerformed(ActionEvent e) {
-        
+
             List<TabelaGpu> dadosGpu = new ArrayList<>();
-            
+
             gpu.pegaGpu(dadosGpu, idComputador, idUser);
             telaGpu.dadosGpu = dadosGpu;
             telaGpu.pegaGpu();
         }
-        
+
     }
+
     class ChamarRelogio implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
@@ -347,7 +348,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
             telaEstatisticas.cpuModelo = dadosCpu.getModelo();
             telaEstatisticas.cpuProcessos = dadosCpu.getProcessos().toString();
-            telaEstatisticas.cpuTemp = dadosCpu.getTemperatura().toString();
+            if (dadosCpu.getTemperatura() < 1) {
+                telaEstatisticas.cpuTemp = "Necessário permissão Admin";
+            } else {
+                telaEstatisticas.cpuTemp = dadosCpu.getTemperatura().toString();
+            }
+            
             telaEstatisticas.cpuVoltagem = dadosCpu.getVoltagem().toString();
             telaEstatisticas.cpuUtilizacao = dadosCpu.getUtilizacao();
             telaEstatisticas.cpuTempAtividade = dadosCpu.getTempAtividade().toString().split(" ")[3];
@@ -370,7 +376,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
             telaEstatisticas.memoriaUso = data.get(2);
             telaEstatisticas.memoriaModelo = data.get(0);
             telaEstatisticas.pegaMemoria();
-
 
             List<TabelaProcessos> dadosProcesso = new ArrayList<>();
             processos.pegaProcessos(dadosProcesso, true, idComputador, idUser, OperatingSystem.ProcessSort.CPU);
