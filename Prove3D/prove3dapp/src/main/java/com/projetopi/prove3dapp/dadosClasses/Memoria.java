@@ -5,7 +5,9 @@ import com.projetopi.prove3dapp.Config;
 import com.projetopi.prove3dapp.dao.TabelaLogDAO;
 import com.projetopi.prove3dapp.dao.TabelaMemoriaDAO;
 import com.projetopi.prove3dapp.tabelas.TabelaComputador;
+import com.projetopi.prove3dapp.tabelas.TabelaDisco;
 import com.projetopi.prove3dapp.tabelas.TabelaMemoria;
+import java.text.SimpleDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import oshi.SystemInfo;
@@ -15,6 +17,8 @@ import oshi.util.FormatUtil;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import javax.swing.JTextArea;
 
 @Controller
 public class Memoria {
@@ -77,6 +81,15 @@ public class Memoria {
         return memoria;
     }
 
-
+  public void verificaDados(TabelaMemoria dadosMemoria, JTextArea console){
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(calendar.getTime());
+        
+        SystemInfo si = config.oshi();
+        HardwareAbstractionLayer hal = si.getHardware();
+        
+        console.setText(console.getText() + formato.format(calendar.getTime()) + " - Finalizando monitoramento de Memória.\n");
+  }
 
 }

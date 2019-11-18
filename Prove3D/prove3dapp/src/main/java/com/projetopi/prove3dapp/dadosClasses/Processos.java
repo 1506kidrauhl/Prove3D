@@ -9,8 +9,11 @@ import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import javax.swing.JTextArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import oshi.SystemInfo;
@@ -109,6 +112,33 @@ public class Processos {
         }
 
         return dadosProcessos;
+        
+    }
+    
+    
+    public void verificaDados(List<TabelaProcessos> dadosProcessos, JTextArea console){
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(calendar.getTime());
+        
+        SystemInfo si = config.oshi();
+        OperatingSystem os = si.getOperatingSystem();
+        
+        String mensagem = " - Processos do computador: " + os.getProcessCount() + "\n";
+        console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
+        
+        dadosProcessos.sort(Comparator.comparing(TabelaProcessos::getUsoCpu).reversed());
+        mensagem = " - Processo com maior utilização de CPU: " + dadosProcessos.get(0).getProcesso() + "\n";
+        console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
+        
+        dadosProcessos.sort(Comparator.comparing(TabelaProcessos::getUsoMemoria).reversed());
+        mensagem = " - Processo com maior utilização de Memória: " + dadosProcessos.get(0).getProcesso() + "\n";
+        console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
+        
+                
+        console.setText(console.getText() + formato.format(calendar.getTime()) + " - Finalizando monitoramento de Processos.\n");
+        
+        
         
     }
 
