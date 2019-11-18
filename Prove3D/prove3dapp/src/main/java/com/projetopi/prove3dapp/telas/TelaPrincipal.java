@@ -17,8 +17,14 @@ import oshi.util.FormatUtil;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 public class TelaPrincipal extends javax.swing.JFrame {
@@ -38,19 +44,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     @Autowired
     private Disco disco;
-    
+
     @Autowired
     private DGpu gpu;
 
     @Autowired
     private Memoria memoria;
-    
+
     @Autowired
     private Processos processos;
 
     public TabelaUsuario idUser;
     public TabelaComputador idComputador;
-
+    
+    SimpleDateFormat formato;
+    Calendar calendar;
+    
     /*Criando uma instancia de Tempo no java. Essa instância irá chamar o
     método 'ChamarRelogio()' a cada cinco segundos*/
     Timer timer = new Timer(5000, new ChamarRelogio());
@@ -144,11 +153,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(52, 52, 52)
                 .addComponent(jLabel3)
-                .addGap(26, 26, 26)
-                .addComponent(lblTempAtividade, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblTempAtividade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,7 +206,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(btnProcessos, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(btnEstatisticas, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(btnGpu, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(btnRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -220,6 +229,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         txtLog.setEditable(false);
         txtLog.setColumns(20);
+        txtLog.setLineWrap(true);
         txtLog.setRows(5);
         jScrollPane1.setViewportView(txtLog);
 
@@ -319,35 +329,53 @@ public class TelaPrincipal extends javax.swing.JFrame {
         telaGpu = config.telaGpu();
     }
 
-    public void disparaRelogio() {
+    public void disparaRelogio() { 
+        formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
+        calendar = Calendar.getInstance();
+        calendar.setTime(calendar.getTime());
+               
+        txtLog.setWrapStyleWord(true);
+        txtLog.setText(formato.format(calendar.getTime()) + " - Iniciando Sistema...\n");
         // Inicia o timer, para que a cada 5 seg, ele se repita
         timer.start();
         //timerGPU.start();
+        txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Provë 3D pronto\n");
     }
 
     class ChamarGpu implements ActionListener {
-        
+
         public void actionPerformed(ActionEvent e) {
-        
+
             List<TabelaGpu> dadosGpu = new ArrayList<>();
-            
+
             gpu.pegaGpu(dadosGpu, idComputador, idUser);
             telaGpu.dadosGpu = dadosGpu;
             telaGpu.pegaGpu();
         }
-        
+
     }
+
     class ChamarRelogio implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
             //Chamando o método que irá pegar os processos do sistema
             dados();
+            
+            calendar = Calendar.getInstance();
+            calendar.setTime(calendar.getTime());
+            txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Iniciando monitoramento da CPU.\n");
             TabelaCpu dadosCpu = new TabelaCpu();
             cpu.pegaCpu(dadosCpu, idComputador);
-
+            cpu.verificaDados(dadosCpu, txtLog);
+            
             telaEstatisticas.cpuModelo = dadosCpu.getModelo();
             telaEstatisticas.cpuProcessos = dadosCpu.getProcessos().toString();
-            telaEstatisticas.cpuTemp = dadosCpu.getTemperatura().toString();
+            if (dadosCpu.getTemperatura() < 1) {
+                telaEstatisticas.cpuTemp = "Necessário permissão Admin";
+            } else {
+                telaEstatisticas.cpuTemp = dadosCpu.getTemperatura().toString();
+            }
+            
             telaEstatisticas.cpuVoltagem = dadosCpu.getVoltagem().toString();
             telaEstatisticas.cpuUtilizacao = dadosCpu.getUtilizacao();
             telaEstatisticas.cpuTempAtividade = dadosCpu.getTempAtividade().toString().split(" ")[3];
@@ -355,13 +383,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
             List<String> data = new ArrayList<>();
 
+            calendar = Calendar.getInstance();
+            calendar.setTime(calendar.getTime());
+            txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Iniciando monitoramento do Disco.\n");
             TabelaDisco dadosDisco = new TabelaDisco();
             disco.pegaDisco(dadosDisco, idComputador, data);
             telaEstatisticas.discoModelo = dadosDisco.getModelo();
             telaEstatisticas.discoVLeitura = data.get(0);
             telaEstatisticas.discoVGravacao = data.get(1);
             telaEstatisticas.pegaDisco();
-
+            disco.verificaDados(dadosDisco, txtLog);
+            
+            calendar = Calendar.getInstance();
+            calendar.setTime(calendar.getTime());
+            txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Iniciando monitoramento da Memória.\n");
             TabelaMemoria dadosMemoria = new TabelaMemoria();
             memoria.pegaMemoria(dadosMemoria, idComputador, data);
 
@@ -370,10 +405,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
             telaEstatisticas.memoriaUso = data.get(2);
             telaEstatisticas.memoriaModelo = data.get(0);
             telaEstatisticas.pegaMemoria();
-
+            memoria.verificaDados(dadosMemoria, txtLog);
+          
+            calendar = Calendar.getInstance();
+            calendar.setTime(calendar.getTime());
+            
+            txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Iniciando monitoramento dos Processos.\n");
 
             List<TabelaProcessos> dadosProcesso = new ArrayList<>();
             processos.pegaProcessos(dadosProcesso, true, idComputador, idUser, OperatingSystem.ProcessSort.CPU);
+            processos.verificaDados(dadosProcesso, txtLog);
 
         }
     }

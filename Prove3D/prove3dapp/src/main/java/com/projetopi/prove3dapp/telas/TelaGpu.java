@@ -37,15 +37,17 @@ public class TelaGpu extends javax.swing.JFrame {
     public List<TabelaGpu> dadosGpu;
 
     public void pegaGpu() {
-
+        
+        
         DefaultTableModel tabela = (DefaultTableModel) tbGpu.getModel();
 
         tabela.setNumRows(0);
-
+        
+        
         if (dadosGpu.size() != 0) {
 
             for (TabelaGpu gpus : dadosGpu) {
-
+               
                 tabela.addRow(new Object[]{gpus.getGpu(), gpus.getTemperatura(), gpus.getMemoria(),
                     gpus.getVideo(), gpus.getUtilizacao(), gpus.getControlMemoria()});
 

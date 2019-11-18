@@ -6,6 +6,8 @@ import com.projetopi.prove3dapp.dao.TabelaDiscoDAO;
 import com.projetopi.prove3dapp.dao.TabelaLogDAO;
 import com.projetopi.prove3dapp.tabelas.TabelaComputador;
 import com.projetopi.prove3dapp.tabelas.TabelaDisco;
+import com.projetopi.prove3dapp.tabelas.TabelaProcessos;
+import java.text.SimpleDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import oshi.SystemInfo;
@@ -14,8 +16,11 @@ import oshi.hardware.HardwareAbstractionLayer;
 import oshi.software.os.OperatingSystem;
 import oshi.util.FormatUtil;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import javax.swing.JTextArea;
 
 @Controller
 public class Disco {
@@ -79,4 +84,29 @@ public class Disco {
         return disco;
     }
 
+   
+    public void verificaDados(TabelaDisco dadosDisco, JTextArea console){
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(calendar.getTime());
+        
+        SystemInfo si = config.oshi();
+        HardwareAbstractionLayer hal = si.getHardware();
+         HWDiskStore[] memoriaDisco = hal.getDiskStores();
+         
+         for(HWDiskStore atual : memoriaDisco){
+           long totalDisco = atual.getSize();
+           
+           
+        
+        String mensagem = "- Capacidade do disco em : " + FormatUtil.formatBytesDecimal(totalDisco)+ "\n";
+        console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
+        
+        
+         }
+        
+        
+        console.setText(console.getText() + formato.format(calendar.getTime()) + " - Finalizando monitoramento de Disco.\n");
+        
+    }
 }
