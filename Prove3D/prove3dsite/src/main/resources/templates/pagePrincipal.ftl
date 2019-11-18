@@ -42,8 +42,8 @@
 <!-- CONTAINER DOS CARDS DA PÁGINA -->
 <div class="container">
     <!-- CARDS PARTE 1 -->
-     <div class="row" style="margin-top: 70px">
-        <div class="col-sm-3">
+     <div class="row">
+        <div class="col-sm-2.4">
             <a data-toggle="modal" data-target="#modalChamados">
             <div class="card cardSize">
                 <img src="img/cards/conversacao.png" class="card-body imgSize"/>
@@ -52,7 +52,7 @@
             </a>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-2.4">
             <a href="/dashboard">
             <div class="card cardSize">
                 <img src="img/cards/estatisticas.png" class="card-body imgSize"/>
@@ -61,7 +61,7 @@
             </a>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-2.4">
             <a data-toggle="modal" data-target="#modalEdit">
             <div class="card cardSize">
                 <img src="img/cards/curriculo.png" class="card-body imgSize"/>
@@ -70,7 +70,7 @@
             </a>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-2.4">
             <a href="/relatorio">
             <div class="card cardSize">
                 <img src="img/cards/relatorio.png" class="card-body imgSize"/>

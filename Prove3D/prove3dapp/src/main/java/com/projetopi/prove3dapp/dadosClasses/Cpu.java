@@ -1,5 +1,10 @@
 package com.projetopi.prove3dapp.dadosClasses;
 
+import com.profesorfalken.jsensors.JSensors;
+import com.profesorfalken.jsensors.model.components.Components;
+import com.profesorfalken.jsensors.model.sensors.Fan;
+import com.profesorfalken.jsensors.model.sensors.Load;
+import com.profesorfalken.jsensors.model.sensors.Temperature;
 import com.projetopi.prove3dapp.Config;
 import com.projetopi.prove3dapp.dao.TabelaComputadorDAO;
 import com.projetopi.prove3dapp.dao.TabelaCpuDAO;
@@ -9,6 +14,7 @@ import com.projetopi.prove3dapp.tabelas.TabelaCpu;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JTextArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,8 +52,20 @@ public class Cpu {
         //Modelo da cpu
         cpu.setModelo(String.valueOf(hal.getProcessor().getName()));
 
-        //Temperatura
-        cpu.setTemperatura(hal.getSensors().getCpuTemperature());
+        //Verificando se o PC do usuário é Windows, caso seja, usaremos o JSensors para
+        //capturar os dados da CPU        
+        if (fkPc.getSistemaOperacional().split(" ")[0].equals("Windows")) {
+            pegarCPUJsensor(cpu);
+        } else {
+
+            //Temperatura
+            cpu.setTemperatura(hal.getSensors().getCpuTemperature());
+
+            //Utilização
+            long[] prevTicks = hal.getProcessor().getSystemCpuLoadTicks();
+            Double cpuUtilizacao = hal.getProcessor().getSystemCpuLoadBetweenTicks(prevTicks) * 100;
+            cpu.setUtilizacao(cpuUtilizacao);
+        }
 
         //Voltagem
         Double voltagem = hal.getSensors().getCpuVoltage();
@@ -55,7 +73,7 @@ public class Cpu {
 
         //Tempo de atividade cpu
         SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss");
-        
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(calendar.getTime());
         try {
@@ -71,16 +89,45 @@ public class Cpu {
             System.out.println("Deu ruim");
         }
 
-        //Utilização
-        long[] prevTicks = hal.getProcessor().getSystemCpuLoadTicks();
-        Double cpuUtilizacao = hal.getProcessor().getSystemCpuLoadBetweenTicks(prevTicks) * 100;
-        cpu.setUtilizacao(cpuUtilizacao);
-
         cpu.setFkComputador(fkPc);
         tabelaCpuDaAO.save(cpu);
 
         return cpu;
-       
+
+    }
+
+    private void pegarCPUJsensor(TabelaCpu cpu) {
+
+        List<com.profesorfalken.jsensors.model.components.Cpu> components = JSensors.get.components().cpus;
+
+        if (components != null) {
+            for (final com.profesorfalken.jsensors.model.components.Cpu cpuComp : components) {
+
+                if (cpuComp.sensors != null) {
+                    System.out.println("Sensors: ");
+
+                    //Print temperatures
+                    List<Temperature> temps = cpuComp.sensors.temperatures;
+                    for (final Temperature temp : temps) {
+                        if (temp.name.equals("Temp CPU Package")) {
+                            cpu.setTemperatura(temp.value);
+                            break;
+                        }
+                    }
+
+                    List<Load> loads = cpuComp.sensors.loads;
+                    for (final Load load : loads) {
+
+                        if (load.name.equals("Load CPU Total")) {
+                            cpu.setUtilizacao(load.value);
+                        }
+
+                    }
+
+                }
+            }
+        }
+
     }
     
     public void verificaDados(TabelaCpu cpu, JTextArea console){
