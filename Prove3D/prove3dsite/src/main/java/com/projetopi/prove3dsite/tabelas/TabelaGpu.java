@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.projetopi.prove3dsite.tabelas;
+package com.projetopi.prove3dapp.tabelas;
 
 import java.util.Date;
 import java.util.HashSet;

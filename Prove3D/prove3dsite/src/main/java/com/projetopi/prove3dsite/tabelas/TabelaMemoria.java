@@ -1,5 +1,5 @@
 
-package com.projetopi.prove3dsite.tabelas;
+package com.projetopi.prove3dapp.tabelas;
 
 import java.util.Date;
 import javax.persistence.*;
