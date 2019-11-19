@@ -185,44 +185,39 @@
                                 <div class="text"><small>Temperatura</small></div>
                             </div>
 
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Voltagem(V)','volt', 0)">
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Utilização(%)','util', 0)">
                                 <div class="icon bg-green"><i class="fa fa-calendar-o"></i></div>
-                                <div class="text"><small>Voltagem</small></div>
+                                <div class="text"><small>Utilização</small></div>
                             </div>
                         </div>
 
 
                         <div class="statistics col-lg-3 col-12" style="display: none;" id="memoria" onclick="tbDisplay()">
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Utilização(%)')">
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Utilização(%)', 'memo', 3)">
                                 <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Utilização</small></div>
                             </div>
                         </div>
 
                         <div class="statistics col-lg-3 col-12" style="display: none;" id="disco" onclick="tbDisplay()">
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff',' Leitura')">
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff',' Leitura', 'leit', 1)">
                                 <div class="icon bg-green"><i class="fa fa-calendar-o"></i></div>
                                 <div class="text"><small>Leitura</small></div>
                             </div>
 
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Gravação')" >
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Gravação', 'grav', 1)" >
                                 <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Gravação</small></div>
                             </div>
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Memória(%)', 'memo',2)" >
-                                <div class="icon bg-green"><i class="fa fa-tasks"></i></div>
-                                <div class="text"><small>Memória</small></div>
-                            </div>
                         </div>
 
-
                         <div class="statistics col-lg-3 col-12" style="display: none;" id="gpu" onclick="tbDisplay()">
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Utilizacao(%)')">
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Utilizacao(%)', 'util', 2)">
                                 <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Utilização</small></div>
                             </div>
 
-                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Memoria(%)')">
+                            <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Memoria(%)', 'memori', 2)">
                                 <div class="icon bg-green"><i class="fa fa-calendar-o"></i></div>
                                 <div class="text"><small>Memória</small></div>
                             </div>

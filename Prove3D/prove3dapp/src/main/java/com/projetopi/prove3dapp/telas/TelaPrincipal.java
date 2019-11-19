@@ -10,7 +10,6 @@ import com.projetopi.prove3dapp.tabelas.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import oshi.SystemInfo;
-import oshi.hardware.HardwareAbstractionLayer;
 import oshi.software.os.OperatingSystem;
 import oshi.util.FormatUtil;
 
@@ -60,7 +59,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     
     /*Criando uma instancia de Tempo no java. Essa instância irá chamar o
     método 'ChamarRelogio()' a cada cinco segundos*/
-    Timer timer = new Timer(15 * 1000, new ChamarRelogio());
+    Timer timer = new Timer(5 * 1000, new ChamarRelogio());
     Timer timerGPU = new Timer(20 * 1000, new ChamarGpu());
     Timer init = new Timer(1000, new TempoAtividade());
 

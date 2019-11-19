@@ -150,7 +150,7 @@ public class Cpu {
             //Verificando temperatua da CPU
             if (cpu.getTemperatura() > 40) {
 
-                mensagem = String.format("Sua CPU está acima da temperatura recomendada "
+                mensagem = String.format(" - Sua CPU está acima da temperatura recomendada "
                         + "(Temperatura: %.2fC, recomendado: 40C)\n", cpu.getTemperatura());
                 //Printando log
                 console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
@@ -190,7 +190,7 @@ public class Cpu {
             //Verificando Utilização da CPU
             if (cpu.getUtilizacao() > 50) {
                 calendar.setTime(calendar.getTime());
-                mensagem = String.format("Sua CPU está com uso excessivo (Uso: %.2f%%, recomendado: 50%%)\n",
+                mensagem = String.format(" - Sua CPU está com uso excessivo (Uso: %.2f%%, recomendado: 50%%)\n",
                         cpu.getUtilizacao());
                 //Printando Log
                 console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);

@@ -351,10 +351,11 @@ public class ApplicationController {
 
     @RequestMapping(value = "/lastLog", method = RequestMethod.GET)
     @ResponseBody
-    public TabelaLog coletarUltimoLog(@RequestParam("comp") String componente, @RequestParam("id") Long id){
+    public TabelaLog coletarUltimoLog(@RequestParam("comp") String componente, @RequestParam("id") Long id,
+                                      @RequestParam("filtro") String fil){
 
         TabelaLog dados = new TabelaLog();
-        Object[] dadoLog = (Object[]) tabelaLogDAO.findLastLog(componente, id)[0];
+        Object[] dadoLog = (Object[]) tabelaLogDAO.findLastLog(componente, id, fil)[0];
 
         dados.setComponente(dadoLog[1].toString());
         dados.setDescricao(dadoLog[2].toString());

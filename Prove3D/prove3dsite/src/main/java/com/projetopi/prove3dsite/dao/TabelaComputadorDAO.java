@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface TabelaComputadorDAO extends JpaRepository<TabelaComputador, Long>{
 
-    @Query(value = "select cpu.id_cpu, cpu.voltagem, cpu.temperatura, cpu.dt_Hora from tbComputador c join " +
+    @Query(value = "select cpu.id_cpu, cpu.utilizacao, cpu.temperatura, cpu.dt_Hora from tbComputador c join " +
             "tbCpu cpu where c.id_Computador = cpu.fk_ComputadorCPU_id_computador " +
             "and cpu.fk_ComputadorCPU_id_computador = ?1 order by cpu.dt_Hora desc limit 10;", nativeQuery = true)
     Object[] filtraCPU(TabelaComputador fkUser);

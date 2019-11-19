@@ -6,23 +6,23 @@ $(document).ready(function() {
 });
 
 function ajaxLog(){
-
+    /*
     if(comp == "CPU"){
-        comp = "Memória";
-    } else if(comp == "Memória"){
         comp = "GPU";
     } else if(comp == "GPU"){
         comp = "CPU";
-    }
+    }*/
 
-    var parametros = "comp="+comp+"&id=" + idUser.value;
+    var filtro = ['Alerta', 'Erro'];
+    var random = parseInt(Math.random() * filtro.length);
+
+    var parametros = "comp="+comp+"&id=" + idUser.value + "&filtro=" + filtro[random];
 
     $.ajax({
         url: "/lastLog",
         method: 'GET',
         data: parametros,
         error: function (data){
-            lblAlertas.style.display = "none";
             console.log("foi nada");
         },
         success: function(data){
