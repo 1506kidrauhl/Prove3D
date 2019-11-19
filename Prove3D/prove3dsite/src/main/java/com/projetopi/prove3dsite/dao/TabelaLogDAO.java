@@ -23,4 +23,8 @@ public interface TabelaLogDAO extends JpaRepository<TabelaLog, Long>{
             + "l.tipo = ?3 and l.componente = ?4 and u.idUsuario = ?5")
     Object[] findByComponente(Date inicial, Date fim, String tipo, String comp, Long id);
 
+    @Query(value = "SELECT l.* FROM tbLog l join tbUsuario u on u.id_usuario = l.fk_usuario_id_usuario where " +
+            "l.componente = ?1 and u.id_usuario = ?2 order by l.dt_Hora desc limit 1", nativeQuery = true)
+    Object[] findLastLog(String componente, Long id);
+
 }

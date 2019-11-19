@@ -33,7 +33,7 @@
 </nav>
 
 <!-- CARD PARA ALERT DE ALERTAS -->
-    <div class="card bg-ligth" id="lblAlertas" >
+    <div class="card bg-ligth" id="lblAlertas" style="display: none">
         <div class="card-body text-center">
             <p id="lblMsg" class="card-text text-light" style="border-radius: 50px"></p>
         </div>
@@ -225,6 +225,7 @@
 </body>
 </html>
 
+<script src="js/ajax/homeLog.js"></script>
 <script src="js/ajax/edicaoPerfil.js"></script>
 <script src="js/ajax/envioEmail.js"></script>
 <script src="js/pagePrincipal/basic.js"></script>

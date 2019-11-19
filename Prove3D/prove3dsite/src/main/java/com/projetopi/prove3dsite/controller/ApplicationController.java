@@ -349,5 +349,20 @@ public class ApplicationController {
         return dadosLog;
     }
 
+    @RequestMapping(value = "/lastLog", method = RequestMethod.GET)
+    @ResponseBody
+    public TabelaLog coletarUltimoLog(@RequestParam("comp") String componente, @RequestParam("id") Long id){
+
+        TabelaLog dados = new TabelaLog();
+        Object[] dadoLog = (Object[]) tabelaLogDAO.findLastLog(componente, id)[0];
+
+        dados.setComponente(dadoLog[1].toString());
+        dados.setDescricao(dadoLog[2].toString());
+        dados.setTipo(dadoLog[4].toString());
+
+        return dados;
+
+    }
+
 
 }
