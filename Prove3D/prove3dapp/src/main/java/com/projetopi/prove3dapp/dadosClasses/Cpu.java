@@ -44,6 +44,9 @@ public class Cpu {
     @Autowired
     EnviarSlack enviarSlack;
 
+    @Autowired
+    ApplicationController applicationController;
+
     public TabelaCpu pegaCpu(TabelaCpu cpu, TabelaComputador fkPc) {
 
         SystemInfo si = config.oshi();
@@ -134,58 +137,112 @@ public class Cpu {
 
     }
 
-    public void verificaDados(TabelaCpu cpu, JTextArea console, TabelaUsuario user) {
+    public void verificaDados(TabelaCpu cpu, JTextArea console, TabelaUsuario user, TabelaComputador pc) {
+
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(calendar.getTime());
         String mensagem = "";
+        int aux = 0;
 
-        if (cpu.getTemperatura() > 40) {
+        if (cpu.getTemperatura() > 0) {
 
-            mensagem = String.format("Sua CPU está acima da temperatura recomendada "
-                    + "(Temperatura: %.2fC, recomendado: 40C)\n", cpu.getTemperatura());
-         //   console.setText(console.getText() + formato.format(calendar) + mensagem);
+            //Verificando temperatua da CPU
+            if (cpu.getTemperatura() > 40) {
 
-            if (cpu.getTemperatura() >= 50) {
-                mensagem = String.format("Sua CPU esta com uma temperatura "
-                        + "muito alta (%.2fC)", cpu.getTemperatura());
+                mensagem = String.format("Sua CPU está acima da temperatura recomendada "
+                        + "(Temperatura: %.2fC, recomendado: 40C)\n", cpu.getTemperatura());
+                //Printando log
+                console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
 
-                try {
-                    enviarSlack.enviarMsg(user.getNome(), mensagem);
-                } catch (IOException io) {
-                    io.printStackTrace();
-                    calendar.setTime(calendar.getTime());
-                    console.setText(console.getText() + formato.format(calendar.getTime())
-                            + " - Ocorreu um erro ao enviar o alerta de temperatura da CPU ao Slack \n");
+                //Verificando temperatura maior ou igual a 50, para ser enviado o alerta ao slack
+                if (cpu.getTemperatura() >= 50) {
+                    mensagem = String.format("Sua CPU esta com uma temperatura "
+                            + "muito alta (%.2fC)", cpu.getTemperatura());
+                    aux++;
+                    try {
+                        //Função para enviar para slack
+                        enviarSlack.enviarMsg(user.getNome(), mensagem);
+
+                        //Populando tabela Log em caso de erro
+                        applicationController.enviarLog(pc, user, "CPU", "Erro",
+                                "Temperatura da CPU muito acima do recomendado");
+                    } catch (IOException io) {
+                        io.printStackTrace();
+                        calendar.setTime(calendar.getTime());
+                        console.setText(console.getText() + formato.format(calendar.getTime())
+                                + " - Ocorreu um erro ao enviar o alerta de temperatura da CPU ao Slack \n");
+                    }
+
+                } else {
+                    //Populando tabela Log em caso da temperatura estiver alta, mas 
+                    //não acima de 50
+                    applicationController.enviarLog(pc, user, "CPU", "Alerta",
+                            "Temperatura da CPU está acima do recomendado e aumentando");
                 }
 
+            } else {
+                //Caso esteja tudo OK com temperatura
+                applicationController.enviarLog(pc, user, "CPU", "OK",
+                        "Temperatura da CPU OK");
+            }
+
+            //Verificando Utilização da CPU
+            if (cpu.getUtilizacao() > 50) {
+                calendar.setTime(calendar.getTime());
+                mensagem = String.format("Sua CPU está com uso excessivo (Uso: %.2f%%, recomendado: 50%%)\n",
+                        cpu.getUtilizacao());
+                //Printando Log
+                console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
+
+                //Verificando se utilização de CPU é maior que 66 para enviar um alerta
+                if (cpu.getUtilizacao() > 66) {
+                    aux++;
+                    mensagem = String.format("A CPU está com a utilização muito acima do recomendado "
+                            + "(Uso: %.2f%%, recomendado: 50%%)", cpu.getUtilizacao());
+
+                    try {
+                        //Enviando alerta ao slack
+                        enviarSlack.enviarMsg(user.getNome(), mensagem);
+                        //Populando tabela de log
+                        applicationController.enviarLog(pc, user, "CPU", "Erro",
+                                "Utilização da CPU muito alta, está causando mal desempenho no"
+                                + " computador");
+                    } catch (IOException io) {
+                        io.printStackTrace();
+                        calendar.setTime(calendar.getTime());
+                        console.setText(console.getText() + formato.format(calendar.getTime())
+                                + " - Ocorreu um erro ao enviar o alerta de uso CPU ao Slack \n");
+                    }
+
+                } else {
+                    //Populando tabela de Log caso a utilização esteja alta, mas não
+                    //acima de 66
+                    applicationController.enviarLog(pc, user, "CPU", "Alerta",
+                            "Utilização da CPU aumentando, isto pode causar mal desempenho no"
+                            + " computador");
+                }
+
+            } else {
+                //Caso a utilização da CPU esteja dentro do recomendado
+                applicationController.enviarLog(pc, user, "CPU", "OK",
+                        "Utilização da CPU OK");
+            }
+
+            if (aux == 1) {
+                applicationController.enviarLog(pc, user, "CPU", "Alerta",
+                        "CPU está operando normalmente, mas suas funções podem ser "
+                        + "prejudicadas futuramente");
+            } else if (aux == 2) {
+                applicationController.enviarLog(pc, user, "CPU", "Erro",
+                        "CPU possui problemas de funcionamento. Sua temperatura e utilização"
+                        + " estão muito acima do recomendado para um bom funcionamento");
+            } else {
+                applicationController.enviarLog(pc, user, "CPU", "OK",
+                        "Tudo OK com a CPU");
             }
 
         }
-
-        if (cpu.getUtilizacao() > 50) {
-            calendar.setTime(calendar.getTime());
-            mensagem = String.format("Sua CPU está com uso excessivo (Uso: %.2f%%, recomendado: 50%%)",
-                    cpu.getUtilizacao());
-
-            if (cpu.getUtilizacao() > 66) {
-                mensagem = String.format("A CPU está com a utilização muito acima do recomendado "
-                        + "(Uso: %.2f%%, recomendado: 50%%)", cpu.getUtilizacao());
-
-                try {
-                    enviarSlack.enviarMsg(user.getNome(), mensagem);
-                } catch (IOException io) {
-                    io.printStackTrace();
-                    calendar.setTime(calendar.getTime());
-                    console.setText(console.getText() + formato.format(calendar.getTime())
-                            + " - Ocorreu um erro ao enviar o alerta de uso CPU ao Slack \n");
-                }
-
-            }
-
-        }
-        calendar.setTime(calendar.getTime());
-        console.setText(console.getText() + formato.format(calendar.getTime()) + " - Finalizando monitoramento de CPU.\n");
     }
 
 }

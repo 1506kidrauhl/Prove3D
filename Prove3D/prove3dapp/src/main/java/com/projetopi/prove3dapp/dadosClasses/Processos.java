@@ -38,6 +38,9 @@ public class Processos {
     @Autowired
     EnviarSlack enviarSlack;
 
+    @Autowired
+    ApplicationController applicationController;
+
     public synchronized List<TabelaProcessos> pegaProcessos(List<TabelaProcessos> dadosProcessos, boolean enviarDados, TabelaComputador fkPc, TabelaUsuario fkUser, OperatingSystem.ProcessSort filtro) {
 
         //Instanciando classe SystemInfo para podermos pegarmos os dados de Hardware
@@ -119,7 +122,7 @@ public class Processos {
 
     }
 
-    public void verificaDados(List<TabelaProcessos> dadosProcessos, JTextArea console, TabelaUsuario user) {
+    public void verificaDados(List<TabelaProcessos> dadosProcessos, JTextArea console, TabelaUsuario user, TabelaComputador pc) {
 
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
@@ -153,6 +156,8 @@ public class Processos {
 
                 try {
                     enviarSlack.enviarMsg(user.getNome(), mensagem);
+                    applicationController.enviarLog(pc, user, "CPU", "Erro",
+                            mensagem);
                 } catch (IOException io) {
                     io.printStackTrace();
                     calendar.setTime(calendar.getTime());
@@ -180,6 +185,7 @@ public class Processos {
 
                 try {
                     enviarSlack.enviarMsg(user.getNome(), mensagem);
+                    applicationController.enviarLog(pc, user, "Memória", "Erro", mensagem);
                 } catch (IOException io) {
                     io.printStackTrace();
                     calendar.setTime(calendar.getTime());
@@ -189,8 +195,6 @@ public class Processos {
             }
 
         }
-
-        console.setText(console.getText() + formato.format(calendar.getTime()) + " - Finalizando monitoramento de Processos.\n");
 
     }
 

@@ -22,9 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 @Component
 public class TelaPrincipal extends javax.swing.JFrame {
@@ -62,8 +60,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     
     /*Criando uma instancia de Tempo no java. Essa instância irá chamar o
     método 'ChamarRelogio()' a cada cinco segundos*/
-    Timer timer = new Timer(5000, new ChamarRelogio());
-    Timer timerGPU = new Timer(6000, new ChamarGpu());
+    Timer timer = new Timer(15 * 1000, new ChamarRelogio());
+    Timer timerGPU = new Timer(20 * 1000, new ChamarGpu());
+    Timer init = new Timer(1000, new TempoAtividade());
 
     TelaEstatisticas telaEstatisticas;
     TelaProcessos telaProcessos;
@@ -312,8 +311,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     public void dados() {
         SystemInfo si = config.oshi();
-        //informações de hardware
-        HardwareAbstractionLayer hal = si.getHardware();
         //informações de sistema 
         OperatingSystem os = si.getOperatingSystem();
 
@@ -337,7 +334,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         txtLog.setWrapStyleWord(true);
         txtLog.setText(formato.format(calendar.getTime()) + " - Iniciando Sistema...\n");
         // Inicia o timer, para que a cada 5 seg, ele se repita
-        timer.start();
+         timer.start();
+         init.start();
         //timerGPU.start();
         txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Provë 3D pronto\n");
     }
@@ -354,21 +352,24 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
 
     }
+    
+    class TempoAtividade implements ActionListener{
+        
+        public void actionPerformed(ActionEvent e){
+            //Chamando o método que irá pegar os processos do sistema
+            dados();
+        }
+        
+    }
 
     class ChamarRelogio implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-            //Chamando o método que irá pegar os processos do sistema
-            dados();
-            
             
             //Coleta de dados da CPU
-            calendar = Calendar.getInstance();
-            calendar.setTime(calendar.getTime());
-            txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Iniciando monitoramento da CPU.\n");
             TabelaCpu dadosCpu = new TabelaCpu();
             cpu.pegaCpu(dadosCpu, idComputador);
-            cpu.verificaDados(dadosCpu, txtLog, idUser);
+            cpu.verificaDados(dadosCpu, txtLog, idUser, idComputador);
             
             telaEstatisticas.cpuModelo = dadosCpu.getModelo();
             telaEstatisticas.cpuProcessos = dadosCpu.getProcessos().toString();
@@ -386,10 +387,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
             
             //Coleta dados do Disco
             List<String> data = new ArrayList<>();
-
-            calendar = Calendar.getInstance();
-            calendar.setTime(calendar.getTime());
-            txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Iniciando monitoramento do Disco.\n");
             TabelaDisco dadosDisco = new TabelaDisco();
             disco.pegaDisco(dadosDisco, idComputador, data);
             telaEstatisticas.discoModelo = dadosDisco.getModelo();
@@ -400,9 +397,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
             
             
             //Coleta dados da memória
-            calendar = Calendar.getInstance();
-            calendar.setTime(calendar.getTime());
-            txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Iniciando monitoramento da Memória.\n");
             TabelaMemoria dadosMemoria = new TabelaMemoria();
             memoria.pegaMemoria(dadosMemoria, idComputador, data);
 
@@ -411,18 +405,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
             telaEstatisticas.memoriaUso = data.get(2);
             telaEstatisticas.memoriaModelo = data.get(0);
             telaEstatisticas.pegaMemoria();
-         //   memoria.verificaDados(dadosMemoria, txtLog);
-          
-            calendar = Calendar.getInstance();
-            calendar.setTime(calendar.getTime());
-            
+            //memoria.verificaDados(dadosMemoria, txtLog);
             
             //Coleta dados dos processos
-            txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Iniciando monitoramento dos Processos.\n");
-
             List<TabelaProcessos> dadosProcesso = new ArrayList<>();
             processos.pegaProcessos(dadosProcesso, true, idComputador, idUser, OperatingSystem.ProcessSort.CPU);
-            processos.verificaDados(dadosProcesso, txtLog, idUser);
+            processos.verificaDados(dadosProcesso, txtLog, idUser, idComputador);
 
         }
     }

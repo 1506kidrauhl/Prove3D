@@ -12,7 +12,6 @@ import com.projetopi.prove3dapp.tabelas.TabelaLog;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,9 +22,7 @@ import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -50,6 +47,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
 
     @Autowired
     ApplicationController applicationController;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -106,7 +104,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
         });
 
         cbTipoLog.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        cbTipoLog.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Aviso", "Erro", "Ok" }));
+        cbTipoLog.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Alerta", "Erro", "Ok" }));
 
         txDataInicial.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
 
@@ -127,7 +125,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
         jLabel7.setText("Tipo de log");
 
         cbComponente.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        cbComponente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CPU", "Disco", "GPU", "Memória" }));
+        cbComponente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CPU", "GPU", "Memória" }));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -270,7 +268,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
         //Aqui defino o tipo de Log que o usuário quer, para ser utilizado mais tarde, na consulta do BD
         switch (cbTipoLog.getSelectedIndex()) {
             case 1:
-                tipoLog = "Aviso";
+                tipoLog = "Alerta";
                 break;
             case 2:
                 tipoLog = "Erro";
@@ -286,12 +284,9 @@ public class TelaRelatórios extends javax.swing.JFrame {
                 componente = "CPU";
                 break;
             case 1:
-                componente = "Disco";
-                break;
-            case 2:
                 componente = "GPU";
                 break;
-            case 3:
+            case 2:
                 componente = "Memória";
                 break;
         }
@@ -310,7 +305,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
                 return;
             }
             //Chamando função que irá fazer a consulta no banco
-            verificaDados(dados,  dataInit,  dataFim,  componente,  tipoLog);
+            verificaDados(dados, dataInit, dataFim, componente, tipoLog);
 
         } else {
             //Aqui o split é utilizado para a verificação de hora. Que deve ser digitada pelo usuário no formato
@@ -339,36 +334,35 @@ public class TelaRelatórios extends javax.swing.JFrame {
             }
 
             //Chamando função que irá fazer a consulta no BD
-            verificaDados(dados,  dataInit,  dataFim,  componente,  tipoLog);
+            verificaDados(dados, dataInit, dataFim, componente, tipoLog);
 
         }
 
     }//GEN-LAST:event_btGerarActionPerformed
 
-    private void verificaDados(List<TabelaLog> dados, Date dataInit, Date dataFim, String componente, String tipoLog){
+    private void verificaDados(List<TabelaLog> dados, Date dataInit, Date dataFim, String componente, String tipoLog) {
         //Verificando se o usuário escolher filtrar ou não por tipo de Log
         if (cbTipoLog.getSelectedIndex() == 0) {
             //Caso sejam todos os tipos de Log
-              Object[] datas =  tabelaLogDAO.findAllByInitialAndFinal(dataInit, dataFim, componente, idUser.getIdUsuario());
-              SimpleDateFormat dataForm = new SimpleDateFormat("yyy-MM-dd");
+            Object[] datas = tabelaLogDAO.findAllByInitialAndFinal(dataInit, dataFim, componente, idUser.getIdUsuario());
 
-              for (int i = 0; i < datas.length; i++){
+            for (int i = 0; i < datas.length; i++) {
 
-                  Object[] data = (Object[]) datas[i];
-                  TabelaLog tb = new TabelaLog();
+                Object[] data = (Object[]) datas[i];
+                TabelaLog tb = new TabelaLog();
 
-                  tb.setComponente(data[0].toString());
-                  tb.setDescricao(data[1].toString());
-                  tb.setTipo(data[2].toString());
-                  try{
+                tb.setComponente(data[0].toString());
+                tb.setDescricao(data[1].toString());
+                tb.setTipo(data[2].toString());
+                try {
                     tb.setDtHora((Date) data[3]);
-                  } catch (Exception ex){
-                      ex.printStackTrace();
-                      System.out.println("Deu Ruim!!");
-                  }
-                  dados.add(tb);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("Deu Ruim!!");
+                }
+                dados.add(tb);
 
-              }
+            }
 
             geraExcel(dados, "Log.xls");
 
@@ -377,13 +371,20 @@ public class TelaRelatórios extends javax.swing.JFrame {
 
             Object[] datas = tabelaLogDAO.findByComponente(dataInit, dataFim, tipoLog, componente, idUser.getIdUsuario());
 
-            SimpleDateFormat dataForm = new SimpleDateFormat("yyy-MM-dd");
-
-            for (int i = 0; i < datas.length; i++){
+            for (int i = 0; i < datas.length; i++) {
 
                 Object[] data = (Object[]) datas[i];
-                TabelaLog tb = (TabelaLog) data[i];
+                TabelaLog tb = new TabelaLog();
 
+                tb.setComponente(data[0].toString());
+                tb.setDescricao(data[1].toString());
+                tb.setTipo(data[2].toString());
+                try {
+                    tb.setDtHora((Date) data[3]);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("Deu Ruim!!");
+                }
                 dados.add(tb);
 
             }
@@ -392,11 +393,12 @@ public class TelaRelatórios extends javax.swing.JFrame {
         }
 
     }
+
     //Iniciando geração do Excel
-    private void geraExcel(List<TabelaLog> dados, String nome){
+    private void geraExcel(List<TabelaLog> dados, String nome) {
 
         //Verificando se a consultada no BD trouxe algum resultado
-        if(dados.size() > 0){
+        if (dados.size() > 0) {
 
             HSSFWorkbook workbook = new HSSFWorkbook();
 
@@ -444,7 +446,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
                 //Exibe ao usuário onde foi efetuado o download do excel
                 lbMensagem.setText("Seu arquivo foi gerado no caminho: " + caminho + "/" + nome);
 
-            } catch (FileNotFoundException fil){
+            } catch (FileNotFoundException fil) {
                 fil.printStackTrace();
                 Random random = new Random();
 
@@ -456,7 +458,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
                 lbMensagem.setText("Ocorreu um erro ao gerar o Excel, tente novamente");
             }
 
-        } else{
+        } else {
             //Caso não tenha encontrado dados na consulta do BD
             lbMensagem.setText("Nenhum dado foi encontrado para geração de relatório");
         }
