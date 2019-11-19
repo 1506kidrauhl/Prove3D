@@ -14,14 +14,11 @@ public class EnviarSlack {
 
     private static HttpURLConnection con;
 
-    public void enviarMsg(String nomeUser, String msg) throws IOException{
+    public void enviarMsg(String nomeUser, String msg) throws IOException {
 
         String l1 = "https://hooks.slack.com - ";
         String l2 = "/services/TPRKC8REJ/BQKJ7052T - ";
         String l3 = "/QPiPK8NQEY4jMwThu43V18F0 - ";
-        /*
-            TODA VEZ QUE FOREM COMMITAR, LEMBREM-SE DE COMENTAR A URL ABAIXO!!!!!!
-        */
         String url = l1.split(" -")[0] + l2.split(" -")[0] + l3.split(" -")[0];
 
         JSONObject json = new JSONObject();
@@ -37,6 +34,9 @@ public class EnviarSlack {
             con.setRequestMethod("POST");
             con.setRequestProperty("User-Agent", "Java client");
             con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            con.setRequestProperty("Accept-Charset", "UTF-8");
+            con.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
+            con.setRequestProperty("encoding", "UTF-8");
 
             try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
 
@@ -46,7 +46,7 @@ public class EnviarSlack {
             StringBuilder content;
 
             try (BufferedReader br = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()))) {
+                    new InputStreamReader(con.getInputStream(), "UTF-8"))) {
 
                 String line;
                 content = new StringBuilder();
@@ -60,7 +60,6 @@ public class EnviarSlack {
             System.out.println(content.toString());
 
         } finally {
-
             con.disconnect();
         }
     }

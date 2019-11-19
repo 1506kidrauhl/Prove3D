@@ -6,6 +6,7 @@ import com.projetopi.prove3dapp.dao.TabelaProcessosDAO;
 import com.projetopi.prove3dapp.tabelas.TabelaComputador;
 import com.projetopi.prove3dapp.tabelas.TabelaProcessos;
 import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
+import java.io.IOException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,6 +34,9 @@ public class Processos {
 
     @Autowired
     TabelaProcessosDAO tabelaProcessosDAO;
+
+    @Autowired
+    EnviarSlack enviarSlack;
 
     public synchronized List<TabelaProcessos> pegaProcessos(List<TabelaProcessos> dadosProcessos, boolean enviarDados, TabelaComputador fkPc, TabelaUsuario fkUser, OperatingSystem.ProcessSort filtro) {
 
@@ -87,7 +91,7 @@ public class Processos {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(calendar.getTime());
             SimpleDateFormat hora = new SimpleDateFormat("hh:mm:ss");
-            
+
             try {
                 tbProcessos.setTempoAtividade(hora.parse(tempo[1]));
                 Date dtHora = new Date(calendar.getTime().getTime());
@@ -101,45 +105,93 @@ public class Processos {
 
             dadosProcessos.add(tbProcessos);
             //ENVIAR DADOS PARA O BANCO APENAS DOS QUE SÃO DO TIPO PROCESSO DE USUÁRIO
-            if(enviarDados && (tbProcessos.getUsoCpu() >= 20 || tbProcessos.getUsoMemoria() >= 20)){
-                
-                    tbProcessos.setFkComputadorP(fkPc);
-                    tbProcessos.setFkUsuarioP(fkUser);
-                    tabelaProcessosDAO.save(tbProcessos);
-                
+            if (enviarDados && (tbProcessos.getUsoCpu() >= 20 || tbProcessos.getUsoMemoria() >= 20)) {
+
+                tbProcessos.setFkComputadorP(fkPc);
+                tbProcessos.setFkUsuarioP(fkUser);
+                tabelaProcessosDAO.save(tbProcessos);
+
             }
 
         }
 
         return dadosProcessos;
-        
+
     }
-    
-    
-    public void verificaDados(List<TabelaProcessos> dadosProcessos, JTextArea console){
+
+    public void verificaDados(List<TabelaProcessos> dadosProcessos, JTextArea console, TabelaUsuario user) {
+
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(calendar.getTime());
-        
+
         SystemInfo si = config.oshi();
         OperatingSystem os = si.getOperatingSystem();
-        
-        String mensagem = " - Processos do computador: " + os.getProcessCount() + "\n";
-        console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
-        
+
+        String mensagem = "";
+
+        //Printando na tela apenas se tiverem mais de 350 processos rodando no PC
+        if (os.getProcessCount() > 350) {
+            mensagem = " - Processos do computador: " + os.getProcessCount() + "\n";
+            console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
+        }
+
+        //Ordenando processos de acordo com a maior utilização de CPU
         dadosProcessos.sort(Comparator.comparing(TabelaProcessos::getUsoCpu).reversed());
-        mensagem = " - Processo com maior utilização de CPU: " + dadosProcessos.get(0).getProcesso() + "\n";
-        console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
-        
+
+        if (dadosProcessos.get(0).getUsoCpu() > 30) {
+
+            //Printando no console
+            mensagem = " - Processo com maior utilização de CPU: " + dadosProcessos.get(0).getProcesso() + "\n";
+            console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
+
+            //Enviando alerta no Slack caso a utilização da CPU seja maior qur 50%
+            if (dadosProcessos.get(0).getUsoCpu() > 50) {
+                //Preparando mensagem para enviar ao slack
+                mensagem = String.format("O processo %s, esta com uma utilizacao de CPU "
+                        + "muito alta (%.2f%%)", dadosProcessos.get(0).getProcesso(), dadosProcessos.get(0).getUsoCpu());
+
+                try {
+                    enviarSlack.enviarMsg(user.getNome(), mensagem);
+                } catch (IOException io) {
+                    io.printStackTrace();
+                    calendar.setTime(calendar.getTime());
+                    console.setText(console.getText() + formato.format(calendar.getTime())
+                            + " - Ocorreu um erro ao enviar o alerta de uso CPU ao Slack \n");
+                }
+            }
+
+        }
+
+        //Ordenando processos de acordo com a maior utilização de Memória
         dadosProcessos.sort(Comparator.comparing(TabelaProcessos::getUsoMemoria).reversed());
-        mensagem = " - Processo com maior utilização de Memória: " + dadosProcessos.get(0).getProcesso() + "\n";
-        console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
-        
-                
+
+        if (dadosProcessos.get(0).getUsoMemoria() > 45) {
+
+            //Printando no Console
+            mensagem = " - Processo com maior utilização de Memória: " + dadosProcessos.get(0).getProcesso() + "\n";
+            console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
+
+            //Enviando alerta no Slack caso a utilização da Memória seja maior qur 60%
+            if (dadosProcessos.get(0).getUsoMemoria() > 60) {
+                //Preparando mensagem para enviar ao slack
+                mensagem = String.format("O processo %s, está com uma utilização de memória "
+                        + "muito alta (%.2f%%)", dadosProcessos.get(0).getProcesso(), dadosProcessos.get(0).getUsoMemoria());
+
+                try {
+                    enviarSlack.enviarMsg(user.getNome(), mensagem);
+                } catch (IOException io) {
+                    io.printStackTrace();
+                    calendar.setTime(calendar.getTime());
+                    console.setText(console.getText() + formato.format(calendar.getTime())
+                            + " - Ocorreu um erro ao enviar o alerta de uso memória ao Slack \n");
+                }
+            }
+
+        }
+
         console.setText(console.getText() + formato.format(calendar.getTime()) + " - Finalizando monitoramento de Processos.\n");
-        
-        
-        
+
     }
 
 }

@@ -1,11 +1,10 @@
-package com.projetopi.prove3dapp.tabelas;
+package com.projetopi.prove3dsite.tabelas;
 
 import java.util.Date;
 import javax.persistence.*;
 
 @Entity
 @Table(name="TBDISCO")
-@SequenceGenerator(name = "sqDisco", sequenceName = "sqDisco", allocationSize = 1)
 public class TabelaDisco {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqDisco")

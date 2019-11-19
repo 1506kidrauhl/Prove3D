@@ -11,10 +11,13 @@ import com.projetopi.prove3dapp.dao.TabelaCpuDAO;
 import com.projetopi.prove3dapp.dao.TabelaLogDAO;
 import com.projetopi.prove3dapp.tabelas.TabelaComputador;
 import com.projetopi.prove3dapp.tabelas.TabelaCpu;
+import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.JTextArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +40,9 @@ public class Cpu {
 
     @Autowired
     TabelaCpuDAO tabelaCpuDaAO;
+
+    @Autowired
+    EnviarSlack enviarSlack;
 
     public TabelaCpu pegaCpu(TabelaCpu cpu, TabelaComputador fkPc) {
 
@@ -104,8 +110,6 @@ public class Cpu {
             for (final com.profesorfalken.jsensors.model.components.Cpu cpuComp : components) {
 
                 if (cpuComp.sensors != null) {
-                    System.out.println("Sensors: ");
-
                     //Print temperatures
                     List<Temperature> temps = cpuComp.sensors.temperatures;
                     for (final Temperature temp : temps) {
@@ -129,12 +133,59 @@ public class Cpu {
         }
 
     }
-    
-    public void verificaDados(TabelaCpu cpu, JTextArea console){
-        
-        
-        
+
+    public void verificaDados(TabelaCpu cpu, JTextArea console, TabelaUsuario user) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(calendar.getTime());
+        String mensagem = "";
+
+        if (cpu.getTemperatura() > 40) {
+
+            mensagem = String.format("Sua CPU está acima da temperatura recomendada "
+                    + "(Temperatura: %.2fC, recomendado: 40C)\n", cpu.getTemperatura());
+         //   console.setText(console.getText() + formato.format(calendar) + mensagem);
+
+            if (cpu.getTemperatura() >= 50) {
+                mensagem = String.format("Sua CPU esta com uma temperatura "
+                        + "muito alta (%.2fC)", cpu.getTemperatura());
+
+                try {
+                    enviarSlack.enviarMsg(user.getNome(), mensagem);
+                } catch (IOException io) {
+                    io.printStackTrace();
+                    calendar.setTime(calendar.getTime());
+                    console.setText(console.getText() + formato.format(calendar.getTime())
+                            + " - Ocorreu um erro ao enviar o alerta de temperatura da CPU ao Slack \n");
+                }
+
+            }
+
+        }
+
+        if (cpu.getUtilizacao() > 50) {
+            calendar.setTime(calendar.getTime());
+            mensagem = String.format("Sua CPU está com uso excessivo (Uso: %.2f%%, recomendado: 50%%)",
+                    cpu.getUtilizacao());
+
+            if (cpu.getUtilizacao() > 66) {
+                mensagem = String.format("A CPU está com a utilização muito acima do recomendado "
+                        + "(Uso: %.2f%%, recomendado: 50%%)", cpu.getUtilizacao());
+
+                try {
+                    enviarSlack.enviarMsg(user.getNome(), mensagem);
+                } catch (IOException io) {
+                    io.printStackTrace();
+                    calendar.setTime(calendar.getTime());
+                    console.setText(console.getText() + formato.format(calendar.getTime())
+                            + " - Ocorreu um erro ao enviar o alerta de uso CPU ao Slack \n");
+                }
+
+            }
+
+        }
+        calendar.setTime(calendar.getTime());
+        console.setText(console.getText() + formato.format(calendar.getTime()) + " - Finalizando monitoramento de CPU.\n");
     }
-    
 
 }

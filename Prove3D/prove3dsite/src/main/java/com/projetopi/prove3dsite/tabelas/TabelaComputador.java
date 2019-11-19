@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.projetopi.prove3dapp.tabelas;
+package com.projetopi.prove3dsite.tabelas;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +15,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "TBCOMPUTADOR")
-@SequenceGenerator(name = "sqComp", sequenceName = "sqComp", allocationSize = 1)
 public class TabelaComputador {
    @Id
    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqComp")

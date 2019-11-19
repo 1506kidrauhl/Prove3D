@@ -1,12 +1,11 @@
 
-package com.projetopi.prove3dapp.tabelas;
+package com.projetopi.prove3dsite.tabelas;
 
 import java.util.Date;
 import javax.persistence.*;
 
 @Entity
 @Table(name="TBMEMORIA")
-@SequenceGenerator(name = "sqMemory", sequenceName = "sqMemory", allocationSize = 1)
 public class TabelaMemoria {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqMemory")

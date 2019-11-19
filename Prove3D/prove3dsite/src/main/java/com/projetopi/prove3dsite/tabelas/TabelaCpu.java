@@ -1,4 +1,4 @@
-package com.projetopi.prove3dapp.tabelas;
+package com.projetopi.prove3dsite.tabelas;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "TBCPU")
-@SequenceGenerator(name = "sqCpu", sequenceName = "sqCpu", allocationSize = 1)
 public class TabelaCpu {
 
     @Id

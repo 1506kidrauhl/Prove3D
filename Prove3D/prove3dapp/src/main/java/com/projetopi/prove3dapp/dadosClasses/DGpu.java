@@ -28,9 +28,8 @@ public class DGpu {
     public List<TabelaGpu> pegaGpu(List<TabelaGpu> gpu, TabelaComputador fkPc, TabelaUsuario fkUser) {
 
         Map<String, String> overriddenConfig = new HashMap<String, String>();
-        overriddenConfig.put("debugMode", "false");
 
-        Components component = JSensors.get.config(overriddenConfig).components();
+        Components component = JSensors.get.components();
 
         TabelaGpu gpu1 = new TabelaGpu();
 

@@ -1,4 +1,3 @@
-
 package com.projetopi.prove3dapp.dadosClasses;
 
 import com.projetopi.prove3dapp.Config;
@@ -21,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.JTextArea;
+import oshi.hardware.HWPartition;
 
 @Controller
 public class Disco {
@@ -33,6 +33,7 @@ public class Disco {
 
     @Autowired
     TabelaDiscoDAO tabelaDiscoDaAO;
+
     public synchronized TabelaDisco pegaDisco(TabelaDisco disco, TabelaComputador fkPc, List<String> data) {
         SystemInfo si = config.oshi();
 
@@ -40,15 +41,15 @@ public class Disco {
 
         HWDiskStore[] memoriaDisco = hal.getDiskStores();
 
-        for(HWDiskStore atual : memoriaDisco){
+        for (HWDiskStore atual : memoriaDisco) {
             long vleitura = atual.getReadBytes() / atual.getReads();
-            long vGravacao = atual.getWriteBytes()/ atual.getWrites();
+            long vGravacao = atual.getWriteBytes() / atual.getWrites();
 
             data.add(FormatUtil.formatBytesDecimal(vleitura));
             data.add(FormatUtil.formatBytesDecimal(vGravacao));
-            
+
             String splitL1 = FormatUtil.formatBytesDecimal(vleitura).split(" K")[0];
-            
+
             String[] splitLF = splitL1.split(",");
 
             String splitG1 = FormatUtil.formatBytesDecimal(vGravacao).split(" K")[0];
@@ -84,29 +85,28 @@ public class Disco {
         return disco;
     }
 
-   
-    public void verificaDados(TabelaDisco dadosDisco, JTextArea console){
+    public void verificaDados(TabelaDisco dadosDisco, JTextArea console) {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(calendar.getTime());
-        
+
         SystemInfo si = config.oshi();
         HardwareAbstractionLayer hal = si.getHardware();
-         HWDiskStore[] memoriaDisco = hal.getDiskStores();
-         
-         for(HWDiskStore atual : memoriaDisco){
-           long totalDisco = atual.getSize();
-           
-           
-        
-        String mensagem = "- Capacidade do disco em : " + FormatUtil.formatBytesDecimal(totalDisco)+ "\n";
-        console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
-        
-        
-         }
-        
-        
+        HWDiskStore[] memoriaDisco = hal.getDiskStores();
+
+        for (HWDiskStore atual : memoriaDisco) {
+            long totalDisco = atual.getSize();
+            
+            for(HWPartition at : atual.getPartitions()){
+                at.getSize();
+            }
+            
+            String mensagem = "- Capacidade do disco em : " + FormatUtil.formatBytesDecimal(totalDisco) + "\n";
+            console.setText(console.getText() + formato.format(calendar.getTime()) + mensagem);
+
+        }
+
         console.setText(console.getText() + formato.format(calendar.getTime()) + " - Finalizando monitoramento de Disco.\n");
-        
+
     }
 }

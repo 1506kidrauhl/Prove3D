@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.projetopi.prove3dapp.tabelas;
+package com.projetopi.prove3dsite.tabelas;
 
 import java.util.Date;
 import javax.persistence.*;
@@ -14,7 +14,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "TBLOG")
-@SequenceGenerator(name = "sqLog", sequenceName = "sqLog", allocationSize = 1)
 public class TabelaLog {
 
     @Id
