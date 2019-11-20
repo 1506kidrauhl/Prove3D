@@ -1,0 +1,4 @@
+1) Abrir com o seu prompt de comando favorito - (GitBash, ConEmu, tradicional do Windows);
+2) Deve estar dentro do diretorio target do projeto prove3dapp (É onde o jar executavel está);
+3) Rodar o seguinte comando " java -jar  prove3dapp-0.0.1-SNAPSHOT.jar";
+4) Pronto, só aguardar o programa ser iniciado.

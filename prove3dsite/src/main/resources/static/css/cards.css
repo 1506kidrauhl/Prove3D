@@ -1,0 +1,35 @@
+.imgSize{
+    width: 170px;
+    height: 110px
+}
+
+.mgTop{
+    margin-top: 10px;
+}
+
+.topPage{
+    background-color: rgb(47,51,62);
+    margin-bottom: 5px;
+}
+
+.colorCard{
+    background-color: rgb(121,106,238)!important;
+}
+
+.cardSize{
+    width: 170px;
+    height: 210px;
+    margin: 15px;
+}
+
+body, html {
+    height: 100%;
+    background-color: rgb(238,245,249)!important;
+
+    /* background-image: url("https://hdqwalls.com/download/3d-abstract-sharp-eg-2560x1700.jpg"); */
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
