@@ -1,12 +1,9 @@
 package com.projetopi.prove3dapp.dadosClasses;
 
 import com.profesorfalken.jsensors.JSensors;
-import com.profesorfalken.jsensors.model.components.Components;
-import com.profesorfalken.jsensors.model.sensors.Fan;
 import com.profesorfalken.jsensors.model.sensors.Load;
 import com.profesorfalken.jsensors.model.sensors.Temperature;
 import com.projetopi.prove3dapp.Config;
-import com.projetopi.prove3dapp.dao.TabelaComputadorDAO;
 import com.projetopi.prove3dapp.dao.TabelaCpuDAO;
 import com.projetopi.prove3dapp.dao.TabelaLogDAO;
 import com.projetopi.prove3dapp.tabelas.TabelaComputador;
@@ -34,9 +31,6 @@ public class Cpu {
 
     @Autowired
     TabelaLogDAO tabelaLogDaAO;
-
-    @Autowired
-    TabelaComputadorDAO tabelaComputadorDAO;
 
     @Autowired
     TabelaCpuDAO tabelaCpuDaAO;
