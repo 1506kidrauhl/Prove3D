@@ -50,8 +50,6 @@ public class TabelaUsuario {
     public void setFkUsuarioL(Set<TabelaLog> fkUsuarioL) {
         this.fkUsuarioL = fkUsuarioL;
     }
-    
-    
 
     public Set<TabelaComputador> getFkUsuario() {
         return fkUsuario;
@@ -132,6 +130,14 @@ public class TabelaUsuario {
 
     public void setFkUsuarioG(Set<TabelaGpu> fkUsuarioG) {
         this.fkUsuarioG = fkUsuarioG;
+    }
+
+    @Override
+    public String toString() {
+        return "{\""+ "id" + "\"" + ":" + "\"" + idUsuario + "\"" + ",\""+ "nome" + "\"" + ":"
+                + "\"" + nome + "\"" + ",\""+ "login" + "\"" + ":"+ "\"" + login + "\"" +  ",\""+ "senha" + "\"" + ":"
+                + "\"" + senha + "\"" + ",\""+ "email" + "\"" + ":" + "\"" + email + "\"" + ",\""+ "telefone" + "\"" + ":"
+                + "\"" + telefone + "\"" + ",\""+ "cpf" + "\"" + ":" + "\"" + cpf + "\"" + "}";
     }
 
 }

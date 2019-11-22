@@ -10,6 +10,8 @@ import com.projetopi.prove3dsite.tabelas.TabelaLog;
 import com.projetopi.prove3dsite.tabelas.TabelaUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
@@ -22,7 +24,6 @@ import java.util.*;
 @Controller
 public class ApplicationController {
 
-    
     @Autowired
     private TabelaUsuarioDAO tabelaUsuarioDAO;
 
@@ -38,73 +39,24 @@ public class ApplicationController {
     @Autowired
     private TabelaLogDAO tabelaLogDAO;
 
-    TabelaComputador dadosComputador;
-
-    String log, pass;
-
-    TabelaUsuario idUsuario;
-
-    TabelaUsuario dadosUser;
-
     @GetMapping("/principal")
     public String pagePrincipal(Model model){
-
-        TabelaUsuario dados = tabelaUsuarioDAO.findByLogin(log, pass);
-
-        if(dados == null){
-            return "redirect:/index";
-        } else{
-            model.addAttribute("dadosLog",dados);
             return "/pagePrincipal";
-        }
-
     }
 
-    @GetMapping("/index")
+    @GetMapping(value = {"/index", "/", ""})
     public String pageIndex(Model model){
-
-        if(log != null || pass != null){
-            model.addAttribute("dadosLog", tabelaUsuarioDAO.findByLogin(log, pass));
             return "/index";
-        } else {
-            return "/index";
-        }
-
     }
 
     @GetMapping("/dashboard")
     public String pageDash(Model model){
-
-        TabelaUsuario dados = tabelaUsuarioDAO.findByLogin(log, pass);
-
-        if(dados == null){
-            return "redirect:/index";
-        } else{
-            model.addAttribute("dadosLog",dados);
             return "/dashboard";
-        }
-
     }
 
     @GetMapping("/relatorio")
     public String pageRelatorio(Model model){
-
-        TabelaUsuario dados = tabelaUsuarioDAO.findByLogin(log, pass);
-
-        if(dados == null){
-            return "redirect:/index";
-        } else{
-            model.addAttribute("dadosLog",dados);
             return "/pageLog";
-        }
-
-    }
-
-    @GetMapping("/sair")
-    public String efetuarLogout(){
-        log = null;
-        pass = null;
-        return "redirect:/index";
     }
 
     @PostMapping("/cadastro")
@@ -128,21 +80,17 @@ public class ApplicationController {
     }
     
     @GetMapping("/login")
-    public String loginUser(@RequestParam("txtLogin") String login, 
-            @RequestParam("txtSenha") String senha, Model model){
-        
-        TabelaUsuario dados = tabelaUsuarioDAO.findByLogin(login, senha);
-        
-        if(dados == null){
-            model.addAttribute("verificacao",0);
-            return "/index";
+    @ResponseBody
+    public ResponseEntity<TabelaUsuario> loginUser(@RequestParam("login") String login,
+                                                   @RequestParam("senha") String senha){
+        TabelaUsuario user = tabelaUsuarioDAO.findByLogin(login, senha);
+
+        if(user == null){
+            return new ResponseEntity("Login ou senha incorretos", HttpStatus.PRECONDITION_FAILED);
         } else{
-            log = login;
-            pass = senha;
-            dadosUser = dados;
-            return "redirect:/principal";
+            return new ResponseEntity(user.toString(), HttpStatus.OK);
         }
-        
+
     }
 
     @RequestMapping(value = "/enviarEmail",method = RequestMethod.POST)
@@ -165,56 +113,46 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/editarPerfil", method = RequestMethod.POST)
-    public @ResponseBody String editarPerfil(@RequestBody TabelaUsuario perfil){
+    public @ResponseBody ResponseEntity<String> editarPerfil(@RequestParam("id") Long id, @RequestParam("nome") String nome,
+                                                             @RequestParam("login") String login, @RequestParam("senha") String senha,
+                                                             @RequestParam("email") String email, @RequestParam("telefone") String telefone,
+                                                             @RequestParam("cpf") String cpf){
 
         TabelaUsuario editar = new TabelaUsuario();
-        tabelaUsuarioDAO.findById(perfil.getIdUsuario());
+        tabelaUsuarioDAO.findById(id);
 
-        editar.setIdUsuario(perfil.getIdUsuario());
-        editar.setNome(perfil.getNome());
-        editar.setLogin(perfil.getLogin());
-        editar.setSenha(perfil.getSenha());
-        editar.setEmail(perfil.getEmail());
-        editar.setTelefone(perfil.getTelefone());
-        editar.setCpf(perfil.getCpf());
+        editar.setIdUsuario(id);
+        editar.setNome(nome);
+        editar.setLogin(login);
+        editar.setSenha(senha);
+        editar.setEmail(email);
+        editar.setTelefone(telefone);
+        editar.setCpf(cpf);
 
         try{
             tabelaUsuarioDAO.save(editar);
-            log = perfil.getLogin();
-            pass = perfil.getSenha();
-            return "Sucesso!. Seus dados foram alterados com sucesso.";
+            return new ResponseEntity("Dados alterados com sucesso", HttpStatus.OK);
         } catch (Exception ex){
             ex.printStackTrace();
-            return "Erro!. Não foi possível editar seus dados, por favor, tente novamente";
+            return new ResponseEntity("Não foi possível editar seus dados, por favor, tente novamente", HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @RequestMapping(value = "/pegarDados", method = RequestMethod.GET)
     @ResponseBody
     public List<Dashaboard> pegarDados(@RequestParam("componente") Integer componente,@RequestParam("filtro")String filtro,
-                                       @RequestParam("id")Long id){
+                                       @RequestParam("id")Long idUser){
 
         List<Dashaboard> dadosDash = new ArrayList<>();
 
+        Object[] pc = (Object[]) tabelaComputadorDAO.findData(idUser);
+        TabelaComputador dadosComputador = new TabelaComputador();
 
-       if(dadosComputador == null ||idUsuario == null) {
-           Optional<TabelaUsuario>  user = tabelaUsuarioDAO.findById(id);
-           idUsuario = user.get();
+        dadosComputador.setIdComputador(Math.round(Double.valueOf(pc[0].toString())));
+        dadosComputador.setSistemaOperacional(pc[1].toString());
+        dadosComputador.setNmComputador(pc[2].toString());
+        dadosComputador.setModelo(pc[3].toString());
 
-           Object[] dado = tabelaComputadorDAO.findData(id);
-           Object[] data = (Object[]) dado[0];
-
-           TabelaComputador tbComputador = new TabelaComputador();
-           long idPc = Math.round(Double.valueOf(data[0].toString()));
-
-           tbComputador.setIdComputador(idPc);
-
-           tbComputador.setSistemaOperacional(data[1].toString());
-           tbComputador.setNmComputador(data[2].toString());
-           tbComputador.setModelo(data[3].toString());
-
-           dadosComputador = tbComputador;
-       }
         //Cpu = 0 Disco = 1 Gpu =2 Memoria = 3
         if (componente == 0) {
 
@@ -257,11 +195,10 @@ public class ApplicationController {
 
                 dadosDash.add(dashaboard);
 
-
             }
 
         }else if (componente == 2){
-            Object[] dadoGpu = tabelaGpuDAO.filtraGPU(idUsuario);
+            Object[] dadoGpu = tabelaGpuDAO.filtraGPU(idUser);
             for (int i = 0; i < dadoGpu.length; i++) {
                 Dashaboard dashaboard = new Dashaboard();
                 Object[] dataGpu = (Object[]) dadoGpu[i];

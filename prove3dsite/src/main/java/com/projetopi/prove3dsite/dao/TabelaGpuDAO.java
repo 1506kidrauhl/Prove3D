@@ -17,5 +17,5 @@ public interface TabelaGpuDAO extends JpaRepository<TabelaGpu, Long>{
     @Query(value = "select top 10 g.id_Gpu, g.utilizacao, g.memoria, g.dt_Hora from tbGpu g join tbUsuario u " +
             "where u.id_usuario = g.fk_usuariog_id_usuario " +
             "and g.fk_usuariog_id_usuario = ?1 order by g.dt_Hora desc;" , nativeQuery = true)
-    Object[] filtraGPU(TabelaUsuario fkUser);
+    Object[] filtraGPU(Long fkUser);
 }

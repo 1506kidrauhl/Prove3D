@@ -23,11 +23,9 @@
         Provë 3D
         <br>
         Bem vindo,
-        <#if dadosLog ? has_content>
-            <b id="nmUser">${dadosLog.nome}.</b>
-        </#if>
+        <b id="nmUser"></b>
     </a>
-    <a class="navbar-brand text-white" style="height: 50px;" href="/sair">
+    <a class="navbar-brand text-white" style="height: 50px;" onclick="btnSair()">
         Sair
     </a>
 </nav>
@@ -84,13 +82,12 @@
 </div>
 
 <!-- MODAL DE EDIÇÃO DE PERFIL -->
-<#if dadosLog ? has_content>
 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title" id="exampleModalLabel">
-                    <input type="hidden" id="idUser" value="${dadosLog.idUsuario}">
+                    <input type="hidden" id="idUser">
                     <div class="row">
                         <div class="col-sm-2">
                             <img src="img/parallax/logo.png" width="30px" height="30px">
@@ -111,13 +108,13 @@
                 Nome:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtName" class="form-control form-group" value="${dadosLog.nome}" readonly>
+                        <input type="text" id="txtName" class="form-control form-group" readonly>
                     </div>
                 </div>
                 Login:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtLogin" class="form-control form-group" value="${dadosLog.login}" readonly>
+                        <input type="text" id="txtLogin" class="form-control form-group" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtLogin)">
@@ -126,7 +123,7 @@
                 Senha:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="password" id="txtSenha" class="form-control form-group" value="${dadosLog.senha}" readonly>
+                        <input type="password" id="txtSenha" class="form-control form-group" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtSenha)">
@@ -135,7 +132,7 @@
                 Email:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtEmail" class="form-control form-group" value="${dadosLog.email}" readonly>
+                        <input type="text" id="txtEmail" class="form-control form-group" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtEmail)">
@@ -144,7 +141,7 @@
                 Telefone:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtTel" class="form-control form-group" maxlength="14" value="${dadosLog.telefone}" readonly>
+                        <input type="text" id="txtTel" class="form-control form-group" maxlength="14" readonly>
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtTel)">
@@ -153,7 +150,7 @@
                 CPF:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtCpf" class="form-control form-group" value="${dadosLog.cpf}" readonly>
+                        <input type="text" id="txtCpf" class="form-control form-group" readonly>
                     </div>
                 </div>
             </div>
@@ -164,7 +161,7 @@
         </div>
     </div>
 </div>
-</#if>
+
 
 <!-- MODAL DE CHAMADOS -->
 <div class="modal fade" id="modalChamados" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -213,10 +210,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="btnEnviar" onclick="btnEmail()">Abrir Chamado</button>
-                <#if dadosLog ? has_content>
-                    <input type="hidden" id="txtNmUser" value="${dadosLog.nome}">
-                    <input type="hidden" id="txtEmailC" value="${dadosLog.email}">
-                </#if>
+                <input type="hidden" id="txtNmUser">
+                <input type="hidden" id="txtEmailC">
             </div>
         </div>
     </div>

@@ -13,9 +13,9 @@ import java.util.List;
 @Repository
 public interface TabelaComputadorDAO extends JpaRepository<TabelaComputador, Long>{
 
-    @Query(value = "select top 10 cpu.id_cpu, cpu.utilizacao, cpu.temperatura, cpu.dt_Hora from tbComputador c join " +
+    @Query(value = "select cpu.id_cpu, cpu.utilizacao, cpu.temperatura, cpu.dt_Hora from tbComputador c join " +
             "tbCpu cpu where c.id_Computador = cpu.fk_ComputadorCPU_id_computador " +
-            "and cpu.fk_ComputadorCPU_id_computador = ?1 order by cpu.dt_Hora desc;", nativeQuery = true)
+            "and cpu.fk_ComputadorCPU_id_computador = ?1 order by cpu.dt_Hora desc limit 10;", nativeQuery = true)
     Object[] filtraCPU(TabelaComputador fkUser);
 
     @Query(value = "select top 10 d.id_disco, d.v_Gravacao, d.v_Leitura, d.dt_Hora from tbComputador c join tbDisco d " +
@@ -28,7 +28,7 @@ public interface TabelaComputadorDAO extends JpaRepository<TabelaComputador, Lon
             "and m.fk_ComputadorM_id_Computador = ?1 order by m.dt_Hora desc;", nativeQuery = true)
     Object[] filtraMemoria(TabelaComputador fkComputador);
 
-    @Query("Select c.idComputador, c.sistemaOperacional, c.nmComputador, c.modelo, c.fkUsuario from TabelaComputador c join c.fkUsuario u where c.fkUsuario = u.idUsuario and u.idUsuario = ?1")
+    @Query("Select c.idComputador, c.sistemaOperacional, c.nmComputador, c.modelo from TabelaComputador c join c.fkUsuario u where c.fkUsuario = u.idUsuario and u.idUsuario = ?1")
     Object[] findData(Long id);
 
 }

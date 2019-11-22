@@ -38,19 +38,13 @@
 					</a></h1>
       </div>
       <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav" data-0="margin-top:20px;" data-300="margin-top:20px;">
+        <ul class="nav navbar-nav" id="homeBar" data-0="margin-top:20px;" data-300="margin-top:20px;">
           <li class="active"><a href="#header">Home</a></li>
           <li><a href="#parallax1">Download</a></li>
           <li><a href="#section-manual">Manual</a></li>
           <li><a href="#testimonialsx1">Sobre</a></li>
           <li><a href="#section-works">Portfolio</a></li>
           <li><a href="#section-contact">Nos contate</a></li>
-          <#if dadosLog ? has_content>
-            <li><a href="/principal">${dadosLog.login}</a></li>
-            <#else>
-              <li><a href="#section-signup" type="button"  data-toggle="modal" data-target="#modalExemplo">Cadastro</a></li>
-              <li><a href="#section-singin"  type="button"  data-toggle="modal" data-target="#modalExemplo2">Login</a></li>
-          </#if>
         </ul>
       </div>
       <!--/.navbar-collapse -->
@@ -112,7 +106,6 @@
   </div>
 </form>
   <!-- MODAL LOGIN -->
- <form action = "/login" method="get">
   <div class="modal fade" id="modalExemplo2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -124,22 +117,20 @@
         <div class="modal-body">
             <div class="form-group">
               <label for="exampleInputEmail1">Username</label>
-              <input type="text" class="form-control" name="txtLogin" aria-describedby="emailHelp" required>
+              <input type="text" class="form-control" id="txtLogin" aria-describedby="emailHelp" required>
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Senha</label>
-              <input type="password" class="form-control" name="txtSenha" required>
+              <input type="password" class="form-control" id="txtSenha" required>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-              <button type="submit" class="btn btn-primary">Enviar</button>
+              <button type="button" class="btn btn-primary" onclick="btnEntrar()">Enviar</button>
             </div>
         </div>
       </div>
     </div>
   </div>
-</form>
-
 
       <section id="testimonialsx2" class="section" data-stellar-background-ratio="0.5">
     <div class="container">
@@ -393,14 +384,12 @@
     </div>
 
   </section>
-  <#if verificacao ? has_content>
-    <input type="hidden" id="verif" value="${verificacao}">
-  </#if>
 
 </body>
 
 </html>
 
+<script src="js/ajax/login.js"></script>
 <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/jquery.easing.1.3.js"></script>
@@ -428,11 +417,14 @@
             $('#meuInput').trigger('focus')
         });
 
-        try{
-            if(verif.value == 0){
-                swal("Login ou Senha incorretos");
-            }
-        } catch (e) {}
+        if(localStorage.getItem("id") == null) {
+          homeBar.innerHTML += `
+              <li><a href="#section-signup" type="button"  data-toggle="modal" data-target="#modalExemplo">Cadastro</a></li>
+              <li><a href="#section-singin"  type="button"  data-toggle="modal" data-target="#modalExemplo2">Login</a></li>
+           `;
+        } else{
+          homeBar.innerHTML += "<li><a href='/principal'>"+localStorage.getItem("login")+"</a></li>";
+        }
 
     });
 

@@ -44,7 +44,7 @@
               <!-- Navbar Menu -->
               <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                 <!-- Logout    -->
-                <li class="nav-item"><a href="/sair" class="nav-link logout"> <span class="d-none d-sm-inline">Sair</span><i class="fa fa-sign-out"></i></a></li>
+                <li class="nav-item"><a onclick="btnSair()" class="nav-link logout"> <span class="d-none d-sm-inline">Sair</span><i class="fa fa-sign-out"></i></a></li>
               </ul>
             </div>
           </div>
@@ -77,10 +77,8 @@
           <div class="sidebar-header d-flex align-items-center">
             <div class="avatar"><img src="img/dashboard/user.png" alt="..." class="img-fluid rounded-circle"></div>
             <div class="title">
-              <#if dadosLog ? has_content>
-                <h1 class="h4">${dadosLog.nome}</h1>
-                <input type="hidden" id="idAux" value="${dadosLog.idUsuario}">
-              </#if>
+                <h1 class="h4" id="nmUser"></h1>
+                <input type="hidden" id="idAux">
             </div>
           </div>
 
@@ -237,10 +235,8 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             <button type="button" class="btn btn-primary" id="btnEnviar" onclick="btnEmail()">Abrir Chamado</button>
-            <#if dadosLog ? has_content>
-              <input type="hidden" id="txtNmUser" value="${dadosLog.nome}">
-              <input type="hidden" id="txtEmailC" value="${dadosLog.email}">
-            </#if>
+              <input type="hidden" id="txtNmUser">
+              <input type="hidden" id="txtEmailC">
           </div>
         </div>
       </div>
@@ -261,6 +257,6 @@
 <!-- Tweaks for older IEs--><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-
+<script src="js/validacaoLogin.js"></script>
 <script src="js/log/logs-home.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
