@@ -60,7 +60,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     /*Criando uma instancia de Tempo no java. Essa instância irá chamar o
     método 'ChamarRelogio()' a cada cinco segundos*/
     Timer timer = new Timer(5 * 1000, new ChamarRelogio());
-    Timer timerGPU = new Timer(20 * 1000, new ChamarGpu());
+    Timer timerGPU = new Timer( 15 * 5000, new ChamarGpu());
     Timer init = new Timer(1000, new TempoAtividade());
 
     TelaEstatisticas telaEstatisticas;
@@ -333,9 +333,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         txtLog.setWrapStyleWord(true);
         txtLog.setText(formato.format(calendar.getTime()) + " - Iniciando Sistema...\n");
         // Inicia o timer, para que a cada 5 seg, ele se repita
-         timer.start();
-         init.start();
-        //timerGPU.start();
+        timer.start();
+        init.start();
+        timerGPU.start();
         txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Provë 3D pronto\n");
     }
 
@@ -346,6 +346,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
             List<TabelaGpu> dadosGpu = new ArrayList<>();
 
             gpu.pegaGpu(dadosGpu, idComputador, idUser);
+            if(!dadosGpu.isEmpty()){
+                gpu.verificaDados(dadosGpu.get(0), txtLog, idUser, idComputador);
+            }
+
             telaGpu.dadosGpu = dadosGpu;
             telaGpu.pegaGpu();
         }
@@ -364,7 +368,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     class ChamarRelogio implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-            
+            /*
             //Coleta de dados da CPU
             TabelaCpu dadosCpu = new TabelaCpu();
             cpu.pegaCpu(dadosCpu, idComputador);
@@ -410,7 +414,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             List<TabelaProcessos> dadosProcesso = new ArrayList<>();
             processos.pegaProcessos(dadosProcesso, true, idComputador, idUser, OperatingSystem.ProcessSort.CPU);
             processos.verificaDados(dadosProcesso, txtLog, idUser, idComputador);
-
+*/
         }
     }
 
