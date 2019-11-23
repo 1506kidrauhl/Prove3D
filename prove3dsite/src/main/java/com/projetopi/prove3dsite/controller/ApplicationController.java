@@ -78,11 +78,10 @@ public class ApplicationController {
         return "/index";
         
     }
-    
-    @GetMapping("/login")
-    @ResponseBody
-    public ResponseEntity<TabelaUsuario> loginUser(@RequestParam("login") String login,
-                                                   @RequestParam("senha") String senha){
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public @ResponseBody ResponseEntity<TabelaUsuario> loginUser(@RequestParam("login") String login,
+                                                                 @RequestParam("senha") String senha){
         TabelaUsuario user = tabelaUsuarioDAO.findByLogin(login, senha);
 
         if(user == null){
@@ -140,18 +139,22 @@ public class ApplicationController {
 
     @RequestMapping(value = "/pegarDados", method = RequestMethod.GET)
     @ResponseBody
-    public List<Dashaboard> pegarDados(@RequestParam("componente") Integer componente,@RequestParam("filtro")String filtro,
+    public ResponseEntity<List<Dashaboard>> pegarDados(@RequestParam("componente") Integer componente,@RequestParam("filtro")String filtro,
                                        @RequestParam("id")Long idUser){
 
         List<Dashaboard> dadosDash = new ArrayList<>();
 
-        Object[] pc = (Object[]) tabelaComputadorDAO.findData(idUser);
+        Object pc = tabelaComputadorDAO.findData(idUser);
         TabelaComputador dadosComputador = new TabelaComputador();
 
-        dadosComputador.setIdComputador(Math.round(Double.valueOf(pc[0].toString())));
-        dadosComputador.setSistemaOperacional(pc[1].toString());
-        dadosComputador.setNmComputador(pc[2].toString());
-        dadosComputador.setModelo(pc[3].toString());
+        if(pc == null){
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        dadosComputador.setIdComputador(Math.round(Double.valueOf(((Object[])pc)[0].toString())));
+        dadosComputador.setSistemaOperacional(((Object[])pc)[1].toString());
+        dadosComputador.setNmComputador(((Object[])pc)[2].toString());
+        dadosComputador.setModelo(((Object[])pc)[3].toString());
 
         //Cpu = 0 Disco = 1 Gpu =2 Memoria = 3
         if (componente == 0) {
@@ -235,8 +238,8 @@ public class ApplicationController {
         }
 
         dadosDash.sort(Comparator.comparing(Dashaboard::getId));
-        return dadosDash;
 
+        return new ResponseEntity(dadosDash.toString(), HttpStatus.OK);
 
     }
 

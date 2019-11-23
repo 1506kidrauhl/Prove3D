@@ -8,12 +8,10 @@ function btnEntrar(){
         return;
     }
 
-        var parametros = "login=" + txtLogin.value + "&senha=" + txtSenha.value;
-
     $.ajax({
         url: "/login",
         method: "GET",
-        data: parametros,
+        data: "login=" + txtLogin.value + "&senha=" + txtSenha.value,
 
         error: function (data) {
             swal({

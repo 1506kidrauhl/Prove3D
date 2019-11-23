@@ -9,11 +9,24 @@ function chamaAjax(cor, texto, fil,comp) {
         method: 'GET',
         data: parametros,
         error: function (data){
-            console.log("foi nada");
+            chartDashboard.style.display = 'none';
+            swal({
+               title: "Ops!",
+                text: "Ainda não possuimos dados do seu computador"
+            });
         },
-        success: function(data){
-            console.log("foi");
+        success: function(dadosD){
 
+            if(dadosD.length == 2){
+                chartDashboard.style.display = 'none';
+                swal({
+                    title: "Ops!",
+                    text: "Este componente não possui dados sendo coletados"
+                });
+                return;
+            }
+
+            var data = JSON.parse(dadosD);
             var  dados=[],dataHora=[];
 
             for(i=0;i<data.length;i++){
