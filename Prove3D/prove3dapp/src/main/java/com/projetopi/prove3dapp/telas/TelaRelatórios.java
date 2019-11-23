@@ -19,6 +19,14 @@ import java.util.List;
 import java.util.Random;
 
 import com.projetopi.prove3dapp.tabelas.TabelaUsuario;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -74,6 +82,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        cbEscolhe = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -148,7 +157,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
@@ -158,37 +167,44 @@ public class TelaRelatórios extends javax.swing.JFrame {
                         .addGap(23, 23, 23))))
         );
 
+        cbEscolhe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escolher arquivo", "Excel", "Txt" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(67, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lbMensagem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addContainerGap(54, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lbMensagem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txHorarioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(jLabel2)
-                                    .addGap(173, 173, 173))
+                                    .addGap(254, 254, 254))
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel3)
-                                    .addGap(32, 32, 32)))
-                            .addComponent(txDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbTipoLog, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btGerar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(81, 81, 81)
+                                    .addGap(113, 113, 113)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txHorarioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(txDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbTipoLog, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(81, 81, 81)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txHorarioFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                             .addComponent(jLabel6)
                             .addComponent(txDataFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                             .addComponent(cbComponente, 0, 250, Short.MAX_VALUE)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel7))))
+                            .addComponent(jLabel7)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(cbEscolhe, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                        .addComponent(btGerar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(89, 89, 89))
         );
         layout.setVerticalGroup(
@@ -219,11 +235,13 @@ public class TelaRelatórios extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txHorarioInicial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txHorarioFinal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addComponent(btGerar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbEscolhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btGerar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lbMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -399,63 +417,83 @@ public class TelaRelatórios extends javax.swing.JFrame {
 
         //Verificando se a consultada no BD trouxe algum resultado
         if (dados.size() > 0) {
+            if (cbEscolhe.getSelectedIndex() == 1) {
+                HSSFWorkbook workbook = new HSSFWorkbook();
 
-            HSSFWorkbook workbook = new HSSFWorkbook();
+                //Nome da planilha
+                HSSFSheet planilha = workbook.createSheet("Relatório");
 
-            //Nome da planilha
-            HSSFSheet planilha = workbook.createSheet("Relatório");
+                // Criando as linhas
+                //O número representa a linha que será criada o cabeçalho
+                HSSFRow cabecalho = planilha.createRow((short) 0);
 
-            // Criando as linhas
-            //O número representa a linha que será criada o cabeçalho
-            HSSFRow cabecalho = planilha.createRow((short) 0);
+                //Número representa a coluna
+                cabecalho.createCell(0).setCellValue("Tipo");
+                cabecalho.createCell(1).setCellValue("Componente");
+                cabecalho.createCell(2).setCellValue("Descrição");
+                cabecalho.createCell(3).setCellValue("Data");
+                cabecalho.createCell(4).setCellValue("Hora");
 
-            //Número representa a coluna
-            cabecalho.createCell(0).setCellValue("Tipo");
-            cabecalho.createCell(1).setCellValue("Componente");
-            cabecalho.createCell(2).setCellValue("Descrição");
-            cabecalho.createCell(3).setCellValue("Data");
-            cabecalho.createCell(4).setCellValue("Hora");
+                //DEFINE A LINHA DAS COLUNAS
+                //Após a consulta, faço um For para trazer todos os dados e montar o excel
+                for (int i = 0; i < dados.size(); i++) {
+                    //Aqui o i + 1 serve apenas para não ser iniciado com 0 e sim em um, não sobrescrevendo
+                    //As linhas anteriores
+                    HSSFRow linha = planilha.createRow((short) i + 1);
+                    linha.createCell(0).setCellValue(dados.get(i).getTipo());
+                    linha.createCell(1).setCellValue(dados.get(i).getComponente());
+                    linha.createCell(2).setCellValue(dados.get(i).getDescricao());
 
-            //DEFINE A LINHA DAS COLUNAS
-            //Após a consulta, faço um For para trazer todos os dados e montar o excel
-            for (int i = 0; i < dados.size(); i++) {
-                //Aqui o i + 1 serve apenas para não ser iniciado com 0 e sim em um, não sobrescrevendo
-                //As linhas anteriores
-                HSSFRow linha = planilha.createRow((short) i + 1);
-                linha.createCell(0).setCellValue(dados.get(i).getTipo());
-                linha.createCell(1).setCellValue(dados.get(i).getComponente());
-                linha.createCell(2).setCellValue(dados.get(i).getDescricao());
+                    //Formatando a data para dd/MM/yyyy (05/11/2019) para mostras nas linhas da tabela
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    linha.createCell(3).setCellValue(formato.format(dados.get(i).getDtHora()));
+                    String[] hora = dados.get(i).getDtHora().toString().split(" ");
+                    linha.createCell(4).setCellValue(hora[1]);
 
-                //Formatando a data para dd/MM/yyyy (05/11/2019) para mostras nas linhas da tabela
-                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                linha.createCell(3).setCellValue(formato.format(dados.get(i).getDtHora()));
-                String[] hora = dados.get(i).getDtHora().toString().split(" ");
-                linha.createCell(4).setCellValue(hora[1]);
+                }
 
+                try {
+                    //Este código gigantesco apenas traz o caminho de uma pasta padrão do sistema operacional
+                    String caminho = javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory().toString();
+                    //Aqui estou criando o caminho e por último o nome do arquivo excel que irá ser gerado.
+                    FileOutputStream fileOut = new FileOutputStream(caminho + "/" + nome);
+                    //Aqui é gerado o excel de fato
+                    workbook.write(fileOut);
+                    //Finaliza o processo
+                    fileOut.close();
+                    //Exibe ao usuário onde foi efetuado o download do excel
+                    lbMensagem.setText("Seu arquivo foi gerado no caminho: " + caminho + "/" + nome);
+
+                } catch (FileNotFoundException fil) {
+                    fil.printStackTrace();
+                    Random random = new Random();
+
+                    nome = String.format("Log%d.xls", random.nextInt(100) + 1);
+                    geraExcel(dados, nome);
+
+                } catch (Exception ex) {
+                    System.out.println(ex);
+                    lbMensagem.setText("Ocorreu um erro ao gerar o Excel, tente novamente");
+                }
             }
+            if (cbEscolhe.getSelectedIndex() == 2) {
+                File arquivo = new File("log.txt");
+                try {
+                    if (!arquivo.exists()) {
+                        arquivo.createNewFile();
+                    }
+                    List<String> lista = new ArrayList<>();
+                    for(TabelaLog atual:dados){
+                        lista.add(atual.getComponente() +"   |  "+atual.getDescricao()+"  |   "+atual.getTipo()+"  |   "
+                                +atual.getDtHora());
+                    }
+                    Files.write(Paths.get(arquivo.getPath()),lista, StandardOpenOption.APPEND);
+                } catch (IOException io) {
+                    io.printStackTrace();
+                }
 
-            try {
-                //Este código gigantesco apenas traz o caminho de uma pasta padrão do sistema operacional
-                String caminho = javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory().toString();
-                //Aqui estou criando o caminho e por último o nome do arquivo excel que irá ser gerado.
-                FileOutputStream fileOut = new FileOutputStream(caminho + "/" + nome);
-                //Aqui é gerado o excel de fato
-                workbook.write(fileOut);
-                //Finaliza o processo
-                fileOut.close();
-                //Exibe ao usuário onde foi efetuado o download do excel
-                lbMensagem.setText("Seu arquivo foi gerado no caminho: " + caminho + "/" + nome);
+                lbMensagem.setText("ta aqui");
 
-            } catch (FileNotFoundException fil) {
-                fil.printStackTrace();
-                Random random = new Random();
-
-                nome = String.format("Log%d.xls", random.nextInt(100) + 1);
-                geraExcel(dados, nome);
-
-            } catch (Exception ex) {
-                System.out.println(ex);
-                lbMensagem.setText("Ocorreu um erro ao gerar o Excel, tente novamente");
             }
 
         } else {
@@ -503,6 +541,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btGerar;
     private javax.swing.JComboBox<String> cbComponente;
+    private javax.swing.JComboBox<String> cbEscolhe;
     private javax.swing.JComboBox<String> cbTipoLog;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
