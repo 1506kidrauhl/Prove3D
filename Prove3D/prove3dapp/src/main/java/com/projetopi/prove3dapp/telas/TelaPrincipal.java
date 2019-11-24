@@ -333,9 +333,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         txtLog.setWrapStyleWord(true);
         txtLog.setText(formato.format(calendar.getTime()) + " - Iniciando Sistema...\n");
         // Inicia o timer, para que a cada 5 seg, ele se repita
-        timer.start();
-        init.start();
-        timerGPU.start();
+        //timer.start();
+        //init.start();
+        //timerGPU.start();
         txtLog.setText(txtLog.getText() + formato.format(calendar.getTime()) + " - Provë 3D pronto\n");
     }
 

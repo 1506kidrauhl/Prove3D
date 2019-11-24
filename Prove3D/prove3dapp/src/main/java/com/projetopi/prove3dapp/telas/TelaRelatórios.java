@@ -24,9 +24,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -83,6 +80,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         cbEscolhe = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -113,7 +111,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
         });
 
         cbTipoLog.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        cbTipoLog.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Alerta", "Erro", "Ok" }));
+        cbTipoLog.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Alerta", "Erro", "OK" }));
 
         txDataInicial.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
 
@@ -131,10 +129,10 @@ public class TelaRelatórios extends javax.swing.JFrame {
         lbMensagem.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        jLabel7.setText("Tipo de log");
+        jLabel7.setText("Componente");
 
         cbComponente.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        cbComponente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CPU", "GPU", "Memória" }));
+        cbComponente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CPU", "GPU" }));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -167,7 +165,10 @@ public class TelaRelatórios extends javax.swing.JFrame {
                         .addGap(23, 23, 23))))
         );
 
-        cbEscolhe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escolher arquivo", "Excel", "Txt" }));
+        cbEscolhe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escolher arquivo", "Excel", "TXT" }));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        jLabel9.setText("Formato do arquivo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -176,35 +177,37 @@ public class TelaRelatórios extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(54, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbMensagem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lbMensagem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(254, 254, 254))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addGap(113, 113, 113)))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txHorarioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(txDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbTipoLog, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(81, 81, 81)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txHorarioFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(jLabel6)
-                            .addComponent(txDataFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(cbComponente, 0, 250, Short.MAX_VALUE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel7)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(cbEscolhe, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
-                        .addComponent(btGerar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(254, 254, 254))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(113, 113, 113)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txHorarioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel4)
+                                        .addComponent(txDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cbTipoLog, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(81, 81, 81)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txHorarioFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                                .addComponent(jLabel6)
+                                .addComponent(txDataFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                                .addComponent(cbComponente, 0, 250, Short.MAX_VALUE)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel7)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(cbEscolhe, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                            .addComponent(btGerar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(89, 89, 89))
         );
         layout.setVerticalGroup(
@@ -235,7 +238,9 @@ public class TelaRelatórios extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txHorarioInicial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txHorarioFinal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
+                .addGap(20, 20, 20)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbEscolhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btGerar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -253,109 +258,112 @@ public class TelaRelatórios extends javax.swing.JFrame {
 
     private void btGerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGerarActionPerformed
 
-        //Variáveis que irão ser auxiliares
-        lbMensagem.setText("");
+        if (cbEscolhe.getSelectedIndex() != 0) {
 
-        //Aqui defino o formato como quero que o que o usuário digitou fique
-        //Ou seja, ano-mes-dia horas:segundos (2019-11-05 14:57)
-        //Fica neste formato, pois é assim que o banco entende DATETIMe
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            lbMensagem.setText("");
 
-        //Estes Splits servem para transformar o que o usuário digitou em uma data válida
-        //Para isso, preciso que ele digite neste formato: dd/MM/yyyy (05/11/2019)
-        //Caso contrário, é mostrado uma msg de erro e não é executado a geração do Log
-        String[] inicio = txDataInicial.getText().split("/");
-        String[] fim = txDataFinal.getText().split("/");
+            //Aqui defino o formato como quero que o que o usuário digitou fique
+            //Ou seja, ano-mes-dia horas:segundos (2019-11-05 14:57)
+            //Fica neste formato, pois é assim que o banco entende DATETIMe
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
-        //Estas variáveis irão servir como parâmetro mais para frente
-        Date dataInit = new Date(), dataFim = new Date();
-        List<TabelaLog> dados = new ArrayList<>();
-        String init = "", end = "", componente = "", tipoLog = "";
+            //Estes Splits servem para transformar o que o usuário digitou em uma data válida
+            //Para isso, preciso que ele digite neste formato: dd/MM/yyyy (05/11/2019)
+            //Caso contrário, é mostrado uma msg de erro e não é executado a geração do Log
+            String[] inicio = txDataInicial.getText().split("/");
+            String[] fim = txDataFinal.getText().split("/");
 
-        //Aqui utilizo o try para deixar a data no  formato yyyy-MM-dd
-        //Caso dê erro, quer dizer que a data foi digitada no formato errado, então
-        //é mostrado uma mensagem
-        try {
-            init = inicio[2] + "-" + inicio[1] + "-" + inicio[0];
-            end = fim[2] + "-" + fim[1] + "-" + fim[0];
-        } catch (Exception ex) {
-            lbMensagem.setText("Formato de data incorreta");
-            return;
-        }
+            //Estas variáveis irão servir como parâmetro mais para frente
+            Date dataInit = new Date(), dataFim = new Date();
+            List<TabelaLog> dados = new ArrayList<>();
+            String init = "", end = "", componente = "", tipoLog = "";
 
-        //Aqui defino o tipo de Log que o usuário quer, para ser utilizado mais tarde, na consulta do BD
-        switch (cbTipoLog.getSelectedIndex()) {
-            case 1:
-                tipoLog = "Alerta";
-                break;
-            case 2:
-                tipoLog = "Erro";
-                break;
-            case 3:
-                tipoLog = "OK";
-                break;
-        }
-
-        //Aqui defino o componente que o usuário quer, para ser utilizado mais tarde, na consulta do BD
-        switch (cbComponente.getSelectedIndex()) {
-            case 0:
-                componente = "CPU";
-                break;
-            case 1:
-                componente = "GPU";
-                break;
-            case 2:
-                componente = "Memória";
-                break;
-        }
-
-        //Caso o usuário não queira que a consulta seja filtrada por horas
-        if (txHorarioInicial.getText().equals("") || txHorarioFinal.getText().equals("")) {
-            //Agora, estou formatando minha data inicial e final e passando os horários padrões
-            //Ou seja, quero do inicio do primeiro dia, até o ultimo minuto do ultimo dia
-            //Ex: Quero que o filtro seja das 00:00 do dia 05/11/2019 até as 23:59 do dia 06/11/2019.
-            // Isto porque se o horário final fosse 00:00, isto quer dizer que também iria trazer do dia 07/11/2019
+            //Aqui utilizo o try para deixar a data no  formato yyyy-MM-dd
+            //Caso dê erro, quer dizer que a data foi digitada no formato errado, então
+            //é mostrado uma mensagem
             try {
-                dataInit = formato.parse(init + " 00:00");
-                dataFim = formato.parse(end + " 23:59");
+                init = inicio[2] + "-" + inicio[1] + "-" + inicio[0];
+                end = fim[2] + "-" + fim[1] + "-" + fim[0];
             } catch (Exception ex) {
                 lbMensagem.setText("Formato de data incorreta");
                 return;
             }
-            //Chamando função que irá fazer a consulta no banco
-            verificaDados(dados, dataInit, dataFim, componente, tipoLog);
 
+            //Aqui defino o tipo de Log que o usuário quer, para ser utilizado mais tarde, na consulta do BD
+            switch (cbTipoLog.getSelectedIndex()) {
+                case 1:
+                    tipoLog = "Alerta";
+                    break;
+                case 2:
+                    tipoLog = "Erro";
+                    break;
+                case 3:
+                    tipoLog = "OK";
+                    break;
+            }
+
+            //Aqui defino o componente que o usuário quer, para ser utilizado mais tarde, na consulta do BD
+            switch (cbComponente.getSelectedIndex()) {
+                case 0:
+                    componente = "CPU";
+                    break;
+                case 1:
+                    componente = "GPU";
+                    break;
+                case 2:
+                    componente = "Memória";
+                    break;
+            }
+
+            //Caso o usuário não queira que a consulta seja filtrada por horas
+            if (txHorarioInicial.getText().equals("") || txHorarioFinal.getText().equals("")) {
+                //Agora, estou formatando minha data inicial e final e passando os horários padrões
+                //Ou seja, quero do inicio do primeiro dia, até o ultimo minuto do ultimo dia
+                //Ex: Quero que o filtro seja das 00:00 do dia 05/11/2019 até as 23:59 do dia 06/11/2019.
+                // Isto porque se o horário final fosse 00:00, isto quer dizer que também iria trazer do dia 07/11/2019
+                try {
+                    dataInit = formato.parse(init + " 00:00");
+                    dataFim = formato.parse(end + " 23:59");
+                } catch (Exception ex) {
+                    lbMensagem.setText("Formato de data incorreta");
+                    return;
+                }
+                //Chamando função que irá fazer a consulta no banco
+                verificaDados(dados, dataInit, dataFim, componente, tipoLog);
+
+            } else {
+                //Aqui o split é utilizado para a verificação de hora. Que deve ser digitada pelo usuário no formato
+                //hh:mm (15:08), caso contrário, irá dar erro
+                String[] hInicio = txHorarioInicial.getText().split(":");
+                String[] hFim = txHorarioFinal.getText().split(":");
+                String hrI = "", hrF = "";
+
+                try {
+                    //Verificando se a formatação foi correta
+                    hrI = hInicio[0] + ":" + hInicio[1];
+                    hrF = hFim[0] + ":" + hFim[1];
+
+                } catch (Exception ex) {
+                    lbMensagem.setText("Formato de horário incorreto");
+                    return;
+                }
+
+                try {
+                    //Formatando a data desejada com o horário escolhido
+                    dataInit = formato.parse(init + " " + hrI);
+                    dataFim = formato.parse(end + " " + hrF);
+                } catch (Exception ex) {
+                    lbMensagem.setText("Formato de data incorreta");
+                    return;
+                }
+
+                //Chamando função que irá fazer a consulta no BD
+                verificaDados(dados, dataInit, dataFim, componente, tipoLog);
+
+            }
         } else {
-            //Aqui o split é utilizado para a verificação de hora. Que deve ser digitada pelo usuário no formato
-            //hh:mm (15:08), caso contrário, irá dar erro
-            String[] hInicio = txHorarioInicial.getText().split(":");
-            String[] hFim = txHorarioFinal.getText().split(":");
-            String hrI = "", hrF = "";
-
-            try {
-                //Verificando se a formatação foi correta
-                hrI = hInicio[0] + ":" + hInicio[1];
-                hrF = hFim[0] + ":" + hFim[1];
-
-            } catch (Exception ex) {
-                lbMensagem.setText("Formato de horário incorreto");
-                return;
-            }
-
-            try {
-                //Formatando a data desejada com o horário escolhido
-                dataInit = formato.parse(init + " " + hrI);
-                dataFim = formato.parse(end + " " + hrF);
-            } catch (Exception ex) {
-                lbMensagem.setText("Formato de data incorreta");
-                return;
-            }
-
-            //Chamando função que irá fazer a consulta no BD
-            verificaDados(dados, dataInit, dataFim, componente, tipoLog);
-
+            lbMensagem.setText("Escolha um tipo de arquivo para o log");
         }
-
     }//GEN-LAST:event_btGerarActionPerformed
 
     private void verificaDados(List<TabelaLog> dados, Date dataInit, Date dataFim, String componente, String tipoLog) {
@@ -382,7 +390,11 @@ public class TelaRelatórios extends javax.swing.JFrame {
 
             }
 
-            geraExcel(dados, "Log.xls");
+            if (cbEscolhe.getSelectedIndex() == 1) {
+                geraExcel(dados, "Log.xls");
+            } else {
+                geraTxt(dados, "log.txt");
+            }
 
         } else {
             //Caso seja algum tipo especifico de Log
@@ -407,7 +419,11 @@ public class TelaRelatórios extends javax.swing.JFrame {
 
             }
 
-            geraExcel(dados, "Log.xls");
+            if (cbEscolhe.getSelectedIndex() == 1) {
+                geraExcel(dados, "Log.xls");
+            } else {
+                geraTxt(dados, "log.txt");
+            }
         }
 
     }
@@ -417,83 +433,63 @@ public class TelaRelatórios extends javax.swing.JFrame {
 
         //Verificando se a consultada no BD trouxe algum resultado
         if (dados.size() > 0) {
-            if (cbEscolhe.getSelectedIndex() == 1) {
-                HSSFWorkbook workbook = new HSSFWorkbook();
 
-                //Nome da planilha
-                HSSFSheet planilha = workbook.createSheet("Relatório");
+            HSSFWorkbook workbook = new HSSFWorkbook();
 
-                // Criando as linhas
-                //O número representa a linha que será criada o cabeçalho
-                HSSFRow cabecalho = planilha.createRow((short) 0);
+            //Nome da planilha
+            HSSFSheet planilha = workbook.createSheet("Relatório");
 
-                //Número representa a coluna
-                cabecalho.createCell(0).setCellValue("Tipo");
-                cabecalho.createCell(1).setCellValue("Componente");
-                cabecalho.createCell(2).setCellValue("Descrição");
-                cabecalho.createCell(3).setCellValue("Data");
-                cabecalho.createCell(4).setCellValue("Hora");
+            // Criando as linhas
+            //O número representa a linha que será criada o cabeçalho
+            HSSFRow cabecalho = planilha.createRow((short) 0);
 
-                //DEFINE A LINHA DAS COLUNAS
-                //Após a consulta, faço um For para trazer todos os dados e montar o excel
-                for (int i = 0; i < dados.size(); i++) {
-                    //Aqui o i + 1 serve apenas para não ser iniciado com 0 e sim em um, não sobrescrevendo
-                    //As linhas anteriores
-                    HSSFRow linha = planilha.createRow((short) i + 1);
-                    linha.createCell(0).setCellValue(dados.get(i).getTipo());
-                    linha.createCell(1).setCellValue(dados.get(i).getComponente());
-                    linha.createCell(2).setCellValue(dados.get(i).getDescricao());
+            //Número representa a coluna
+            cabecalho.createCell(0).setCellValue("Tipo");
+            cabecalho.createCell(1).setCellValue("Componente");
+            cabecalho.createCell(2).setCellValue("Descrição");
+            cabecalho.createCell(3).setCellValue("Data");
+            cabecalho.createCell(4).setCellValue("Hora");
 
-                    //Formatando a data para dd/MM/yyyy (05/11/2019) para mostras nas linhas da tabela
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                    linha.createCell(3).setCellValue(formato.format(dados.get(i).getDtHora()));
-                    String[] hora = dados.get(i).getDtHora().toString().split(" ");
-                    linha.createCell(4).setCellValue(hora[1]);
+            //DEFINE A LINHA DAS COLUNAS
+            //Após a consulta, faço um For para trazer todos os dados e montar o excel
+            for (int i = 0; i < dados.size(); i++) {
+                //Aqui o i + 1 serve apenas para não ser iniciado com 0 e sim em um, não sobrescrevendo
+                //As linhas anteriores
+                HSSFRow linha = planilha.createRow((short) i + 1);
+                linha.createCell(0).setCellValue(dados.get(i).getTipo());
+                linha.createCell(1).setCellValue(dados.get(i).getComponente());
+                linha.createCell(2).setCellValue(dados.get(i).getDescricao());
 
-                }
+                //Formatando a data para dd/MM/yyyy (05/11/2019) para mostras nas linhas da tabela
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                linha.createCell(3).setCellValue(formato.format(dados.get(i).getDtHora()));
+                String[] hora = dados.get(i).getDtHora().toString().split(" ");
+                linha.createCell(4).setCellValue(hora[1]);
 
-                try {
-                    //Este código gigantesco apenas traz o caminho de uma pasta padrão do sistema operacional
-                    String caminho = javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory().toString();
-                    //Aqui estou criando o caminho e por último o nome do arquivo excel que irá ser gerado.
-                    FileOutputStream fileOut = new FileOutputStream(caminho + "/" + nome);
-                    //Aqui é gerado o excel de fato
-                    workbook.write(fileOut);
-                    //Finaliza o processo
-                    fileOut.close();
-                    //Exibe ao usuário onde foi efetuado o download do excel
-                    lbMensagem.setText("Seu arquivo foi gerado no caminho: " + caminho + "/" + nome);
-
-                } catch (FileNotFoundException fil) {
-                    fil.printStackTrace();
-                    Random random = new Random();
-
-                    nome = String.format("Log%d.xls", random.nextInt(100) + 1);
-                    geraExcel(dados, nome);
-
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                    lbMensagem.setText("Ocorreu um erro ao gerar o Excel, tente novamente");
-                }
             }
-            if (cbEscolhe.getSelectedIndex() == 2) {
-                File arquivo = new File("log.txt");
-                try {
-                    if (!arquivo.exists()) {
-                        arquivo.createNewFile();
-                    }
-                    List<String> lista = new ArrayList<>();
-                    for(TabelaLog atual:dados){
-                        lista.add(atual.getComponente() +"   |  "+atual.getDescricao()+"  |   "+atual.getTipo()+"  |   "
-                                +atual.getDtHora());
-                    }
-                    Files.write(Paths.get(arquivo.getPath()),lista, StandardOpenOption.APPEND);
-                } catch (IOException io) {
-                    io.printStackTrace();
-                }
 
-                lbMensagem.setText("ta aqui");
+            try {
+                //Este código gigantesco apenas traz o caminho de uma pasta padrão do sistema operacional
+                String caminho = javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory().toString();
+                //Aqui estou criando o caminho e por último o nome do arquivo excel que irá ser gerado.
+                FileOutputStream fileOut = new FileOutputStream(caminho + "/" + nome);
+                //Aqui é gerado o excel de fato
+                workbook.write(fileOut);
+                //Finaliza o processo
+                fileOut.close();
+                //Exibe ao usuário onde foi efetuado o download do excel
+                lbMensagem.setText("Seu arquivo foi gerado no caminho: " + caminho + "/" + nome);
 
+            } catch (FileNotFoundException fil) {
+                fil.printStackTrace();
+                Random random = new Random();
+
+                nome = String.format("Log%d.xls", random.nextInt(100) + 1);
+                geraExcel(dados, nome);
+
+            } catch (Exception ex) {
+                System.out.println(ex);
+                lbMensagem.setText("Ocorreu um erro ao gerar o Excel, tente novamente");
             }
 
         } else {
@@ -501,6 +497,102 @@ public class TelaRelatórios extends javax.swing.JFrame {
             lbMensagem.setText("Nenhum dado foi encontrado para geração de relatório");
         }
 
+    }
+
+    public void geraTxt(List<TabelaLog> dados, String nome) {
+
+        if (dados.size() > 0) {
+
+
+        File arquivo = new File(nome);
+        String caminho = javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory().toString();
+        List<String> lista = new ArrayList<>();
+
+        try {
+            if (!arquivo.exists()) {
+                arquivo.createNewFile();
+            } else{
+                lista.add("");
+                lista.add("-------------------------------------------------------------------------------------------" +
+                        "--------------------------------------");
+                lista.add("");
+            }
+
+            int comp = 0, desc = 0, tipo = 0;
+            String eComp = "", eDesc = "", eTipo = "";
+
+            for (TabelaLog atual : dados) {
+
+                if (comp < atual.getComponente().length()) {
+                    comp = atual.getComponente().length();
+                }
+
+                if (desc < atual.getDescricao().length()) {
+                    desc = atual.getDescricao().length();
+                }
+
+                if (tipo < atual.getTipo().length()) {
+                    tipo = atual.getTipo().length();
+                }
+
+            }
+
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            Date hoje = new Date();
+            lista.add("Log gerado no dia: " + formato.format(hoje));
+            lista.add("");
+
+            for (TabelaLog atual : dados) {
+
+                int espacC = comp - atual.getComponente().length();
+                int espacD = desc - atual.getDescricao().length();
+                int espacT = tipo - atual.getTipo().length();
+
+                if (espacC > 0) {
+                    eComp = defineEspaco(espacC);
+                }
+
+                if (espacD > 0) {
+                    eDesc = defineEspaco(espacD);
+                }
+
+                if (espacT > 0) {
+                    eTipo = defineEspaco(espacT);
+                }
+
+                lista.add(atual.getComponente() + eComp + "   |  "
+                        + atual.getDescricao() + eDesc + "   |   "
+                        + atual.getTipo() + eTipo + " |   "
+                        + atual.getDtHora());
+
+                eComp = "";
+                eDesc = "";
+                eTipo = "";
+
+            }
+
+            Files.write(Paths.get(arquivo.getPath()), lista, StandardOpenOption.APPEND);
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+
+        lbMensagem.setText(String.format("Seu arquivo foi gerado no caminho: %s/",
+                arquivo.getPath()));
+        } else{
+            lbMensagem.setText("Nenhum dado foi encontrado para geração de relatório");
+        }
+
+    }
+
+    public String defineEspaco(Integer size) {
+        
+        String espaco = "";
+        
+        for (int i = 0; i < size; i++) {
+            espaco += " ";
+        }
+        
+        return espaco;
     }
 
     /**
@@ -551,6 +643,7 @@ public class TelaRelatórios extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbMensagem;
     private javax.swing.JTextField txDataFinal;
@@ -558,4 +651,5 @@ public class TelaRelatórios extends javax.swing.JFrame {
     private javax.swing.JTextField txHorarioFinal;
     private javax.swing.JTextField txHorarioInicial;
     // End of variables declaration//GEN-END:variables
+
 }
