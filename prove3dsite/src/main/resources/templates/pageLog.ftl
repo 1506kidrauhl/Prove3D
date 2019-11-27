@@ -77,8 +77,11 @@
           <div class="sidebar-header d-flex align-items-center">
             <div class="avatar"><img src="img/dashboard/user.png" alt="..." class="img-fluid rounded-circle"></div>
             <div class="title">
-                <h1 class="h4" id="nmUser"></h1>
-                <input type="hidden" id="idAux">
+                <h1 class="h4" id="nmUser">${dadosUser.nome}</h1>
+                <input type="hidden" id="idAux" value="${dadosUser.idUsuario}">
+                <#if dadosPc ? has_content>
+                   <input type="hidden" id="idPcAux" value = "${dadosPc.idComputador}">
+                </#if>
             </div>
           </div>
 
@@ -143,9 +146,7 @@
                     <div class="col-sm-6">
                       <select id="cmbComp" class="form-control">
                         <option value="CPU">CPU</option>
-                        <option value="Disco">Disco</option>
                         <option value="GPU">GPU</option>
-                        <option value="Memória">Memória</option>
                       </select>
                     </div>
                   </div>
@@ -235,8 +236,8 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             <button type="button" class="btn btn-primary" id="btnEnviar" onclick="btnEmail()">Abrir Chamado</button>
-              <input type="hidden" id="txtNmUser">
-              <input type="hidden" id="txtEmailC">
+              <input type="hidden" id="txtNmUser" value="${dadosUser.nome}">
+              <input type="hidden" id="txtEmailC" value="${dadosUser.email}">
           </div>
         </div>
       </div>
@@ -257,6 +258,5 @@
 <!-- Tweaks for older IEs--><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-<script src="js/validacaoLogin.js"></script>
 <script src="js/log/logs-home.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>

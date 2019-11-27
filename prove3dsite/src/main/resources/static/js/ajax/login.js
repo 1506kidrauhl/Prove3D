@@ -21,19 +21,7 @@ function btnEntrar(){
         },
 
         success: function (dados) {
-
-            var user = dados.split(",");
-            var data = JSON.parse(user);
-
-            localStorage.setItem("id", data.id);
-            localStorage.setItem("nome", data.nome);
-            localStorage.setItem("login", data.login);
-            localStorage.setItem("senha", data.senha);
-            localStorage.setItem("email", data.email);
-            localStorage.setItem("telefone", data.telefone);
-            localStorage.setItem("cpf", data.cpf);
-
-            window.location.href = "/principal";
+            window.location.href = dados;
         }
 
     })

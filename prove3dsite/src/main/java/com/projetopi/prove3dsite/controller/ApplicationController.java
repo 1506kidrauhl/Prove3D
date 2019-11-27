@@ -8,6 +8,7 @@ import com.projetopi.prove3dsite.dao.TabelaUsuarioDAO;
 import com.projetopi.prove3dsite.tabelas.TabelaComputador;
 import com.projetopi.prove3dsite.tabelas.TabelaLog;
 import com.projetopi.prove3dsite.tabelas.TabelaUsuario;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -81,13 +83,27 @@ public class ApplicationController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<TabelaUsuario> loginUser(@RequestParam("login") String login,
-                                                                 @RequestParam("senha") String senha){
+                                                                 @RequestParam("senha") String senha, HttpSession session){
         TabelaUsuario user = tabelaUsuarioDAO.findByLogin(login, senha);
 
         if(user == null){
             return new ResponseEntity("Login ou senha incorretos", HttpStatus.PRECONDITION_FAILED);
         } else{
-            return new ResponseEntity(user.toString(), HttpStatus.OK);
+            session.setAttribute("dadosUser", user);
+            TabelaComputador pc = new TabelaComputador();
+
+            Object pcD = tabelaComputadorDAO.findData(user.getIdUsuario());
+
+            if(pcD != null){
+                pc.setIdComputador(Math.round(Double.valueOf(((Object[])pcD)[0].toString())));
+                pc.setSistemaOperacional(((Object[])pcD)[1].toString());
+                pc.setNmComputador(((Object[])pcD)[2].toString());
+                pc.setModelo(((Object[])pcD)[3].toString());
+
+                session.setAttribute("dadosPc", pc);
+            }
+
+            return new ResponseEntity("/principal", HttpStatus.OK);
         }
 
     }
@@ -140,21 +156,9 @@ public class ApplicationController {
     @RequestMapping(value = "/pegarDados", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<Dashaboard>> pegarDados(@RequestParam("componente") Integer componente,@RequestParam("filtro")String filtro,
-                                       @RequestParam("id")Long idUser){
+                                       @RequestParam("id")Long idUser, @RequestParam("idPc") Long dadosComputador){
 
         List<Dashaboard> dadosDash = new ArrayList<>();
-
-        Object pc = tabelaComputadorDAO.findData(idUser);
-        TabelaComputador dadosComputador = new TabelaComputador();
-
-        if(pc == null){
-            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
-        }
-
-        dadosComputador.setIdComputador(Math.round(Double.valueOf(((Object[])pc)[0].toString())));
-        dadosComputador.setSistemaOperacional(((Object[])pc)[1].toString());
-        dadosComputador.setNmComputador(((Object[])pc)[2].toString());
-        dadosComputador.setModelo(((Object[])pc)[3].toString());
 
         //Cpu = 0 Disco = 1 Gpu =2 Memoria = 3
         if (componente == 0) {

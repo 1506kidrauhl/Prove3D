@@ -2,7 +2,7 @@
 
 function chamaAjax(cor, texto, fil,comp) {
 
-    var parametros="componente="+comp+"&filtro="+fil+"&id="+idAux.value;
+    var parametros="componente="+comp+"&filtro="+fil+"&id="+idAux.value+"&idPc="+idPcAux.value;
     clearTimeout(myVar);
     $.ajax({
         url: "/pegarDados",

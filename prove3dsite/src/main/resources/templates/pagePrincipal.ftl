@@ -23,7 +23,7 @@
         Provë 3D
         <br>
         Bem vindo,
-        <b id="nmUser"></b>
+        <b id="nmUser">${dadosUser.nome}</b>
     </a>
     <a class="navbar-brand text-white" style="height: 50px;" onclick="btnSair()">
         Sair
@@ -210,8 +210,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="btnEnviar" onclick="btnEmail()">Abrir Chamado</button>
-                <input type="hidden" id="txtNmUser">
-                <input type="hidden" id="txtEmailC">
+                <input type="hidden" id="txtNmUser" value="${dadosUser.nome}">
+                <input type="hidden" id="txtEmailC" value="${dadosUser.email}">
             </div>
         </div>
     </div>

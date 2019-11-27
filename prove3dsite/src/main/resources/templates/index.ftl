@@ -45,6 +45,12 @@
           <li><a href="#testimonialsx1">Sobre</a></li>
           <li><a href="#section-works">Portfolio</a></li>
           <li><a href="#section-contact">Nos contate</a></li>
+          <#if dadosUser ? has_content>
+             <li><a href="/principal">${dadosLog.login}</a></li>
+          <#else>
+             <li><a href="#section-signup" type="button"  data-toggle="modal" data-target="#modalExemplo">Cadastro</a></li>
+             <li><a href="#section-singin"  type="button"  data-toggle="modal" data-target="#modalExemplo2">Login</a></li>
+          </#if>
         </ul>
       </div>
       <!--/.navbar-collapse -->
