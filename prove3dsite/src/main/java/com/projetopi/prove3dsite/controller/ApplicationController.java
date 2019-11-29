@@ -41,6 +41,9 @@ public class ApplicationController {
     @Autowired
     private TabelaLogDAO tabelaLogDAO;
 
+    @GetMapping("/performance")
+    public String pagePerformance(Model model){ return "/pagePerformance"; }
+
     @GetMapping("/principal")
     public String pagePrincipal(Model model){
             return "/pagePrincipal";

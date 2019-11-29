@@ -55,8 +55,9 @@
         <a href="/principal">Home</a>
         <a href="/dashboard" data-toggle="modal" data-target="#modalChamados">Chamados</a>
         <a  href="/dashboard">Dashboard</a>
-        <a  href="">Desempenho de processos</a>
+        <a  href="/perfomance">Desempenho de processos</a>
         <a style="color:#796aee" href="/relatorio">Relatórios</a>
+
       </div>
 
 
@@ -89,7 +90,7 @@
             <li><a href="/principal"><i></i>Home</a></li>
             <li><a data-toggle="modal" data-target="#modalChamados"><i></i>Chamados</a></li>
             <li><a href="/dashboard"><i></i>Dashboard</a></li>
-            <li><a><i></i>Desempenho de processos</a></li>
+            <li><a href="/perfomance"><i>Desempenho de processos</a></li>
             <li class="active"><a href="/relatorio"><i></i>Relatórios</a></li>
           </ul>
 
