@@ -368,7 +368,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     class ChamarRelogio implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-            /*
+            
             //Coleta de dados da CPU
             TabelaCpu dadosCpu = new TabelaCpu();
             cpu.pegaCpu(dadosCpu, idComputador);
@@ -414,7 +414,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             List<TabelaProcessos> dadosProcesso = new ArrayList<>();
             processos.pegaProcessos(dadosProcesso, true, idComputador, idUser, OperatingSystem.ProcessSort.CPU);
             processos.verificaDados(dadosProcesso, txtLog, idUser, idComputador);
-*/
+
         }
     }
 
