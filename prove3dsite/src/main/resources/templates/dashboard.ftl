@@ -49,7 +49,7 @@
                     <!-- Navbar Menu -->
                     <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                         <!-- Logout    -->
-                        <li class="nav-item"><a onclick="btnSair()" class="nav-link logout"> <span class="d-flex d-sm-inline">Sair</span><i class="fa fa-sign-out"></i></a></li>
+                        <li class="nav-item"><a href="/sair" class="nav-link logout"> <span class="d-flex d-sm-inline">Sair</span><i class="fa fa-sign-out"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -60,7 +60,7 @@
         <a href="/principal">Home</a>
         <a href="/dashboard" data-toggle="modal" data-target="#modalChamados">Chamados</a>
         <a style="color:#796aee" href="/dashboard">Dashboard</a>
-        <a href="">Desempenho de processos</a>
+        <a href="/desempenho">Desempenho de processos</a>
         <a href="/relatorio">Relatórios</a>
     </div>
 
@@ -97,7 +97,7 @@
                 <li><a href="/principal"><i></i>Home</a></li>
                 <li><a data-toggle="modal" data-target="#modalChamados"><i></i>Chamados</a></li>
                 <li class="active"><a href="/dashboard"><i></i>Dashboard</a></li>
-                <li><a><i></i>Desempenho de processos</a></li>
+                <li><a href="/desempenho">Desempenho de processos</a></li>
                 <li><a href="/relatorio"><i></i>Relatórios</a></li>
             </ul>
 

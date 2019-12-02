@@ -1,12 +1,10 @@
 package com.projetopi.prove3dsite.controller;
 
 
-import com.projetopi.prove3dsite.dao.TabelaComputadorDAO;
-import com.projetopi.prove3dsite.dao.TabelaGpuDAO;
-import com.projetopi.prove3dsite.dao.TabelaLogDAO;
-import com.projetopi.prove3dsite.dao.TabelaUsuarioDAO;
+import com.projetopi.prove3dsite.dao.*;
 import com.projetopi.prove3dsite.tabelas.TabelaComputador;
 import com.projetopi.prove3dsite.tabelas.TabelaLog;
+import com.projetopi.prove3dsite.tabelas.TabelaProcessos;
 import com.projetopi.prove3dsite.tabelas.TabelaUsuario;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +31,9 @@ public class ApplicationController {
     JavaMailSender javaMailSender;
 
     @Autowired
+    TabelaProcessosDAO tabelaProcessosDAO;
+
+    @Autowired
     private TabelaComputadorDAO tabelaComputadorDAO;
 
     @Autowired
@@ -41,26 +42,26 @@ public class ApplicationController {
     @Autowired
     private TabelaLogDAO tabelaLogDAO;
 
-    @GetMapping("/performance")
-    public String pagePerformance(Model model){ return "/pagePerformance"; }
+    @GetMapping("/desempenho")
+    public String pagePerformance(){ return "pagePerformance"; }
 
     @GetMapping("/principal")
-    public String pagePrincipal(Model model){
+    public String pagePrincipal(){
             return "/pagePrincipal";
     }
 
-    @GetMapping(value = {"/index", "/", ""})
-    public String pageIndex(Model model){
+    @GetMapping(value = {"/index", ""})
+    public String pageIndex(){
             return "/index";
     }
 
     @GetMapping("/dashboard")
-    public String pageDash(Model model){
+    public String pageDash(){
             return "/dashboard";
     }
 
     @GetMapping("/relatorio")
-    public String pageRelatorio(Model model){
+    public String pageRelatorio(){
             return "/pageLog";
     }
 
@@ -109,6 +110,12 @@ public class ApplicationController {
             return new ResponseEntity("/principal", HttpStatus.OK);
         }
 
+    }
+    
+    @GetMapping("/sair")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "/index";
     }
 
     @RequestMapping(value = "/enviarEmail",method = RequestMethod.POST)
@@ -324,6 +331,40 @@ public class ApplicationController {
 
         return dados;
 
+    }
+
+    @RequestMapping(value = "/maxProcesso", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ProcessosKPI> lastUsageProcess(@RequestParam("idUser") Long idUser, @RequestParam("idPc") Long idPc){
+
+        Object[] lastProcess = tabelaProcessosDAO.findMaxUsageCpuPerProcess(idPc, idUser);
+        List<ProcessosKPI> processo = new ArrayList<>();
+
+        if(lastProcess != null){
+
+            for(int i = 0; i < lastProcess.length; i++){
+
+                ProcessosKPI tb = new ProcessosKPI();
+                Object[] processAtual = (Object[]) lastProcess[i];
+
+                tb.setPid(Integer.valueOf(processAtual[0].toString()));
+                tb.setProcesso(processAtual[1].toString());
+                tb.setUsoCpu(Double.valueOf(processAtual[2].toString()));
+                tb.setUsoMemoria(Double.valueOf(processAtual[3].toString()));
+                tb.setTempoAtividade(processAtual[4].toString());
+
+                processo.add(tb);
+
+            }
+
+            processo.sort(Comparator.comparing( proc -> {
+                        return proc.getUsoCpu();
+                    })
+            );
+
+        }
+
+        return processo;
     }
 
 }

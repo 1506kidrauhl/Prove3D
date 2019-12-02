@@ -49,7 +49,7 @@
                             <!-- Navbar Menu -->
                             <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                                 <!-- Logout    -->
-                                <li class="nav-item"><a onclick="btnSair()" class="nav-link logout"> <span class="d-flex d-sm-inline">Sair</span><i class="fa fa-sign-out"></i></a></li>
+                                <li class="nav-item"><a href="/sair" class="nav-link logout"> <span class="d-flex d-sm-inline">Sair</span><i class="fa fa-sign-out"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                 <a href="/principal">Home</a>
                 <a href="/dashboard" data-toggle="modal" data-target="#modalChamados">Chamados</a>
                 <a style="color:#796aee" href="/dashboard">Dashboard</a>
-                <a href="/perfomance">Desempenho de processos</a>
+                <a href="/desempenho">Desempenho de processos</a>
                 <a href="/relatorio">Relatórios</a>
 
             </div>
@@ -84,8 +84,11 @@
                     <div class="sidebar-header d-flex align-items-center">
                         <div class="avatar"><img src="img/dashboard/user.png" alt="..." class="img-fluid rounded-circle"></div>
                         <div class="title">
-                            <h1 class="h4" id="nmUser"></h1>
-                            <input type="hidden" id="idAux">
+                            <h1 class="h4" id="nmUser">${dadosUser.nome}</h1>
+                            <input type="hidden" id="idAux" value="${dadosUser.idUsuario}">
+                            <#if dadosPc ? has_content>
+                                <input type="hidden" id="idPcAux" value = "${dadosPc.idComputador}">
+                            </#if>
                         </div>
                     </div>
 
@@ -93,7 +96,7 @@
                         <li><a href="/principal"><i></i>Home</a></li>
                         <li><a data-toggle="modal" data-target="#modalChamados"><i></i>Chamados</a></li>
                         <li class="active"><a href="/dashboard"><i></i>Dashboard</a></li>
-                        <li><a href="/perfomance"><i></i>Desempenho de processos</a></li>
+                        <li><a href="/desempenho"><i></i>Desempenho de processos</a></li>
                         <li><a href="/relatorioo"><i></i>Relatórios</a></li>
 
                     </ul>
@@ -117,10 +120,23 @@
                     <section class="dashboard-counts no-padding-bottom">
                         <div class="container-fluid">
                             <div class="row bg-white has-shadow col-md-12">
+                                <h3>Processo com maior utilização da CPU</h3>
                                 <canvas id="myChart1" width="400" height="400"></canvas>
                             </div>
                             <div class="row bg-white has-shadow col-md-12">
-                                <canvas id="myChart2" width="400" height="400"></canvas>
+                                <h3>Outros processos</h3>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>PID</th>
+                                            <th>Processo</th>
+                                            <th>Uso Cpu</th>
+                                            <th>Uso Memória</th>
+                                            <th>Tempo Atividade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bodyProcessos"></tbody>
+                                </table>
                             </div>
                         </div>
                     </section>
@@ -200,46 +216,6 @@
 <!-- Tweaks for older IEs--><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-<script src="js/validacaoLogin.js"></script>
+<script src="js/ajax/kpi.js"></script>
 <!-- Main File-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-
-<script>
-
-    var ctx = document.getElementById('myChart1').getContext('2d');
-    ctx.canvas.width = 1000;
-    ctx.canvas.height = 200;
-    var chart = new Chart(ctx, {
-        type: 'line',
-        data:{
-            labels: ["a", "b", "c", "d"],
-            datasets:[{
-                label: "Processo",
-                data: [30,40,50,50],
-                borderColor         : "hsla(230,100%,57%,0.6)",
-                backgroundColor         : "transparent"
-            }]
-
-        }
-
-    });
-
-    var ctx = document.getElementById('myChart2').getContext('2d');
-    ctx.canvas.width = 1000;
-    ctx.canvas.height = 200;
-    var chart = new Chart(ctx, {
-        type: 'line',
-        data:{
-            labels: ["a", "b", "c", "d"],
-            datasets:[{
-                label: "Processo",
-                data: [30,40,50,50],
-                borderColor         : "hsla(100,91%,32%,0.6)",
-                backgroundColor         : "transparent"
-            }]
-
-        }
-
-    });
-
-</script>

@@ -423,15 +423,6 @@
             $('#meuInput').trigger('focus')
         });
 
-        if(localStorage.getItem("id") == null) {
-          homeBar.innerHTML += `
-              <li><a href="#section-signup" type="button"  data-toggle="modal" data-target="#modalExemplo">Cadastro</a></li>
-              <li><a href="#section-singin"  type="button"  data-toggle="modal" data-target="#modalExemplo2">Login</a></li>
-           `;
-        } else{
-          homeBar.innerHTML += "<li><a href='/principal'>"+localStorage.getItem("login")+"</a></li>";
-        }
-
     });
 
 </script>

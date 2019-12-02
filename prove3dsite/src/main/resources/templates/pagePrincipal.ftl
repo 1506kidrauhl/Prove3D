@@ -25,7 +25,7 @@
         Bem vindo,
         <b id="nmUser">${dadosUser.nome}</b>
     </a>
-    <a class="navbar-brand text-white" style="height: 50px;" onclick="btnSair()">
+    <a class="navbar-brand text-white" style="height: 50px;" href="/sair">
         Sair
     </a>
 </nav>
@@ -108,13 +108,13 @@
                 Nome:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtName" class="form-control form-group" readonly>
+                        <input type="text" id="txtName" class="form-control form-group" readonly value="${dadosUser.nome}">
                     </div>
                 </div>
                 Login:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtLogin" class="form-control form-group" readonly>
+                        <input type="text" id="txtLogin" class="form-control form-group" readonly value="${dadosUser.login}">
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtLogin)">
@@ -123,7 +123,7 @@
                 Senha:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="password" id="txtSenha" class="form-control form-group" readonly>
+                        <input type="password" id="txtSenha" class="form-control form-group" readonly value="${dadosUser.senha}">
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtSenha)">
@@ -132,7 +132,7 @@
                 Email:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtEmail" class="form-control form-group" readonly>
+                        <input type="text" id="txtEmail" class="form-control form-group" readonly value="${dadosUser.email}">
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtEmail)">
@@ -141,7 +141,7 @@
                 Telefone:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtTel" class="form-control form-group" maxlength="14" readonly>
+                        <input type="text" id="txtTel" class="form-control form-group" maxlength="14" readonly value="${dadosUser.telefone}">
                     </div>
                     <div class="col-sm-2">
                         <img src="img/users/edit.png" onclick="btnEdit(txtTel)">
@@ -150,7 +150,7 @@
                 CPF:
                 <div class="row">
                     <div class="col-sm-10">
-                        <input type="text" id="txtCpf" class="form-control form-group" readonly>
+                        <input type="text" id="txtCpf" class="form-control form-group" readonly value="${dadosUser.cpf}">
                     </div>
                 </div>
             </div>
