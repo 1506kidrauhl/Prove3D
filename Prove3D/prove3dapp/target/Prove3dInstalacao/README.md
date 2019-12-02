@@ -9,7 +9,7 @@ Primeira vez:
 
 As demais:
 1- Abrir o terminal do linux
-2- Executei o comando script_instalacao
+2- Executei o comando prove3d
 3- Coloquei a senha do seu usuário
 
 Windows
