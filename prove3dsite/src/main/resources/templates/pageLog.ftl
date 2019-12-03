@@ -53,7 +53,7 @@
       <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="/principal">Home</a>
-        <a href="/dashboard" data-toggle="modal" data-target="#modalChamados">Chamados</a>
+        <a data-toggle="modal" data-target="#modalChamados">Chamados</a>
         <a  href="/dashboard">Dashboard</a>
         <a  href="/desempenho">Desempenho de processos</a>
         <a style="color:#796aee" href="/relatorio">Relatórios</a>

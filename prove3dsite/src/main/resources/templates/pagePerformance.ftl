@@ -58,7 +58,7 @@
             <div id="mySidenav" class="sidenav">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                 <a href="/principal">Home</a>
-                <a href="/dashboard" data-toggle="modal" data-target="#modalChamados">Chamados</a>
+                <a data-toggle="modal" data-target="#modalChamados">Chamados</a>
                 <a style="color:#796aee" href="/dashboard">Dashboard</a>
                 <a href="/desempenho">Desempenho de processos</a>
                 <a href="/relatorio">Relatórios</a>
@@ -97,7 +97,7 @@
                         <li><a data-toggle="modal" data-target="#modalChamados"><i></i>Chamados</a></li>
                         <li class="active"><a href="/dashboard"><i></i>Dashboard</a></li>
                         <li><a href="/desempenho"><i></i>Desempenho de processos</a></li>
-                        <li><a href="/relatorioo"><i></i>Relatórios</a></li>
+                        <li><a href="/relatorio"><i></i>Relatórios</a></li>
 
                     </ul>
 
