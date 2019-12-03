@@ -1,0 +1,46 @@
+#!/bin/bash
+
+function central(){
+   copia_bin
+   validacao_java
+   jar
+}
+
+function copia_bin(){
+   bin_jar=$(ls /usr/local/bin/ | grep prove3dapp-0.0.1-SNAPSHOT.jar)
+   bin_script=$(ls /usr/local/bin | grep script_instalacao)
+   if [ $bin_jar -z ] 2>/dev/null
+   then
+   sudo cp prove3dapp-0.0.1-SNAPSHOT.jar /usr/local/bin 2>/dev/null
+   elif [ $bin_script -z ] 2>/dev/null
+   then
+   sudo mv script_instalacao prove3d 2>/dev/null
+   sudo cp prove3d /usr/local/bin 2>/dev/null
+fi
+}
+
+function validacao_java(){
+   which java| grep -q java 2>/dev/null
+
+   if [ $? -eq 0 ]
+        then echo "Instalando o Prove3D..."
+   else
+        echo "Você não possui o java, por favor instale para executar o Prove3D"
+fi
+}
+
+function jar(){
+   java -jar prove3dapp-0.0.1-SNAPSHOT.jar 2>/dev/null
+   if [ $? -ne 0 ]
+        then
+        sudo java -jar /usr/local/bin/prove3dapp-0.0.1-SNAPSHOT.jar
+fi
+}
+
+central
+
+
+
+
+
+
