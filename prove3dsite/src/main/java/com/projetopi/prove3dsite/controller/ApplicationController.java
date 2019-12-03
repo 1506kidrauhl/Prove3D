@@ -123,7 +123,7 @@ public class ApplicationController {
 
         SimpleMailMessage mailMessage=new SimpleMailMessage();
 
-        mailMessage.setTo("support@prove.zendesk.com");
+        mailMessage.setTo("support@prove3dsupport.zendesk.com");
         mailMessage.setSubject(mail.getTipo() +" - "+ mail.getAssunto() + " - " + mail.getNome());
         mailMessage.setText(mail.getEmail() + ".\n" + mail.getMensagem());
         mailMessage.setFrom(mail.getEmail());
@@ -180,16 +180,27 @@ public class ApplicationController {
                 Object[] dataCpu = (Object[]) dadoCpu[i];
 
                 if (filtro.equals("temp")) {
-                    dashaboard.setId(Integer.valueOf(dataCpu[0].toString()));
-                    dashaboard.setDados(Double.valueOf(dataCpu[2].toString()));
-                    dashaboard.setDataHora(dataCpu[3].toString());
-                } else {
-                    dashaboard.setId(Integer.valueOf(dataCpu[0].toString()));
-                    dashaboard.setDados(Double.valueOf(dataCpu[1].toString()));
-                    dashaboard.setDataHora(dataCpu[3].toString());
-                }
+                    try{
+                        dashaboard.setId(Integer.valueOf(dataCpu[0].toString()));
+                        dashaboard.setDados(Double.valueOf(dataCpu[2].toString()));
+                        dashaboard.setDataHora(dataCpu[3].toString());
 
-                dadosDash.add(dashaboard);
+                        dadosDash.add(dashaboard);
+                    } catch(Exception ex){
+                        ex.printStackTrace();
+                    }
+
+                } else {
+                    try{
+                        dashaboard.setId(Integer.valueOf(dataCpu[0].toString()));
+                        dashaboard.setDados(Double.valueOf(dataCpu[1].toString()));
+                        dashaboard.setDataHora(dataCpu[3].toString());
+
+                        dadosDash.add(dashaboard);
+                    } catch(Exception ex){
+                        ex.printStackTrace();
+                    }
+                }
 
             }
 
@@ -231,7 +242,6 @@ public class ApplicationController {
                 }
 
                 dadosDash.add(dashaboard);
-
 
             }
 

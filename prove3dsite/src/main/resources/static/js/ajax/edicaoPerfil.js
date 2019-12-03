@@ -37,38 +37,28 @@ function btnEditaPerfil(){
 
     document.getElementById("btnEdit").disabled = true;
 
-    var dadosPerfil = {
-        idUsuario : localStorage.getItem("id"),
-        nome : localStorage.getItem("nome"),
-        login : txtLogin.value,
-        senha : txtSenha.value,
-        email : txtEmail.value,
-        telefone : txtTel.value,
-        cpf : localStorage.getItem("cpf")
-    };
+    var dadosPerfil =
+    `id=${localStorage.getItem("id")}&nome=${localStorage.getItem("nome")}&login=${txtLogin.value}&senha=${txtSenha.value}&email=${txtEmail.value}&telefone=${txtTel.value}&cpf=${localStorage.getItem("cpf")}`;
 
     $.ajax({
         url: "/editarPerfil",
         method: 'POST',
-        contentType : '\'application/x-www-form-urlencoded; charset=UTF-8',
-        dataType : 'json',
-        data: JSON.stringify(dadosPerfil),
+        data: dadosPerfil,
         error: function (data){
-            var conteudo = data.responseText.split(".");
-            swal(conteudo[0], conteudo[1]);
-
-            if(conteudo[2] != undefined){
-                atribuiValor();
-            }
+            swal({
+                title: "Ops!",
+                text: data
+            })
             cancelaEdit();
             document.getElementById("btnEdit").disabled = false;
         },
         success: function(data){
-            var conteudo = data.responseText.split(".");
-            swal(conteudo[0], conteudo[1]);
-            if(conteudo[2] != undefined){
-                atribuiValor();
-            }
+            swal({
+                title: "Ops!",
+                text: data
+            });
+
+            atribuiValor();
             cancelaEdit();
             document.getElementById("btnEdit").disabled = false;
         }

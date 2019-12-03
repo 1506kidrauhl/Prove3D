@@ -87,7 +87,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title" id="exampleModalLabel">
-                    <input type="hidden" id="idUser">
+                    <input type="hidden" id="idUser" value="${dadosUser.idUsuario}">
                     <div class="row">
                         <div class="col-sm-2">
                             <img src="img/parallax/logo.png" width="30px" height="30px">
