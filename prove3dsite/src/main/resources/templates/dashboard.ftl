@@ -95,7 +95,7 @@
 
             <ul class="list-unstyled">
                 <li><a href="/principal"><i></i>Home</a></li>
-                <li><a data-toggle="modal" data-target="#modalChamados"><i></i>Chamados</a></li>
+                <li><a data-toggle="modal" class="pointer" data-target="#modalChamados"><i></i>Chamados</a></li>
                 <li class="active"><a href="/dashboard"><i></i>Dashboard</a></li>
                 <li><a href="/desempenho">Desempenho de processos</a></li>
                 <li><a href="/relatorio"><i></i>Relatórios</a></li>
@@ -110,7 +110,7 @@
                     <div class="container demo">
                     <h2 class="no-margin-bottom">
                         <div class="col-lg-12">
-                            <span class="side-Dash" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+                            <span class="side-Dash pointer" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
                             Dashboard
                         </div>
                     </h2>
@@ -121,7 +121,7 @@
                 <div class="container-fluid">
                     <div class="row bg-white has-shadow">
                         <!-- Item -->
-                        <div class="col-xl-3 col-sm-6" onclick="filtro(cpu)">
+                        <div class="col-xl-3 col-sm-6 pointer" onclick="filtro(cpu)">
                             <div class="teste1">
                             <div class="item d-flex align-items-center">
                                 <div class="img-position" ><img src="img/dashboard/cpu.png"></div>
@@ -135,7 +135,7 @@
                         </div>
 
                         <!-- Item -->
-                        <div class="col-xl-3 col-sm-6" onclick="filtro(disco)">
+                        <div class="col-xl-3 col-sm-6 pointer" onclick="filtro(disco)">
                             <div class="teste1">
                             <div class="item d-flex align-items-center">
                                 <div class="img-position" ><div><img src="img/dashboard/disco.png"></div></div>
@@ -149,7 +149,7 @@
                         </div>
 
                         <!-- Item -->
-                        <div class="col-xl-3 col-sm-6" onclick="filtro(gpu)">
+                        <div class="col-xl-3 col-sm-6 pointer" onclick="filtro(gpu)">
                             <div class="teste1">
                             <div class="item d-flex align-items-center">
                                 <div class="img-position"><img src="img/dashboard/gpu.png"></div>
@@ -162,7 +162,7 @@
                         </div>
                         </div>
                             <!-- Item -->
-                        <div class="col-xl-3 col-sm-6" onclick="filtro(memoria)">
+                        <div class="col-xl-3 col-sm-6 pointer" onclick="filtro(memoria)">
                             <div class="teste1">
                             <div class="item d-flex align-items-center">
                                 <div class="img-positionMemoria"><img src="img/dashboard/memoria.png"></div>
@@ -184,12 +184,12 @@
                         <!--Statistics-->
                         <div class="statistics col-lg-3 col-12" style="display: none;" id="cpu" onclick="tbDisplay()">
                             <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Temperatura(°C)', 'temp', 0)">
-                                <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
+                                <div class="icon bg-red pointer"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Temperatura</small></div>
                             </div>
 
                             <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Utilização(%)','util', 0)">
-                                <div class="icon bg-green"><i class="fa fa-calendar-o"></i></div>
+                                <div class="icon bg-green pointer"><i class="fa fa-calendar-o"></i></div>
                                 <div class="text"><small>Utilização</small></div>
                             </div>
                         </div>
@@ -197,31 +197,31 @@
 
                         <div class="statistics col-lg-3 col-12" style="display: none;" id="memoria" onclick="tbDisplay()">
                             <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Utilização(%)', 'memo', 3)">
-                                <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
+                                <div class="icon bg-red pointer"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Utilização</small></div>
                             </div>
                         </div>
 
                         <div class="statistics col-lg-3 col-12" style="display: none;" id="disco" onclick="tbDisplay()">
                             <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff',' Leitura', 'leit', 1)">
-                                <div class="icon bg-green"><i class="fa fa-calendar-o"></i></div>
+                                <div class="icon bg-green pointer"><i class="fa fa-calendar-o"></i></div>
                                 <div class="text"><small>Leitura</small></div>
                             </div>
 
                             <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Gravação', 'grav', 1)" >
-                                <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
+                                <div class="icon bg-red pointer"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Gravação</small></div>
                             </div>
                         </div>
 
                         <div class="statistics col-lg-3 col-12" style="display: none;" id="gpu" onclick="tbDisplay()">
                             <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#796AED','Utilizacao(%)', 'util', 2)">
-                                <div class="icon bg-red"><i class="fa fa-tasks"></i></div>
+                                <div class="icon bg-red pointer"><i class="fa fa-tasks"></i></div>
                                 <div class="text"><small>Utilização</small></div>
                             </div>
 
                             <div class="statistic d-flex align-items-center bg-white has-shadow" onclick="gerarGrafico('#4dafff','Memoria(%)', 'memori', 2)">
-                                <div class="icon bg-green"><i class="fa fa-calendar-o"></i></div>
+                                <div class="icon bg-green pointer"><i class="fa fa-calendar-o"></i></div>
                                 <div class="text"><small>Memória</small></div>
                             </div>
                         </div>

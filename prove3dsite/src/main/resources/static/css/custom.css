@@ -64,6 +64,10 @@
 
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .modal.left .modal-dialog {
     position: fixed;
     margin: auto;

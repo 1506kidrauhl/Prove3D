@@ -45,7 +45,7 @@
             <a data-toggle="modal" data-target="#modalChamados">
             <div class="card cardSize">
                 <img src="img/cards/conversacao.png" class="card-body imgSize"/>
-                <div class="card-footer text-white colorCard">Chamados</div>
+                <div class="card-footer text-white colorCard pointer">Chamados</div>
             </div>
             </a>
         </div>
@@ -63,7 +63,7 @@
             <a data-toggle="modal" data-target="#modalEdit">
             <div class="card cardSize">
                 <img src="img/cards/curriculo.png" class="card-body imgSize"/>
-                <div class="card-footer text-white colorCard">Perfil</div>
+                <div class="card-footer text-white colorCard pointer">Perfil</div>
             </div>
             </a>
         </div>
