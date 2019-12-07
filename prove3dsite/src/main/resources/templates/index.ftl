@@ -46,7 +46,7 @@
           <li><a href="#section-works">Portfolio</a></li>
           <li><a href="#section-contact">Nos contate</a></li>
           <#if dadosUser ? has_content>
-             <li><a href="/principal">${dadosLog.login}</a></li>
+             <li><a href="/principal">${dadosUser.login}</a></li>
           <#else>
              <li><a href="#section-signup" type="button"  data-toggle="modal" data-target="#modalExemplo">Cadastro</a></li>
              <li><a href="#section-singin"  type="button"  data-toggle="modal" data-target="#modalExemplo2">Login</a></li>

@@ -1,12 +1,20 @@
 $(document).ready(function() {
 
-    var dt = new Date();
+    var data = new Date(),
+        dia  = data.getDate().toString(),
+        diaF = (dia.length == 1) ? '0'+dia : dia,
+        mes  = (data.getMonth()+1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+        mesF = (mes.length == 1) ? '0'+mes : mes,
+        anoF = data.getFullYear();
 
-    dtInicio.value = dt.getFullYear() + "-" + (dt.getMonth()+ 1) +"-" + dt.getDate();
-    dtFim.value = dt.getFullYear() + "-" + (dt.getMonth()+ 1) +"-" + dt.getDate();
+    var dateOk = anoF+"-"+mesF+"-"+diaF;
+
+    dtInicio.value = dateOk;
+    dtFim.value = dateOk;
 
     hrInicio.value = "00:00";
     hrFim.value = "23:59";
+
 });
 
 function chamaAjax() {
@@ -27,23 +35,25 @@ function chamaAjax() {
     var parametros="dtInicio="+dtInicio.value + " " + hrInicio.value + "&dtFim="+ dtFim.value +  " " + hrFim.value +
         "&tipo="+cmbFiltro.value+"&comp="+cmbComp.value+"&id="+idAux.value;
 
-    console.log(parametros);
+    document.getElementById("btnLog").disabled = true;
 
     $.ajax({
         url: "/gerarLog",
         method: 'GET',
         data: parametros,
         error: function (data){
-            console.log("foi nada");
+            document.getElementById("btnLog").disabled = false;
         },
         success: function(data){
             geraLog(data);
+            document.getElementById("btnLog").disabled = false;
         }
     });
 
 }
 
 function troca(){
+    bodyTable.innerHTML = "";
     secTable.style.display = "none";
     secLog.style.display = "block";
 }
@@ -53,7 +63,7 @@ function geraLog(dados){
     bodyTable.innerHTML = "";
 
     if(dados == null || dados.length == 0){
-        swal("Ops!", "Não foram encontrados dados")
+        swal("Ops!", "Não foram encontrados dados");
     } else{
 
             secTable.style.display = "block";
@@ -71,6 +81,8 @@ function geraLog(dados){
             </tr>`;
 
         }
+
+        $("#tbTeste").DataTable();
 
     }
 

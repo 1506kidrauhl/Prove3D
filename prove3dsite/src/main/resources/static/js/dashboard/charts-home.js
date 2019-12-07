@@ -1,5 +1,7 @@
 /*global $, document, Chart, LINECHART, data, options, window*/
 function gerarGrafico(cor,texto,fil,comp) {
+    $('#lineCahrt').remove(); // this is my <canvas> element
+    $('#chartDiv').append('<canvas id="lineCahrt"><canvas>');
     chamaAjax(cor, texto, fil, comp);
 }
 

@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
   <!-- theme stylesheet-->
   <link rel="stylesheet" href="/css/style.default.css" id="theme-stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
 
 </head>
 <body>
@@ -132,6 +133,7 @@
               <!--FILTRO TIPO-->
               <div class="row">
                 <div class="col-sm-6">
+                    <label for="cmbFiltro">Tipo Relatório</label>
                   <select id="cmbFiltro" class="form-control">
                     <option value="">Todos</option>
                     <option value="Atenção">Atenção</option>
@@ -140,17 +142,16 @@
                   </select>
                 </div>
                 <div class="col-sm-6">
+                    <label for="cmbComp">Componente</label>
                   <select id="cmbComp" class="form-control">
                     <option value="CPU">CPU</option>
-                    <option value="Disco">Disco</option>
                     <option value="GPU">GPU</option>
-                    <option value="Memória">Memória</option>
                   </select>
                 </div>
               </div>
               <div class="row">
                 <div class="col-sm-6">
-                  <button class="btn btn-primary" onclick="chamaAjax()">Gerar Relatório</button>
+                  <button class="btn btn-primary" id="btnLog" onclick="chamaAjax()">Gerar Relatório</button>
                 </div>
               </div>
             </div>
@@ -163,21 +164,24 @@
         <div class="container-fluid">
           <div class="row bg-white has-shadow">
             <div class="col-xl-12 col-sm-6">
-              <img src="img/back.png" onclick="troca()"/>
-
-              <table class="table table-bordered table-striped" style="margin-top: 5px;">
+              <div class="row">
+                <img src="img/back.png" onclick="troca()"/>
+              </div>
+                <div class="table-responsive-sm">
+              <table class="table table-bordered table-striped" id="tbTeste" style="margin-top: 5px;">
                 <thead>
                 <tr>
-                  <th>&nbsp;</th>
+                  <th>&nbsp</th>
                   <th>Status</th>
                   <th>Descrição</th>
                   <th>Data</th>
                   <th>Hora</th>
-                <tr>
+                </tr>
                 </thead>
                 <tbody id="bodyTable"></tbody>
+                <tfoot></tfoot>
               </table>
-
+              </div>
             </div>
           </div>
         </div>
@@ -249,7 +253,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.js"> </script>
-
+<script type="text/javascript" src="js/log/datatables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"> </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
 <!-- Main File-->
