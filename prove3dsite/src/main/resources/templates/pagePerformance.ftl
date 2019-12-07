@@ -95,8 +95,8 @@
                     <ul class="list-unstyled">
                         <li><a href="/principal"><i></i>Home</a></li>
                         <li><a data-toggle="modal" data-target="#modalChamados"><i></i>Chamados</a></li>
-                        <li class="active"><a href="/dashboard"><i></i>Dashboard</a></li>
-                        <li><a href="/desempenho"><i></i>Desempenho de processos</a></li>
+                        <li><a href="/dashboard"><i></i>Dashboard</a></li>
+                        <li class="active"><a href="/desempenho"><i></i>Desempenho de processos</a></li>
                         <li><a href="/relatorio"><i></i>Relatórios</a></li>
 
                     </ul>
